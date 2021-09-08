@@ -1,0 +1,28 @@
+{
+  "name": "@psychedelic/DAB-js",
+  "version": "0.1.0",
+  "description": "JS adapter for DAB",
+  "main": "dist/index.js",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:Psychedelic/DAB-js.git"
+  },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com/@psychedelic"
+  },
+  "keywords": [
+    "ic",
+    "dfinity",
+    "plug",
+    "fleek",
+    "psychedelic",
+    "crypto",
+    "wallet"
+  ],
+  "author": "Psychedelic",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Psychedelic/DAB-js/issues"
+  },
+  "homepage": "https://github.com/Psychedelic/DAB-js#readme"
+}
