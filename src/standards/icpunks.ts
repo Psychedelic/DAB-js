@@ -5,7 +5,7 @@ import IDL from '../idls/icpunks.did';
 import NFT, { NFTDetails } from '../nft';
 
 export default class ICPUNKS extends NFT {
-  standard = 'ICPUNKS';
+  standard = 'icpunks';
 
   actor: ActorSubclass<NFT_ICPUNKS>;
 

@@ -17,7 +17,7 @@ const getTokenIdentifier = (canister: string, index: number): string => {
 };
 
 export default class EXT extends NFT {
-  standard = 'EXT';
+  standard = 'ext';
 
   actor: ActorSubclass<NTF_EXT>;
 
