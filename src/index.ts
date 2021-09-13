@@ -19,11 +19,11 @@ const NFT_STANDARDS: { [key: string]: NFTStandards } = {
 interface NFTRegistry {
   name: string;
   canisterId: string;
-  toknes: NFTDetails[];
+  tokens: NFTDetails[];
 }
 
 interface GetAllUserNFTsResponse {
-  [standard: string]: NFTRegistry;
+  [standard: string]: NFTRegistry[];
 }
 
 export const getNFTActor = (
@@ -40,19 +40,21 @@ export const getAllUserNFTs = async (
 ): Promise<GetAllUserNFTsResponse> => {
   const NFTRegistry = await getAllNFTS(agent);
   const result = {};
-  NFTRegistry.map((dab) => {
-    const NFTActor = getNFTActor(
-      dab.principal_id.toString(),
-      agent,
-      dab.standard
-    );
-    const details = NFTActor.getUserTokens(user);
-    if (!(dab.standard in result)) result[dab.standard] = [];
-    result[dab.standard] = {
-      name: dab.name,
-      canisterId: dab.principal_id.toString(),
-      tokens: details,
-    };
-  });
+  await Promise.all(
+    NFTRegistry.map(async (dab) => {
+      const NFTActor = getNFTActor(
+        dab.principal_id.toString(),
+        agent,
+        dab.standard
+      );
+      const details = await NFTActor.getUserTokens(user);
+      if (!(dab.standard in result)) result[dab.standard] = [];
+      result[dab.standard].push({
+        name: dab.name,
+        canisterId: dab.principal_id.toString(),
+        tokens: details,
+      });
+    })
+  );
   return result;
 };
