@@ -1,8 +1,8 @@
-import { Principal } from '@dfinity/principal';
 import { Actor, HttpAgent } from '@dfinity/agent';
 
 import dabInterface, { GetAllResult } from '../interfaces/dab';
 import dabDid from '../idls/dab.did';
+
 const DAB_CANISTER_ID = '';
 
 export const getAllNFTS = async (agent: HttpAgent): Promise<GetAllResult> => {
@@ -12,3 +12,5 @@ export const getAllNFTS = async (agent: HttpAgent): Promise<GetAllResult> => {
   });
   return dabActor.get_all();
 };
+
+export default {};

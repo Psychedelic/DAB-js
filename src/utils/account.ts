@@ -86,3 +86,5 @@ export const getAccountId = (
 
   return val;
 };
+
+export default {};

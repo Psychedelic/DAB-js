@@ -4,7 +4,7 @@
 /* eslint-disable @typescript-eslint/interface-name-prefix */
 import { Principal } from '@dfinity/principal';
 
-export interface ICPunk {
+export default interface _SERVICE {
   data_of: (token_index: bigint) => Promise<TokenDesc>;
   transfer_to: (to: Principal, tokenIndex: bigint) => Promise<boolean>;
   user_tokens: (user: Principal) => Promise<Array<bigint>>;
@@ -22,5 +22,3 @@ export interface TokenDesc {
   name: string;
   properties: Array<Property>;
 }
-
-export default ICPunk;
