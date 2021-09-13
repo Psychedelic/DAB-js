@@ -1,0 +1,49 @@
+{
+  "name": "@psychedelic/DAB-js",
+  "version": "0.1.0",
+  "description": "JS adapter for DAB",
+  "main": "dist/index.js",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:Psychedelic/DAB-js.git"
+  },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com/@psychedelic"
+  },
+  "keywords": [
+    "ic",
+    "dfinity",
+    "plug",
+    "fleek",
+    "psychedelic",
+    "crypto",
+    "wallet"
+  ],
+  "author": "Psychedelic",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Psychedelic/DAB-js/issues"
+  },
+  "homepage": "https://github.com/Psychedelic/DAB-js#readme",
+  "scripts": {
+    "build": "npm run clean && npm run compile",
+    "clean": "rm -rf ./dist && rm -rf tsconfig.tsbuildinfo",
+    "compile": "tsc -b tsconfig.json",
+    "test": "jest",
+    "lint": "eslint --ext ts,js ./src",
+    "watch": "tsc --watch",
+    "publish": "npm run build && npm publish"
+  },
+  "devDependencies": {
+    "eslint": "^7.32.0",
+    "jest": "^27.1.1",
+    "ts-jest": "^27.0.5",
+    "ts-node": "^10.2.1",
+    "typescript": "^4.4.2"
+  },
+  "dependencies": {
+    "@dfinity/agent": "^0.10.0",
+    "@dfinity/identity": "^0.10.0",
+    "@dfinity/principal": "^0.10.0"
+  }
+}
