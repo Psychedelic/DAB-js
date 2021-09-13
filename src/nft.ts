@@ -6,7 +6,7 @@ export interface NFTDetails {
   canister: string;
   id?: string;
   name?: string;
-  url?: string;
+  url: string;
   metadata: any;
 }
 

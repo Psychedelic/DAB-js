@@ -4,6 +4,8 @@ import NFT_ICPUNKS from '../interfaces/icpunks';
 import IDL from '../idls/icpunks.did';
 import NFT, { NFTDetails } from '../nft';
 
+const PRE_URL = 'https://qcg3w-tyaaa-aaaah-qakea-cai.raw.ic0.app'
+
 export default class ICPUNKS extends NFT {
   standard = 'icpunks';
 
@@ -29,7 +31,7 @@ export default class ICPUNKS extends NFT {
       index: token.id,
       canister: this.canisterId,
       name: token.name,
-      url: token.url,
+      url: `${PRE_URL}${token.url}`,
       metadata: token,
     }));
   }
