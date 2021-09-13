@@ -13,9 +13,9 @@ export default ({ IDL }) => {
   const TokenIndex = IDL.Nat;
 
   const ICPunk = IDL.Service({
-    data_of: IDL.Func([TokenIndex], [TokenDesc], ['query']),
+    data_of: IDL.Func([TokenIndex], [TokenDesc], []),
     transfer_to: IDL.Func([IDL.Principal, TokenIndex], [IDL.Bool], []),
-    user_tokens: IDL.Func([IDL.Principal], [IDL.Vec(IDL.Nat)], ['query']),
+    user_tokens: IDL.Func([IDL.Principal], [IDL.Vec(IDL.Nat)], []),
   });
   return ICPunk;
 };

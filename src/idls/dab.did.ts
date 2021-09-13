@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/camelcase */
 /* eslint-disable camelcase */
 export default ({ IDL }) => {
-  const getAllResult = IDL.VEC(
+  const getAllResult = IDL.Vec(
     IDL.Record({
       name: IDL.Text,
       principal_id: IDL.Principal,
@@ -9,7 +9,7 @@ export default ({ IDL }) => {
     })
   );
   return IDL.Service({
-    get_all: IDL.Func([], [getAllResult], ['query']),
+    get_all: IDL.Func([], [getAllResult], []),
   });
 };
 export const init = () => {

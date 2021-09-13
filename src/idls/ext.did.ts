@@ -78,7 +78,7 @@ export default ({ IDL }) => {
     balance: IDL.Func([BalanceRequest], [BalanceResult], ['query']),
     details: IDL.Func([TokenIdentifier], [DetailsResult], ['query']),
     tokens: IDL.Func([AccountIdentifier], [TokensResult], ['query']),
-    tokens_ext: IDL.Func([AccountIdentifier], [TokenExtResult], ['query']),
+    tokens_ext: IDL.Func([AccountIdentifier], [TokenExtResult], []),
     transfer: IDL.Func([TransferRequest], [TransferResult], []),
     metadata: IDL.Func([TokenIdentifier], [MetadataResult], ['query']),
   });
