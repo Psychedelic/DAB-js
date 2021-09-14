@@ -4,7 +4,7 @@ import ICPunks from '../standards/icpunks';
 
 export type NFTStandards = typeof EXT | typeof ICPunks;
 
-export interface NFTRegistry {
+export interface NFTCollection {
   name: string;
   canisterId: string;
   tokens: NFTDetails[];

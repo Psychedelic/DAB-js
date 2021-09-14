@@ -1,6 +1,6 @@
 import { HttpAgent } from '@dfinity/agent';
 import { Principal } from '@dfinity/principal';
-import { NFTRegistry, NFTStandards } from './interfaces/nft';
+import { NFTCollection, NFTStandards } from './interfaces/nft';
 import NFT from './nft';
 import EXT from './standards/ext';
 import ICPunks from './standards/icpunks';
@@ -12,7 +12,7 @@ const NFT_STANDARDS: { [key: string]: NFTStandards } = {
 };
 
 export interface GetAllUserNFTsResponse {
-  [standard: string]: NFTRegistry[];
+  [standard: string]: NFTCollection[];
 }
 
 export const getNFTActor = (
@@ -27,10 +27,10 @@ export const getAllUserNFTs = async (
   agent: HttpAgent,
   user: Principal
 ): Promise<GetAllUserNFTsResponse> => {
-  const NFTRegistry = await getAllNFTS(agent);
+  const NFTCollections = await getAllNFTS(agent);
   const result = {};
   await Promise.all(
-    NFTRegistry.map(async (dab) => {
+    NFTCollections.map(async (dab) => {
       const NFTActor = getNFTActor(
         dab.principal_id.toString(),
         agent,

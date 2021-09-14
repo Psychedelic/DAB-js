@@ -8,6 +8,7 @@ export interface NFTDetails {
   name?: string;
   url: string;
   metadata: any;
+  standard: string;
 }
 
 export default abstract class NFT {

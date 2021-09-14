@@ -7,7 +7,7 @@ import NFT, { NFTDetails } from '../nft';
 const PRE_URL = 'https://qcg3w-tyaaa-aaaah-qakea-cai.raw.ic0.app'
 
 export default class ICPUNKS extends NFT {
-  standard = 'icpunks';
+  standard = 'ICPunks';
 
   actor: ActorSubclass<NFT_ICPUNKS>;
 
@@ -33,6 +33,7 @@ export default class ICPUNKS extends NFT {
       name: token.name,
       url: `${PRE_URL}${token.url}`,
       metadata: token,
+      standard: this.standard
     }));
   }
 
@@ -49,6 +50,7 @@ export default class ICPUNKS extends NFT {
       url: tokenData.url,
       name: tokenData.name,
       metadata: tokenData,
+      standard: this.standard
     };
   }
 }
