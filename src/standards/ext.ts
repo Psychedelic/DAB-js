@@ -17,7 +17,7 @@ const getTokenIdentifier = (canister: string, index: number): string => {
 };
 
 export default class EXT extends NFT {
-  standard = 'ext';
+  standard = 'EXT';
 
   actor: ActorSubclass<NTF_EXT>;
 
@@ -43,7 +43,8 @@ export default class EXT extends NFT {
       id: getTokenIdentifier(this.canisterId, token[0]),
       canister: this.canisterId,
       metadata: token[2].length ? token[2][0] : undefined,
-      url: `https://${this.canisterId}.raw.ic0.app/?type=thumbnail&tokenid=${getTokenIdentifier(this.canisterId, token[0])}`
+      url: `https://${this.canisterId}.raw.ic0.app/?type=thumbnail&tokenid=${getTokenIdentifier(this.canisterId, token[0])}`,
+      standard: this.standard
     }));
   }
 
@@ -76,7 +77,8 @@ export default class EXT extends NFT {
       index: BigInt(tokenIndex),
       canister: this.canisterId,
       metadata: metadata.length ? metadata[0] : undefined,
-      url: `https://${this.canisterId}.raw.ic0.app/?type=thumbnail&tokenid=${tokenIdentifier}`
+      url: `https://${this.canisterId}.raw.ic0.app/?type=thumbnail&tokenid=${tokenIdentifier}`,
+      standard: this.standard
     };
   }
 }
