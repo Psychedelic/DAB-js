@@ -1,28 +1,17 @@
 import { HttpAgent } from '@dfinity/agent';
 import { Principal } from '@dfinity/principal';
-import NFT, { NFTDetails } from './nft';
+import { NFTRegistry, NFTStandards } from './interfaces/nft';
+import NFT from './nft';
 import EXT from './standards/ext';
 import ICPunks from './standards/icpunks';
 import { getAllNFTS } from './utils/dab';
-
-const DAB_RESULT = [
-  { standard: 'ext', canisterId: 'some-id', name: 'entrepot' },
-];
-
-type NFTStandards = typeof EXT | typeof ICPunks;
 
 const NFT_STANDARDS: { [key: string]: NFTStandards } = {
   ext: EXT,
   icpunks: ICPunks,
 };
 
-interface NFTRegistry {
-  name: string;
-  canisterId: string;
-  tokens: NFTDetails[];
-}
-
-interface GetAllUserNFTsResponse {
+export interface GetAllUserNFTsResponse {
   [standard: string]: NFTRegistry[];
 }
 
@@ -58,3 +47,5 @@ export const getAllUserNFTs = async (
   );
   return result;
 };
+
+export * from './interfaces/nft';

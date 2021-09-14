@@ -2,7 +2,7 @@ import { HttpAgent } from '@dfinity/agent';
 import { Principal } from '@dfinity/principal';
 
 export interface NFTDetails {
-  index: BigInt;
+  index: bigint;
   canister: string;
   id?: string;
   name?: string;
