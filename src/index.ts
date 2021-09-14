@@ -37,7 +37,10 @@ export const getAllUserNFTs = async (
           name: dab.name,
           canisterId: dab.principal_id.toString(),
           standard: dab.standard,
-          tokens: details,
+          tokens: details.map((detail) => ({
+            ...detail,
+            collection: dab.name,
+          })),
         };
       } catch (e) {
         return {

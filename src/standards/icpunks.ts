@@ -1,10 +1,10 @@
 import { Actor, ActorSubclass, HttpAgent } from '@dfinity/agent';
 import { Principal } from '@dfinity/principal';
-import NFT_ICPUNKS from '../interfaces/icpunks';
+import NFT_ICPUNKS, { TokenDesc } from '../interfaces/icpunks';
 import IDL from '../idls/icpunks.did';
 import NFT, { NFTDetails } from '../nft';
 
-const PRE_URL = 'https://qcg3w-tyaaa-aaaah-qakea-cai.raw.ic0.app'
+const PRE_URL = 'https://qcg3w-tyaaa-aaaah-qakea-cai.raw.ic0.app';
 
 export default class ICPUNKS extends NFT {
   standard = 'ICPunks';
@@ -27,14 +27,7 @@ export default class ICPUNKS extends NFT {
       tokensIndexes.map((tokenIndex) => this.actor.data_of(tokenIndex))
     );
 
-    return tokensData.map((token) => ({
-      index: token.id,
-      canister: this.canisterId,
-      name: token.name,
-      url: `${PRE_URL}${token.url}`,
-      metadata: token,
-      standard: this.standard
-    }));
+    return tokensData.map((token) => this.serializeTokenData(token));
   }
 
   async transfer(to: Principal, tokenIndex: number): Promise<void> {
@@ -44,13 +37,15 @@ export default class ICPUNKS extends NFT {
   async details(tokenIndex: number): Promise<NFTDetails> {
     const tokenData = await this.actor.data_of(BigInt(tokenIndex));
 
-    return {
-      index: BigInt(tokenIndex),
-      canister: this.canisterId,
-      url: tokenData.url,
-      name: tokenData.name,
-      metadata: tokenData,
-      standard: this.standard
-    };
+    return this.serializeTokenData(tokenData);
   }
+
+  private serializeTokenData = (tokenData: TokenDesc): NFTDetails => ({
+    index: BigInt(tokenData.id),
+    canister: this.canisterId,
+    url: tokenData.url,
+    name: tokenData.name,
+    metadata: tokenData,
+    standard: this.standard,
+  });
 }

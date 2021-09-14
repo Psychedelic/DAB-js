@@ -1,6 +1,6 @@
 import { Actor, ActorSubclass, HttpAgent } from '@dfinity/agent';
 import { Principal } from '@dfinity/principal';
-import NTF_EXT from '../interfaces/ext';
+import NTF_EXT, { TokenIdentifier } from '../interfaces/ext';
 import IDL from '../idls/ext.did';
 import NFT, { NFTDetails } from '../nft';
 import { getAccountId } from '../utils/account';
@@ -38,14 +38,13 @@ export default class EXT extends NFT {
 
     const tokens = userTokensResult.ok || [];
 
-    return tokens.map((token) => ({
-      index: BigInt(token[0]),
-      id: getTokenIdentifier(this.canisterId, token[0]),
-      canister: this.canisterId,
-      metadata: token[2].length ? token[2][0] : undefined,
-      url: `https://${this.canisterId}.raw.ic0.app/?type=thumbnail&tokenid=${getTokenIdentifier(this.canisterId, token[0])}`,
-      standard: this.standard
-    }));
+    return tokens.map((token) =>
+      this.serializeTokenData(
+        token[2],
+        getTokenIdentifier(this.canisterId, token[0]),
+        token[0]
+      )
+    );
   }
 
   async transfer(to: Principal, tokenIndex: number): Promise<void> {
@@ -72,13 +71,21 @@ export default class EXT extends NFT {
 
     const { metadata } = metadataResult.ok.nonfungible;
 
+    return this.serializeTokenData(metadata, tokenIdentifier, tokenIndex);
+  }
+
+  private serializeTokenData(
+    metadata: any,
+    tokenIdentifier: string,
+    tokenIndex: number
+  ): NFTDetails {
     return {
       id: tokenIdentifier,
       index: BigInt(tokenIndex),
       canister: this.canisterId,
       metadata: metadata.length ? metadata[0] : undefined,
       url: `https://${this.canisterId}.raw.ic0.app/?type=thumbnail&tokenid=${tokenIdentifier}`,
-      standard: this.standard
+      standard: this.standard,
     };
   }
 }
