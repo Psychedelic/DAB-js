@@ -7,8 +7,8 @@ import ICPunks from './standards/icpunks';
 import { getAllNFTS } from './utils/dab';
 
 const NFT_STANDARDS: { [key: string]: NFTStandards } = {
-  ext: EXT,
-  icpunks: ICPunks,
+  EXT: EXT,
+  ICPunks: ICPunks,
 };
 
 export interface GetAllUserNFTsResponse {
@@ -38,11 +38,13 @@ export const getAllUserNFTs = async (
       );
       const details = await NFTActor.getUserTokens(user);
       if (!(dab.standard in result)) result[dab.standard] = [];
-      result[dab.standard].push({
-        name: dab.name,
-        canisterId: dab.principal_id.toString(),
-        tokens: details,
-      });
+      if (details.length) {
+        result[dab.standard].push({
+          name: dab.name,
+          canisterId: dab.principal_id.toString(),
+          tokens: details,
+        });
+      }
     })
   );
   return result;
