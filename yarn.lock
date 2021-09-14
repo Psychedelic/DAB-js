@@ -1211,8 +1211,10 @@
     "@types/yargs" "^16.0.0"
     chalk "^4.0.0"
 
-"@psychedelic/plug-controller@../plug-controller":
+"@psychedelic/plug-controller@0.4.7":
   version "0.4.7"
+  resolved "https://npm.pkg.github.com/download/@psychedelic/plug-controller/0.4.7/f3dcef2958522dcce335b130328723abbb9a719a1e7997d40e96c26a19a4e49a#8b746f0c96bf83a7978c3e43e3939a7656a314f6"
+  integrity sha512-OAf1Ye/tyBv1N9jg4FqhuGuGwFu5Z70PhGXjAueWpe/vgD/4UY4fuP4PkYz+Orzs8U6UxTNeCG/mvRLorzq7qA==
   dependencies:
     "@babel/preset-env" "^7.14.4"
     "@dfinity/agent" "^0.9.3"
