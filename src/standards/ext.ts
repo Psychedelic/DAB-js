@@ -36,7 +36,7 @@ export default class EXT extends NFT {
     if ('error' in userTokensResult)
       throw new Error(Object.keys(userTokensResult.error)[0]);
 
-    const tokens = userTokensResult.ok;
+    const tokens = userTokensResult.ok || [];
 
     return tokens.map((token) => ({
       index: BigInt(token[0]),
