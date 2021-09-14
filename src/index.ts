@@ -31,13 +31,22 @@ export const getAllUserNFTs = async (
         agent,
         dab.standard
       );
-      const details = await NFTActor.getUserTokens(user);
-      return {
-        name: dab.name,
-        canisterId: dab.principal_id.toString(),
-        standard: dab.standard,
-        tokens: details,
-      };
+      try {
+        const details = await NFTActor.getUserTokens(user);
+        return {
+          name: dab.name,
+          canisterId: dab.principal_id.toString(),
+          standard: dab.standard,
+          tokens: details,
+        };
+      } catch (e) {
+        return {
+          name: dab.name,
+          canisterId: dab.principal_id.toString(),
+          standard: dab.standard,
+          tokens: [],
+        };
+      }
     })
   );
   return result.filter((element) => element.tokens.length);
