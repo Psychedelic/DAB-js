@@ -38,13 +38,16 @@ export default class EXT extends NFT {
 
     const tokens = userTokensResult.ok || [];
 
-    return tokens.map((token) =>
-      this.serializeTokenData(
-        token[2],
-        getTokenIdentifier(this.canisterId, token[0]),
-        token[0]
-      )
-    );
+    return tokens.map((token) => {
+      const metadata = token[2];
+      const tokenIndex = token[0];
+
+      return this.serializeTokenData(
+        metadata,
+        getTokenIdentifier(this.canisterId, tokenIndex),
+        tokenIndex
+      );
+    });
   }
 
   async transfer(to: Principal, tokenIndex: number): Promise<void> {
