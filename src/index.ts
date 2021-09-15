@@ -56,3 +56,4 @@ export const getAllUserNFTs = async (
 };
 
 export * from './interfaces/nft';
+export * from './nft';
