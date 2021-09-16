@@ -2,14 +2,14 @@
 
 ![](https://storageapi.fleek.co/nicopoggi-team-bucket/dab-gh-nft.png)
 
-This is a JS library that wraps all necessary methods to integrate [DAB's registries/list](https://dab.ooo/), starting with its NFTs List into applications, websites, or other Internet Computer experiences. It includes:
+This is a JS library that wraps several necessary methods to integrate [DAB's registries/list](https://dab.ooo/), starting with its NFTs List into applications, websites, or other Internet Computer experiences. It includes:
 
-- Simple method to query all entries in DAB's NFT List canister.
-- A standard wrapper that unifies all NFT standards (EXT, ICPunks, etc...) under a common interface.
+- Simple method to query an identity's owned NFTs in listed NFT collections.
+- A standard wrapper that unifies several NFT standards (EXT, ICPunks, etc...) under a common interface.
 
 ## 🤔 What is DAB and its NFT list? 
 
-DAB is an open internet service for data registries. In V0.1.0 it provides a list of NFTs that apps & developers can **consume to surface new NFTs as they are listed in DAB, instead of manually adding them one by one**.
+DAB is an open internet service for data registries. In V0.1.0 it provides a list of NFTs that apps & developers can **consume to auto-surface a user's owned NFTs from multiple collections, and support new NFT collections as they are listed in DAB, instead of manually adding them one by one**.
 
 - [DAB's website](https://docs.dab.ooo)
 - [DAB's main repository](https://github.com/psychedelic/dab)
