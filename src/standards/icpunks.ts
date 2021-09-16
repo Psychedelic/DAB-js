@@ -4,8 +4,6 @@ import NFT_ICPUNKS, { TokenDesc } from '../interfaces/icpunks';
 import IDL from '../idls/icpunks.did';
 import NFT, { NFTDetails } from '../nft';
 
-const PRE_URL = 'https://qcg3w-tyaaa-aaaah-qakea-cai.raw.ic0.app';
-
 export default class ICPUNKS extends NFT {
   standard = 'ICPunks';
 
@@ -31,7 +29,10 @@ export default class ICPUNKS extends NFT {
   }
 
   async transfer(to: Principal, tokenIndex: number): Promise<void> {
-    this.actor.transfer_to(to, BigInt(tokenIndex));
+    const success = await this.actor.transfer_to(to, BigInt(tokenIndex));
+    if (!success) {
+      throw new Error('Error transfering token');
+    }
   }
 
   async details(tokenIndex: number): Promise<NFTDetails> {

@@ -19,7 +19,7 @@ const getTokenIdentifier = (canister: string, index: number): string => {
 
 const extImageUrl = (canisterId, index, tokenIdentifier) => ({
   [NFT_CANISTERS.WRAPPED_PUNKS]: `https://${NFT_CANISTERS.IC_PUNKS}.raw.ic0.app/Token/${index}`,
-  [NFT_CANISTERS.IC_DRIP]: `https://${NFT_CANISTERS.IC_DRIP}.raw.ic0.app?tokenId=${index}`,
+  [NFT_CANISTERS.WRAPPED]: `https://${NFT_CANISTERS.IC_DRIP}.raw.ic0.app?tokenId=${index}`,
 })[canisterId] || `https://${canisterId}.raw.ic0.app/?type=thumbnail&tokenid=${tokenIdentifier}`;
 
 export default class EXT extends NFT {
@@ -39,8 +39,8 @@ export default class EXT extends NFT {
   async getUserTokens(principal: Principal): Promise<NFTDetails[]> {
     const accountId = getAccountId(principal);
     const userTokensResult = await this.actor.tokens_ext(accountId);
-    if ('error' in userTokensResult)
-      throw new Error(Object.keys(userTokensResult.error)[0]);
+    if ('err' in userTokensResult)
+      throw new Error(Object.keys(userTokensResult.err)[0]);
 
     const tokens = userTokensResult.ok || [];
 
@@ -61,22 +61,25 @@ export default class EXT extends NFT {
     const from = await this.agent.getPrincipal();
     const dummyMemmo = new Array(32).fill(0);
 
-    this.actor.transfer({
+    const transferResult = await this.actor.transfer({
       to: { principal: to },
       from: { principal: from },
       token: tokenIdentifier,
       amount: BigInt(1),
       memo: dummyMemmo,
       notify: false,
+      subaccount: []
     });
+    if ('err' in transferResult)
+      throw new Error(Object.keys(transferResult.err)[0]);
   }
 
   async details(tokenIndex: number): Promise<NFTDetails> {
     const tokenIdentifier = getTokenIdentifier(this.canisterId, tokenIndex);
     const metadataResult = await this.actor.metadata(tokenIdentifier);
 
-    if ('error' in metadataResult)
-      throw new Error(Object.keys(metadataResult.error)[0]);
+    if ('err' in metadataResult)
+      throw new Error(Object.keys(metadataResult.err)[0]);
 
     const { metadata } = metadataResult.ok.nonfungible;
 
