@@ -41,7 +41,7 @@ export const getAllUserNFTs = async (
           canisterId: collection.principal_id.toString(),
           standard: collection.standard,
           description: collection.description,
-          logo: collection.logo,
+          icon: collection.icon,
           tokens: details.map((detail) => ({
             ...detail,
             collection: collection.name,

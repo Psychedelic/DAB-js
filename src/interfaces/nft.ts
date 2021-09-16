@@ -9,6 +9,6 @@ export interface NFTCollection {
   canisterId: string;
   standard: string;
   tokens: NFTDetails[];
-  logo?: string;
+  icon?: string;
   description?: string;
 }

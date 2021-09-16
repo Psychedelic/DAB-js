@@ -6,7 +6,7 @@ interface DABCollection {
   name: string;
   principal_id: Principal;
   standard: string;
-  logo?: string;
+  icon?: string;
   description?: string;
 }
 
