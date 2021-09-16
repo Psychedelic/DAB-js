@@ -46,4 +46,4 @@ export default ({ IDL }) => {
     'remove' : IDL.Func([IDL.Text], [OperationResponse], []),
   });
 };
-export const init = ({ IDL }) => { return []; };
+export const init = () => { return []; };
