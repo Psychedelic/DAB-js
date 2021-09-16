@@ -2,7 +2,7 @@
 /* eslint-disable camelcase */
 
 export default ({ IDL }) => {
-  const InputNFTCanister = IDL.Record({
+  const DABCollection = IDL.Record({
     'icon' : IDL.Text,
     'name' : IDL.Text,
     'description' : IDL.Text,
@@ -28,7 +28,7 @@ export default ({ IDL }) => {
     'standard' : IDL.Text,
   });
   return IDL.Service({
-    'add' : IDL.Func([InputNFTCanister], [OperationResponse], []),
+    'add' : IDL.Func([DABCollection], [OperationResponse], []),
     'edit' : IDL.Func(
         [
           IDL.Text,
