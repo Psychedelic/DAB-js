@@ -16,6 +16,11 @@ const getTokenIdentifier = (canister: string, index: number): string => {
   return Principal.fromUint8Array(array).toText();
 };
 
+const extImageUrl = (canisterId, index, tokenIdentifier) => ({
+  "bxdf4-baaaa-aaaah-qaruq-cai": `https://qcg3w-tyaaa-aaaah-qakea-cai.raw.ic0.app/Token/${index}`,
+  "3db6u-aiaaa-aaaah-qbjbq-cai": `https://d3ttm-qaaaa-aaaai-qam4a-cai.raw.ic0.app?tokenId=${index}`,
+})[canisterId] || `https://${canisterId}.raw.ic0.app/?type=thumbnail&tokenid=${tokenIdentifier}`
+
 export default class EXT extends NFT {
   standard = 'EXT';
 
@@ -87,7 +92,7 @@ export default class EXT extends NFT {
       index: BigInt(tokenIndex),
       canister: this.canisterId,
       metadata: metadata.length ? metadata[0] : undefined,
-      url: `https://${this.canisterId}.raw.ic0.app/?type=thumbnail&tokenid=${tokenIdentifier}`,
+      url: extImageUrl(this.canisterId, tokenIndex, tokenIdentifier),
       standard: this.standard,
     };
   }
