@@ -19,7 +19,7 @@ const getTokenIdentifier = (canister: string, index: number): string => {
 const extImageUrl = (canisterId, index, tokenIdentifier) => ({
   "bxdf4-baaaa-aaaah-qaruq-cai": `https://qcg3w-tyaaa-aaaah-qakea-cai.raw.ic0.app/Token/${index}`,
   "3db6u-aiaaa-aaaah-qbjbq-cai": `https://d3ttm-qaaaa-aaaai-qam4a-cai.raw.ic0.app?tokenId=${index}`,
-})[canisterId] || `https://${canisterId}.raw.ic0.app/?type=thumbnail&tokenid=${tokenIdentifier}`
+})[canisterId] || `https://${canisterId}.raw.ic0.app/?type=thumbnail&tokenid=${tokenIdentifier}`;
 
 export default class EXT extends NFT {
   standard = 'EXT';

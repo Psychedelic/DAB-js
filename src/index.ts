@@ -6,6 +6,9 @@ import EXT from './standards/ext';
 import ICPunks from './standards/icpunks';
 import { getAllNFTS } from './utils/dab';
 
+export * from './interfaces/nft';
+export * from './nft';
+
 const NFT_STANDARDS: { [key: string]: NFTStandards } = {
   EXT: EXT,
   ICPunks: ICPunks,
@@ -21,32 +24,34 @@ export const getNFTActor = (
 
 export const getAllUserNFTs = async (
   agent: HttpAgent,
-  user: Principal
+  user: Principal,
 ): Promise<NFTCollection[]> => {
   const NFTCollections = await getAllNFTS(agent);
   const result = await Promise.all(
-    NFTCollections.map(async (dab) => {
+    NFTCollections.map(async (collection) => {
       const NFTActor = getNFTActor(
-        dab.principal_id.toString(),
+        collection.principal_id.toString(),
         agent,
-        dab.standard
+        collection.standard
       );
       try {
         const details = await NFTActor.getUserTokens(user);
         return {
-          name: dab.name,
-          canisterId: dab.principal_id.toString(),
-          standard: dab.standard,
+          name: collection.name,
+          canisterId: collection.principal_id.toString(),
+          standard: collection.standard,
+          description: collection.description,
+          logo: collection.logo,
           tokens: details.map((detail) => ({
             ...detail,
-            collection: dab.name,
+            collection: collection.name,
           })),
         };
       } catch (e) {
         return {
-          name: dab.name,
-          canisterId: dab.principal_id.toString(),
-          standard: dab.standard,
+          name: collection.name,
+          canisterId: collection.principal_id.toString(),
+          standard: collection.standard,
           tokens: [],
         };
       }
@@ -54,6 +59,3 @@ export const getAllUserNFTs = async (
   );
   return result.filter((element) => element.tokens.length);
 };
-
-export * from './interfaces/nft';
-export * from './nft';
