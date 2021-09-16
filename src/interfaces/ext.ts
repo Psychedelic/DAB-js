@@ -42,7 +42,7 @@ export interface ResultOk<T> {
 }
 
 export interface ResultError<T> {
-  error: T;
+  err: T;
 }
 
 export type Result<Ok, Error> = ResultOk<Ok> | ResultError<Error>;
@@ -77,7 +77,7 @@ interface TransferRequest {
   amount: Balance;
   memo: Memo;
   notify: boolean;
-  subacount?: SubAccount;
+  subaccount?: SubAccount;
 }
 
 type TransferError =

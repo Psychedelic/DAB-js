@@ -40,7 +40,7 @@ export default ({ IDL }) => {
         [OperationResponse],
         [],
       ),
-    'get_all' : IDL.Func([], [IDL.Vec(NFTCanister)], ['query']),
+    'get_all' : IDL.Func([], [IDL.Vec(NFTCanister)], []),
     'get_canister' : IDL.Func([IDL.Text], [IDL.Opt(NFTCanister)], ['query']),
     'name' : IDL.Func([], [IDL.Text], ['query']),
     'remove' : IDL.Func([IDL.Text], [OperationResponse], []),
