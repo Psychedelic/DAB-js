@@ -5,6 +5,7 @@ import IDL from '../idls/ext.did';
 import NFT, { NFTDetails } from '../nft';
 import { getAccountId } from '../utils/account';
 import { to32bits } from '../utils/number';
+import { NFT_CANISTERS } from '../constants/canisters';
 
 const getTokenIdentifier = (canister: string, index: number): string => {
   const padding = Buffer.from('\x0Atid');
@@ -17,8 +18,8 @@ const getTokenIdentifier = (canister: string, index: number): string => {
 };
 
 const extImageUrl = (canisterId, index, tokenIdentifier) => ({
-  "bxdf4-baaaa-aaaah-qaruq-cai": `https://qcg3w-tyaaa-aaaah-qakea-cai.raw.ic0.app/Token/${index}`,
-  "3db6u-aiaaa-aaaah-qbjbq-cai": `https://d3ttm-qaaaa-aaaai-qam4a-cai.raw.ic0.app?tokenId=${index}`,
+  [NFT_CANISTERS.WRAPPED_PUNKS]: `https://${NFT_CANISTERS.IC_PUNKS}.raw.ic0.app/Token/${index}`,
+  [NFT_CANISTERS.IC_DRIP]: `https://${NFT_CANISTERS.IC_DRIP}.raw.ic0.app?tokenId=${index}`,
 })[canisterId] || `https://${canisterId}.raw.ic0.app/?type=thumbnail&tokenid=${tokenIdentifier}`;
 
 export default class EXT extends NFT {
