@@ -5,6 +5,7 @@ import IDL from '../idls/ext.did';
 import NFT, { NFTDetails } from '../nft';
 import { getAccountId } from '../utils/account';
 import { to32bits } from '../utils/number';
+import { NFT_CANISTERS } from '../constants/canisters';
 
 const getTokenIdentifier = (canister: string, index: number): string => {
   const padding = Buffer.from('\x0Atid');
@@ -15,6 +16,11 @@ const getTokenIdentifier = (canister: string, index: number): string => {
   ]);
   return Principal.fromUint8Array(array).toText();
 };
+
+const extImageUrl = (canisterId, index, tokenIdentifier) => ({
+  [NFT_CANISTERS.WRAPPED_PUNKS]: `https://${NFT_CANISTERS.IC_PUNKS}.raw.ic0.app/Token/${index}`,
+  [NFT_CANISTERS.IC_DRIP]: `https://${NFT_CANISTERS.IC_DRIP}.raw.ic0.app?tokenId=${index}`,
+})[canisterId] || `https://${canisterId}.raw.ic0.app/?type=thumbnail&tokenid=${tokenIdentifier}`;
 
 export default class EXT extends NFT {
   standard = 'EXT';
@@ -87,7 +93,7 @@ export default class EXT extends NFT {
       index: BigInt(tokenIndex),
       canister: this.canisterId,
       metadata: metadata.length ? metadata[0] : undefined,
-      url: `https://${this.canisterId}.raw.ic0.app/?type=thumbnail&tokenid=${tokenIdentifier}`,
+      url: extImageUrl(this.canisterId, tokenIndex, tokenIdentifier),
       standard: this.standard,
     };
   }

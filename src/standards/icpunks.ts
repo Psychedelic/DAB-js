@@ -43,7 +43,7 @@ export default class ICPUNKS extends NFT {
   private serializeTokenData = (tokenData: TokenDesc): NFTDetails => ({
     index: BigInt(tokenData.id),
     canister: this.canisterId,
-    url: tokenData.url,
+    url: `https://${this.canisterId}.raw.ic0.app${tokenData.url}`,
     name: tokenData.name,
     metadata: tokenData,
     standard: this.standard,
