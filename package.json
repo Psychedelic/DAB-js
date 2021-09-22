@@ -1,14 +1,11 @@
 {
   "name": "@psychedelic/dab-js",
-  "version": "0.1.9",
+  "version": "0.1.10",
   "description": "JS adapter for DAB",
   "main": "dist/index.js",
   "repository": {
     "type": "git",
     "url": "git@github.com:Psychedelic/DAB-js.git"
-  },
-  "publishConfig": {
-    "registry": "https://npm.pkg.github.com/@psychedelic"
   },
   "keywords": [
     "ic",
@@ -35,7 +32,6 @@
     "publish": "npm run build && npm publish"
   },
   "devDependencies": {
-    "@psychedelic/plug-controller": "0.4.7",
     "eslint": "^7.32.0",
     "jest": "^27.1.1",
     "ts-jest": "^27.0.5",
