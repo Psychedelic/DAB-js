@@ -1,16 +1,7 @@
 import { HttpAgent } from '@dfinity/agent';
 import { Principal } from '@dfinity/principal';
 
-export interface NFTDetails {
-  index: bigint;
-  canister: string;
-  id?: string;
-  name?: string;
-  url: string;
-  metadata: any;
-  standard: string;
-  collection?: string;
-}
+import { NFTDetails } from '../interfaces/nft';
 
 export default abstract class NFT {
   abstract standard: string;

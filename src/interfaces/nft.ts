@@ -1,6 +1,5 @@
-import { NFTDetails } from '../nft';
-import EXT from '../standards/ext';
-import ICPunks from '../standards/icpunks';
+import EXT from '../nft_standards/ext';
+import ICPunks from '../nft_standards/icpunks';
 
 export type NFTStandards = typeof EXT | typeof ICPunks;
 
@@ -11,4 +10,15 @@ export interface NFTCollection {
   tokens: NFTDetails[];
   icon?: string;
   description?: string;
+}
+
+export interface NFTDetails {
+  index: bigint;
+  canister: string;
+  id?: string;
+  name?: string;
+  url: string;
+  metadata: any;
+  standard: string;
+  collection?: string;
 }
