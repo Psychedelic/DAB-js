@@ -60,13 +60,10 @@ First, you need to install the DAB-js **npm package** into your project.
 
 You can do so from the command line:
 ```js
-npm install @psychedelic/dab-js@0.1.6
+npm install @psychedelic/dab-js@latest
 ```
 
-Or via the package.json:
-```js
-"@psychedelic/dab-js": "0.1.6"
-```
+Find more details about installing versions in the package page [here](https://github.com/Psychedelic/DAB-js/packages/987540)
 
 ## 2. 🎨 Fetching All NFTs the User Owns (getAllUserNFTs)
 
