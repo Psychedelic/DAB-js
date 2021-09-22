@@ -1,8 +1,10 @@
 import { Actor, ActorSubclass, HttpAgent } from '@dfinity/agent';
 import { Principal } from '@dfinity/principal';
+
 import NFT_ICPUNKS, { TokenDesc } from '../interfaces/icpunks';
 import IDL from '../idls/icpunks.did';
-import NFT, { NFTDetails } from '../nft';
+import NFT from './default';
+import { NFTDetails } from '../interfaces/nft';
 
 export default class ICPUNKS extends NFT {
   standard = 'ICPunks';

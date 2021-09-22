@@ -1,8 +1,10 @@
 import { Actor, ActorSubclass, HttpAgent } from '@dfinity/agent';
 import { Principal } from '@dfinity/principal';
-import NTF_EXT, { TokenIdentifier } from '../interfaces/ext';
+
+import { NFTDetails } from '../interfaces/nft';
+import NTF_EXT from '../interfaces/ext';
 import IDL from '../idls/ext.did';
-import NFT, { NFTDetails } from '../nft';
+import NFT from './default';
 import { getAccountId } from '../utils/account';
 import { to32bits } from '../utils/number';
 import { NFT_CANISTERS } from '../constants/canisters';
@@ -17,10 +19,12 @@ const getTokenIdentifier = (canister: string, index: number): string => {
   return Principal.fromUint8Array(array).toText();
 };
 
-const extImageUrl = (canisterId, index, tokenIdentifier) => ({
-  [NFT_CANISTERS.WRAPPED_PUNKS]: `https://${NFT_CANISTERS.IC_PUNKS}.raw.ic0.app/Token/${index}`,
-  [NFT_CANISTERS.WRAPPED]: `https://${NFT_CANISTERS.IC_DRIP}.raw.ic0.app?tokenId=${index}`,
-})[canisterId] || `https://${canisterId}.raw.ic0.app/?type=thumbnail&tokenid=${tokenIdentifier}`;
+const extImageUrl = (canisterId, index, tokenIdentifier) =>
+  ({
+    [NFT_CANISTERS.WRAPPED_PUNKS]: `https://${NFT_CANISTERS.IC_PUNKS}.raw.ic0.app/Token/${index}`,
+    [NFT_CANISTERS.WRAPPED]: `https://${NFT_CANISTERS.IC_DRIP}.raw.ic0.app?tokenId=${index}`,
+  }[canisterId] ||
+  `https://${canisterId}.raw.ic0.app/?type=thumbnail&tokenid=${tokenIdentifier}`);
 
 export default class EXT extends NFT {
   standard = 'EXT';
@@ -68,7 +72,7 @@ export default class EXT extends NFT {
       amount: BigInt(1),
       memo: dummyMemmo,
       notify: false,
-      subaccount: []
+      subaccount: [],
     });
     if ('err' in transferResult)
       throw new Error(Object.keys(transferResult.err)[0]);
