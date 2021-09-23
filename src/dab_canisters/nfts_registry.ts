@@ -1,8 +1,8 @@
 import { Actor, HttpAgent } from '@dfinity/agent';
 import { Principal } from '@dfinity/principal';
 
-import dabInterface, { GetAllResult } from '../interfaces/dab';
-import dabDid from '../idls/dab.did';
+import dabInterface, { GetAllResult } from '../interfaces/dab_nfts';
+import dabDid from '../idls/dab_nfts.did';
 import { NFTStandards, NFTCollection } from '../interfaces/nft';
 import EXT from '../nft_standards/ext';
 import ICPunks from '../nft_standards/icpunks';
