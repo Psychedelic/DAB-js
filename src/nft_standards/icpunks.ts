@@ -5,7 +5,17 @@ import NFT_ICPUNKS, { TokenDesc } from '../interfaces/icpunks';
 import IDL from '../idls/icpunks.did';
 import NFT from './default';
 import { NFTDetails } from '../interfaces/nft';
+import { NFT_CANISTERS } from '../constants/canisters';
 
+const getICPBunnyCanisterId = (index) =>
+  NFT_CANISTERS.ICP_BUNNY_STORAGE[index % 10];
+
+const imageUrl = (canisterId: string, index: number, tokenDataUrl: string) =>
+  ({
+    [NFT_CANISTERS.ICP_BUNNY_MAIN]: `https://${getICPBunnyCanisterId(
+      index
+    )}.raw.ic0.app/Token/${index}`,
+  }[canisterId] || `https://${canisterId}.raw.ic0.app${tokenDataUrl}`);
 export default class ICPUNKS extends NFT {
   standard = 'ICPunks';
 
@@ -46,7 +56,11 @@ export default class ICPUNKS extends NFT {
   private serializeTokenData = (tokenData: TokenDesc): NFTDetails => ({
     index: BigInt(tokenData.id),
     canister: this.canisterId,
-    url: `https://${this.canisterId}.raw.ic0.app${tokenData.url}`,
+    url: imageUrl(
+      this.canisterId,
+      Number.parseInt(tokenData.id.toString(), 10),
+      tokenData.url
+    ),
     name: tokenData.name,
     metadata: tokenData,
     standard: this.standard,

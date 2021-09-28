@@ -61,6 +61,7 @@ export const getAllUserNFTs = async (
           })),
         };
       } catch (e) {
+        console.error(e);
         return {
           name: collection.name,
           canisterId: collection.principal_id.toString(),
