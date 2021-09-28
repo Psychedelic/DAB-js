@@ -19,7 +19,11 @@ export const getNFTActor = (
   canisterId: string,
   agent: HttpAgent,
   standard: string
-): NFT => {
+): NFT | undefined => {
+  if (!(standard in NFT_STANDARDS)) {
+    console.error('Standard is not implemented');
+    return undefined;
+  }
   return new NFT_STANDARDS[standard](canisterId, agent);
 };
 
