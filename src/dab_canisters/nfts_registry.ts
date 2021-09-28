@@ -20,6 +20,10 @@ export const getNFTActor = (
   agent: HttpAgent,
   standard: string
 ): NFT => {
+  if (!(standard in NFT_STANDARDS)) {
+    console.error(`Standard ${standard} is not implemented`);
+    throw new Error(`standard is not supported: ${standard}`);
+  }
   return new NFT_STANDARDS[standard](canisterId, agent);
 };
 
@@ -38,12 +42,12 @@ export const getAllUserNFTs = async (
   const NFTCollections = await getAllNFTS(agent);
   const result = await Promise.all(
     NFTCollections.map(async (collection) => {
-      const NFTActor = getNFTActor(
-        collection.principal_id.toString(),
-        agent,
-        collection.standard
-      );
       try {
+        const NFTActor = getNFTActor(
+          collection.principal_id.toString(),
+          agent,
+          collection.standard
+        );
         const details = await NFTActor.getUserTokens(user);
         return {
           name: collection.name,
