@@ -5,7 +5,7 @@ import dabInterface, { GetAllResult } from '../interfaces/dab_nfts';
 import dabDid from '../idls/dab_nfts.did';
 import { NFTStandards, NFTCollection } from '../interfaces/nft';
 import EXT from '../nft_standards/ext';
-import ICPunks from '../nft_standards/icpunks';
+import ICPunks from '../nft_standards/ic_punks';
 import NFT from '../nft_standards/default';
 
 const DAB_CANISTER_ID = 'aipdg-waaaa-aaaah-aaq5q-cai';

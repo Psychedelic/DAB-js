@@ -1,5 +1,5 @@
 import EXT from '../nft_standards/ext';
-import ICPunks from '../nft_standards/icpunks';
+import ICPunks from '../nft_standards/ic_punks';
 
 export type NFTStandards = typeof EXT | typeof ICPunks;
 
