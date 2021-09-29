@@ -92,8 +92,8 @@ export default class EXT extends NFT {
 
     if ('err' in metadataResult)
       throw new Error(
-        `${Object.keys(transferResult.err)[0]}: ${
-          Object.values(transferResult.err)[0]
+        `${Object.keys(metadataResult.err)[0]}: ${
+          Object.values(metadataResult.err)[0]
         }`
       );
     const { metadata } = metadataResult.ok.nonfungible;
