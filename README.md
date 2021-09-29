@@ -307,6 +307,54 @@ This call returns one object with the metadata of the specific NFT queried.
 
 
 ## Canister List
-### 1. 🛢️ Querying DAB to Check if a Canister ID has Metadata
 
-((Fill in))
+These are the methods utilized to interact with the Canister List to check if a Canister ID has associated metadata in DAB, returning a metadata object you can display in your app for a better UI/UX.
+
+### 1. 🛢️ Check a Single Canister's Metadata in the Registry (getcanisterInfo)
+
+This method allows you to query the DAB canister registry to fetch the metadata for a **specific Canister ID**. You will need to pass:
+
+- `canisterID`: the Canister ID of the canister you want to check in DAB.
+- `agent`: and HttpAgent (instantiated with agent-js or Plug)
+
+
+```ts
+import { getCanisterInfo } from '@psychedelic/dab-js';
+const agent = new HttpAgent();
+const nnsCanisterId = 'ryjl3-tyaaa-aaaaa-aaaba-cai';
+const nnsMetadata = await getCanisterInfo(nnsCanisterId, agent);
+console.log(nnsMetadata);
+```
+
+If the Canister ID has metadata associated in the Canister Registry, it will return a **metadata object**. Else, it will return undefined.
+
+```js
+type CanisterId = Principal | string;
+interface CanisterMetadata {
+  url: string;
+  name: string;
+  description: string;
+  version: number;
+  logo_url: string;
+}
+```
+
+
+### 2. 🛢️🛢️ Check Multiple Canister's Metadata in the Registry (getMultipleCanisterInfo)
+
+This second method is a variation that allows you to query DAB to check the metadata of **multiple canisters at once**. The main differences is that you will pass:
+
+- `canisterIDs`: An array of **several canister IDs** of the canisters you want to check in DAB.
+- `agent`: and HttpAgent (instantiated with agent-js or Plug).
+
+```ts
+import { getMultipleCanisterInfo } from '@psychedelic/dab-js';
+
+const agent = HttpAgent();
+const canisterIds = ['e3izy-jiaaa-aaaah-qacbq-cai', 'qcg3w-tyaaa-aaaah-qakea-cai']; // Cronic + ICPunks
+const nftsInfo = await getMultipleCanisterInfoFromDab(canisterIds, agent);
+console.log(nftsInfo);
+```
+
+
+In contrast to the previous method, this will return an **array of metadata objects** for all the canister IDs you entered.
