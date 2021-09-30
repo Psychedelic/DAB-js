@@ -42,13 +42,16 @@ export const getAllUserNFTs = async (
   user: Principal
 ): Promise<NFTCollection[]> => {
   const NFTCollections = await getAllNFTS(agent);
-  NFTCollections.push({
-    icon: '',
-    name: '3D NFT Test',
-    principal_id: Principal.fromText('lhq4n-3yaaa-aaaai-qaniq-cai'),
-    description: 'Test',
-    standard: 'DepartureLabs'
-  });
+  // REMOVE WHEN COLLECTION IS ADDED TO DAB
+  if (!NFTCollections.some(c => c.principal_id.toText() === 'lhq4n-3yaaa-aaaai-qaniq-cai')) {
+    NFTCollections.push({
+      icon: 'https://storageapi.fleek.co/fleek-team-bucket/principia.png',
+      name: 'Principia Mathematica',
+      principal_id: Principal.fromText('lhq4n-3yaaa-aaaai-qaniq-cai'),
+      description: 'An Ode to Mathematics, a silent tribute to the greatest minds of all time.',
+      standard: 'DepartureLabs'
+    });
+  }
   const result = await Promise.all(
     NFTCollections.map(async (collection) => {
       try {

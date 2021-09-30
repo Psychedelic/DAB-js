@@ -185,7 +185,7 @@ export default ({ IDL }) => {
   const Hub = IDL.Service({
     'assetRequest' : IDL.Func([AssetRequest], [], []),
     'authorize' : IDL.Func([AuthorizeRequest], [Result_1], []),
-    'balanceOf' : IDL.Func([IDL.Principal], [IDL.Vec(IDL.Text)], ['query']),
+    'balanceOf' : IDL.Func([IDL.Principal], [IDL.Vec(IDL.Text)], []),
     'getAuthorized' : IDL.Func([IDL.Text], [IDL.Vec(IDL.Principal)], ['query']),
     'getContractInfo' : IDL.Func([], [ContractInfo], []),
     'getEventCallbackStatus' : IDL.Func([], [CallbackStatus], []),
