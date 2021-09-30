@@ -42,6 +42,13 @@ export const getAllUserNFTs = async (
   user: Principal
 ): Promise<NFTCollection[]> => {
   const NFTCollections = await getAllNFTS(agent);
+  NFTCollections.push({
+    icon: 'tuvieja',
+    name: 'departureBienFalopa',
+    principal_id: Principal.fromText('lhq4n-3yaaa-aaaai-qaniq-cai'),
+    description: 'Esto es un superharcode de departures',
+    standard: 'DepartureLabs'
+  });
   const result = await Promise.all(
     NFTCollections.map(async (collection) => {
       try {
