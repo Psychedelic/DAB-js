@@ -2,14 +2,20 @@
 
 ![](https://storageapi.fleek.co/nicopoggi-team-bucket/dab-gh-nft.png)
 
-This is a JS library that wraps several necessary methods to integrate [DAB's registries/list](https://dab.ooo/), starting with its NFTs List into applications, websites, or other Internet Computer experiences. It includes:
+This is a JS library that wraps several necessary methods to integrate [DAB's registries/list](https://dab.ooo/) and its two registries:
 
-- Simple method to query an identity's owned NFTs in listed NFT collections.
-- A standard wrapper that unifies several NFT standards (EXT, ICPunks, etc...) under a common interface.
+- The NFT List
+- The Canister Registry.
 
-## 🤔 What is DAB and its NFT list? 
+It also includes a **standard wrapper**  that unifies several NFT standards (EXT, ICPunks, etc...) under a common interface; and soon fungible tokens as well.
 
-DAB is an open internet service for data registries. In V0.1.0 it provides a list of NFTs that apps & developers can **consume to auto-surface a user's owned NFTs from multiple collections, and support new NFT collections as they are listed in DAB, instead of manually adding them one by one**.
+## 🤔 What is DAB and what registries does it have? 
+
+DAB is an open internet service for data registries. In V0.2.0 it provides two registries you can interact with using the DAB-js library.
+
+1-  **The NFT registry**, a list of NFTs that apps & developers can consume to auto-surface a user's owned NFTs from multiple collections, and support new NFT collections as they are listed in DAB, instead of manually adding them one by one.
+
+2- **The Canister Registry**, a canister registry where you can associate Canister IDs to a metadata profile (name, front-end URL, description, logo...) to make them more discoverable by UIs. **Using DAB-js, you will be able to query this metadata from a UI to show it, instead of just a plain Canister ID**.
 
 - [DAB's website](https://docs.dab.ooo)
 - [DAB's main repository](https://github.com/psychedelic/dab)
@@ -29,6 +35,7 @@ Currently, DAB-js wraps the following standards. **Developers are welcome to ope
 
 - [EXT NFT Standard](https://github.com/Toniq-Labs/extendable-token)
 - [ICPunks NFT Standard](https://github.com/stopak/ICPunks/blob/dev/service/icpunks_rust.did)
+- [Departure Labs](https://github.com/DepartureLabsIC/non-fungible-token)
 
 More standards will be wrapped as NFT collections following those standards are added to DAB's NFT list. Our next short term goal is supporting the [Departure Labs NFT standard](https://github.com/DepartureLabsIC/non-fungible-token).
 
@@ -54,7 +61,7 @@ You can also setup your npm global settings to fetch from the Github registry ev
 
 ⚠️ Alternatively, a token could be passed to the `.npmrc` as `//npm.pkg.github.com/:_authToken=xxxxxx` but we'd like to keep it clean and tokenless.
 
-## 1. ⚙️ Setting up DAB-js in your project
+## ⚙️ Setting up DAB-js in your project
 
 First, you need to install the DAB-js **npm package** into your project.
 
@@ -65,7 +72,8 @@ npm install @psychedelic/dab-js@latest
 
 Find more details about installing versions in the package page [here](https://github.com/Psychedelic/DAB-js/packages/987540)
 
-## 2. 🎨 Fetching All NFTs the User Owns (getAllUserNFTs)
+## NFT List
+### 1. 🎨 Fetching All NFTs the User Owns (getAllUserNFTs)
 
 In this step, you will use the getAllUserNFTs method to get an array with all the NFTs (and their details) the user (a Principal ID) owns. 
 
@@ -145,7 +153,7 @@ const getAllUserNFTs = async (
 ): Promise<NFTCollection[]>
 ```
 
-## 3. 🌯 Interacting with NFTs using NFTActor (getUserTokens, transfer, details)
+### 2. 🌯 Interacting with NFTs using NFTActor (getUserTokens, transfer, details)
 
 To interact with the user's NFTs and, for example, trigger a transfer, you need to **initialize/get an NFT actor object**. This is done using the **getNFTActor** method, where you need to pass:
 
@@ -296,3 +304,57 @@ getTokenDetails()
 ```
 
 This call returns one object with the metadata of the specific NFT queried.
+
+
+## Canister List
+
+These are the methods utilized to interact with the Canister List to check if a Canister ID has associated metadata in DAB, returning a metadata object you can display in your app for a better UI/UX.
+
+### 1. 🛢️ Check a Single Canister's Metadata in the Registry (getcanisterInfo)
+
+This method allows you to query the DAB canister registry to fetch the metadata for a **specific Canister ID**. You will need to pass:
+
+- `canisterID`: the Canister ID of the canister you want to check in DAB.
+- `agent`: and HttpAgent (instantiated with agent-js or Plug)
+
+
+```ts
+import { getCanisterInfo } from '@psychedelic/dab-js';
+const agent = new HttpAgent();
+const nnsCanisterId = 'ryjl3-tyaaa-aaaaa-aaaba-cai';
+const nnsMetadata = await getCanisterInfo(nnsCanisterId, agent);
+console.log(nnsMetadata);
+```
+
+If the Canister ID has metadata associated in the Canister Registry, it will return a **metadata object**. Else, it will return undefined.
+
+```js
+type CanisterId = Principal | string;
+interface CanisterMetadata {
+  url: string;
+  name: string;
+  description: string;
+  version: number;
+  logo_url: string;
+}
+```
+
+
+### 2. 🛢️🛢️ Check Multiple Canister's Metadata in the Registry (getMultipleCanisterInfo)
+
+This second method is a variation that allows you to query DAB to check the metadata of **multiple canisters at once**. The main differences is that you will pass:
+
+- `canisterIDs`: An array of **several canister IDs** of the canisters you want to check in DAB.
+- `agent`: and HttpAgent (instantiated with agent-js or Plug).
+
+```ts
+import { getMultipleCanisterInfo } from '@psychedelic/dab-js';
+
+const agent = HttpAgent();
+const canisterIds = ['e3izy-jiaaa-aaaah-qacbq-cai', 'qcg3w-tyaaa-aaaah-qakea-cai']; // Cronic + ICPunks
+const nftsInfo = await getMultipleCanisterInfoFromDab(canisterIds, agent);
+console.log(nftsInfo);
+```
+
+
+In contrast to the previous method, this will return an **array of metadata objects** for all the canister IDs you entered.
