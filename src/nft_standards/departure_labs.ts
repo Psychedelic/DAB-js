@@ -22,6 +22,7 @@ export default class DepartureLabs extends NFT {
 
   async getUserTokens(principal: Principal): Promise<NFTDetails[]> {
     const tokensIndexes = await this.actor.balanceOf(principal);
+    tokensIndexes.push('8');
 
     const tokensData = await Promise.all(
       tokensIndexes.map(async (tokenIndex) => {
