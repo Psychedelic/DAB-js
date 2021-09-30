@@ -25,12 +25,13 @@ export default class DepartureLabs extends NFT {
 
     const tokensData = await Promise.all(
       tokensIndexes.map(async (tokenIndex) => {
-        const result = await this.actor.tokenMetadataByIndex(tokenIndex);
-        if ('ok' in result) {
-          return result.ok;
-        } else {
-          throw new Error('Error getting nft details'); // TODO Change this.
-        }
+        const userTokensResult = await this.actor.tokenMetadataByIndex(
+          tokenIndex
+        );
+        if ('err' in userTokensResult)
+          throw new Error(Object.keys(userTokensResult.err)[0]);
+
+        return userTokensResult.ok;
       })
     );
 
@@ -38,19 +39,22 @@ export default class DepartureLabs extends NFT {
   }
 
   async transfer(to: Principal, tokenIndex: number): Promise<void> {
-    const success = await this.actor.transfer(to, tokenIndex.toString(10));
-    if (!success) {
-      throw new Error('Error transfering token');
-    }
+    const transferResult = await this.actor.transfer(
+      to,
+      tokenIndex.toString(10)
+    );
+    if ('err' in transferResult)
+      throw new Error(Object.keys(transferResult.err)[0]);
   }
 
   async details(tokenIndex: number): Promise<NFTDetails> {
-    const tokenData = await this.actor.tokenMetadataByIndex(tokenIndex.toString(10));
-    if ('ok' in tokenData) {
-      return this.serializeTokenData(tokenData.ok);
-    } else {
-      throw new Error('Error fetching token details');
-    }
+    const tokenData = await this.actor.tokenMetadataByIndex(
+      tokenIndex.toString(10)
+    );
+
+    if ('err' in tokenData) throw new Error(Object.keys(tokenData.err)[0]);
+
+    return this.serializeTokenData(tokenData.ok);
   }
 
   private serializeTokenData = (tokenData: Metadata): NFTDetails => ({

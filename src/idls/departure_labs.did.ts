@@ -233,4 +233,4 @@ export default ({ IDL }) => {
   });
   return Hub;
 };
-export const init = ({ IDL }) => { return []; };
+export const init = ({ }) => { return []; };

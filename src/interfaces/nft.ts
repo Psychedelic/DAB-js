@@ -1,7 +1,8 @@
+import DepartureLabs from '../nft_standards/departure_labs';
 import EXT from '../nft_standards/ext';
 import ICPunks from '../nft_standards/ic_punks';
 
-export type NFTStandards = typeof EXT | typeof ICPunks;
+export type NFTStandards = typeof EXT | typeof ICPunks | typeof DepartureLabs;
 
 export interface NFTCollection {
   name: string;

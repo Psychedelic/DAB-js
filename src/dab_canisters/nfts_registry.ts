@@ -6,6 +6,7 @@ import dabDid from '../idls/dab_nfts.did';
 import { NFTStandards, NFTCollection } from '../interfaces/nft';
 import EXT from '../nft_standards/ext';
 import ICPunks from '../nft_standards/ic_punks';
+import DepartureLabs from '../nft_standards/departure_labs';
 import NFT from '../nft_standards/default';
 
 const DAB_CANISTER_ID = 'aipdg-waaaa-aaaah-aaq5q-cai';
@@ -13,6 +14,7 @@ const DAB_CANISTER_ID = 'aipdg-waaaa-aaaah-aaq5q-cai';
 const NFT_STANDARDS: { [key: string]: NFTStandards } = {
   EXT: EXT,
   ICPunks: ICPunks,
+  DepartureLabs: DepartureLabs,
 };
 
 export const getNFTActor = (
