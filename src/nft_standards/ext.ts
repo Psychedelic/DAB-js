@@ -22,7 +22,7 @@ const getTokenIdentifier = (canister: string, index: number): string => {
 const extImageUrl = (canisterId, index, tokenIdentifier) =>
   ({
     [NFT_CANISTERS.WRAPPED_PUNKS]: `https://${NFT_CANISTERS.IC_PUNKS}.raw.ic0.app/Token/${index}`,
-    [NFT_CANISTERS.WRAPPED]: `https://${NFT_CANISTERS.IC_DRIP}.raw.ic0.app?tokenId=${index}`,
+    [NFT_CANISTERS.WRAPPED_DRIP]: `https://${NFT_CANISTERS.IC_DRIP}.raw.ic0.app?tokenId=${index}`,
   }[canisterId] ||
   `https://${canisterId}.raw.ic0.app/?type=thumbnail&tokenid=${tokenIdentifier}`);
 
