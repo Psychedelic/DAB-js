@@ -22,7 +22,7 @@ const getTokenIdentifier = (canister: string, index: number): string => {
 const extImageUrl = (canisterId, index, tokenIdentifier) =>
   ({
     [NFT_CANISTERS.WRAPPED_PUNKS]: `https://${NFT_CANISTERS.IC_PUNKS}.raw.ic0.app/Token/${index}`,
-    [NFT_CANISTERS.WRAPPED]: `https://${NFT_CANISTERS.IC_DRIP}.raw.ic0.app?tokenId=${index}`,
+    [NFT_CANISTERS.WRAPPED_DRIP]: `https://${NFT_CANISTERS.IC_DRIP}.raw.ic0.app?tokenId=${index}`,
   }[canisterId] ||
   `https://${canisterId}.raw.ic0.app/?type=thumbnail&tokenid=${tokenIdentifier}`);
 
@@ -44,7 +44,11 @@ export default class EXT extends NFT {
     const accountId = getAccountId(principal);
     const userTokensResult = await this.actor.tokens_ext(accountId);
     if ('err' in userTokensResult)
-      throw new Error(Object.keys(userTokensResult.err)[0]);
+      throw new Error(
+        `${Object.keys(userTokensResult.err)[0]}: ${
+          Object.values(userTokensResult.err)[0]
+        }`
+      );
 
     const tokens = userTokensResult.ok || [];
 
@@ -75,7 +79,11 @@ export default class EXT extends NFT {
       subaccount: [],
     });
     if ('err' in transferResult)
-      throw new Error(Object.keys(transferResult.err)[0]);
+      throw new Error(
+        `${Object.keys(transferResult.err)[0]}: ${
+          Object.values(transferResult.err)[0]
+        }`
+      );
   }
 
   async details(tokenIndex: number): Promise<NFTDetails> {
@@ -83,8 +91,11 @@ export default class EXT extends NFT {
     const metadataResult = await this.actor.metadata(tokenIdentifier);
 
     if ('err' in metadataResult)
-      throw new Error(Object.keys(metadataResult.err)[0]);
-
+      throw new Error(
+        `${Object.keys(metadataResult.err)[0]}: ${
+          Object.values(metadataResult.err)[0]
+        }`
+      );
     const { metadata } = metadataResult.ok.nonfungible;
 
     return this.serializeTokenData(metadata, tokenIdentifier, tokenIndex);

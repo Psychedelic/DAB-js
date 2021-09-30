@@ -6,6 +6,7 @@ import dabDid from '../idls/dab_nfts.did';
 import { NFTStandards, NFTCollection } from '../interfaces/nft';
 import EXT from '../nft_standards/ext';
 import ICPunks from '../nft_standards/ic_punks';
+import DepartureLabs from '../nft_standards/departure_labs';
 import NFT from '../nft_standards/default';
 
 const DAB_CANISTER_ID = 'aipdg-waaaa-aaaah-aaq5q-cai';
@@ -13,6 +14,7 @@ const DAB_CANISTER_ID = 'aipdg-waaaa-aaaah-aaq5q-cai';
 const NFT_STANDARDS: { [key: string]: NFTStandards } = {
   EXT: EXT,
   ICPunks: ICPunks,
+  DepartureLabs: DepartureLabs,
 };
 
 export const getNFTActor = (
@@ -20,6 +22,10 @@ export const getNFTActor = (
   agent: HttpAgent,
   standard: string
 ): NFT => {
+  if (!(standard in NFT_STANDARDS)) {
+    console.error(`Standard ${standard} is not implemented`);
+    throw new Error(`standard is not supported: ${standard}`);
+  }
   return new NFT_STANDARDS[standard](canisterId, agent);
 };
 
@@ -38,12 +44,12 @@ export const getAllUserNFTs = async (
   const NFTCollections = await getAllNFTS(agent);
   const result = await Promise.all(
     NFTCollections.map(async (collection) => {
-      const NFTActor = getNFTActor(
-        collection.principal_id.toString(),
-        agent,
-        collection.standard
-      );
       try {
+        const NFTActor = getNFTActor(
+          collection.principal_id.toString(),
+          agent,
+          collection.standard
+        );
         const details = await NFTActor.getUserTokens(user);
         return {
           name: collection.name,
@@ -57,6 +63,7 @@ export const getAllUserNFTs = async (
           })),
         };
       } catch (e) {
+        console.error(e);
         return {
           name: collection.name,
           canisterId: collection.principal_id.toString(),
