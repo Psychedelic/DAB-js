@@ -1,7 +1,10 @@
 import { Actor, HttpAgent } from '@dfinity/agent';
 import { Principal } from '@dfinity/principal';
 
-import dabInterface, { GetAllResult } from '../interfaces/dab_nfts';
+import dabInterface, {
+  DABCollection,
+  GetAllResult,
+} from '../interfaces/dab_nfts';
 import dabDid from '../idls/dab_nfts.did';
 import { NFTStandards, NFTCollection } from '../interfaces/nft';
 import EXT from '../nft_standards/ext';
@@ -29,7 +32,24 @@ export const getNFTActor = (
   return new NFT_STANDARDS[standard](canisterId, agent);
 };
 
-export const getAllNFTS = async (agent: HttpAgent): Promise<GetAllResult> => {
+export const getNFTInfo = async (
+  nftCanisterId: string,
+  agent: HttpAgent
+): Promise<DABCollection | undefined> => {
+  const dabActor = Actor.createActor<dabInterface>(dabDid, {
+    agent,
+    canisterId: Principal.fromText(DAB_CANISTER_ID),
+  });
+
+  const result = await dabActor.get_canister(nftCanisterId);
+  if (result.length == 0) return undefined;
+
+  return result[0];
+};
+
+export const getAllNFTS = async (
+  agent: HttpAgent
+): Promise<DABCollection[]> => {
   const dabActor = Actor.createActor<dabInterface>(dabDid, {
     agent,
     canisterId: Principal.fromText(DAB_CANISTER_ID),
@@ -43,13 +63,18 @@ export const getAllUserNFTs = async (
 ): Promise<NFTCollection[]> => {
   const NFTCollections = await getAllNFTS(agent);
   // REMOVE WHEN COLLECTION IS ADDED TO DAB
-  if (!NFTCollections.some(c => c.principal_id.toText() === 'lhq4n-3yaaa-aaaai-qaniq-cai')) {
+  if (
+    !NFTCollections.some(
+      (c) => c.principal_id.toText() === 'lhq4n-3yaaa-aaaai-qaniq-cai'
+    )
+  ) {
     NFTCollections.push({
       icon: 'https://storageapi.fleek.co/fleek-team-bucket/principia.png',
       name: 'Principia Mathematica',
       principal_id: Principal.fromText('lhq4n-3yaaa-aaaai-qaniq-cai'),
-      description: 'An Ode to Mathematics, a silent tribute to the greatest minds of all time.',
-      standard: 'DepartureLabs'
+      description:
+        'An Ode to Mathematics, a silent tribute to the greatest minds of all time.',
+      standard: 'DepartureLabs',
     });
   }
   const result = await Promise.all(
