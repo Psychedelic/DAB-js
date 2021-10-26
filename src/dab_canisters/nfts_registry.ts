@@ -1,5 +1,6 @@
 import { Actor, HttpAgent } from '@dfinity/agent';
 import { Principal } from '@dfinity/principal';
+import fetch from 'cross-fetch';
 
 import dabInterface, {
   DABCollection,
@@ -109,6 +110,54 @@ export const getAllUserNFTs = async (
     })
   );
   return result.filter((element) => element.tokens.length);
+};
+
+const BATCH_AMOUNT = 5;
+
+export const getBatchedNFTs = async ({ principal, callback, batchSize = BATCH_AMOUNT }) => {
+  const agent = new HttpAgent({ fetch, host: 'https://ic0.app' });
+  const NFTCollections = await getAllNFTS(agent);
+  let result: NFTCollection[] = [];
+  for (let i = 0; i < NFTCollections.length; i+= batchSize) {
+    const batch = NFTCollections.slice(i, i + batchSize);
+    const batchResult = await Promise.all(
+      batch.map(async (collection) => {
+        try {
+          const NFTActor = getNFTActor(
+            collection.principal_id.toString(),
+            agent,
+            collection.standard
+          );
+          const details = await NFTActor.getUserTokens(principal);
+          const collectionDetails = {
+            name: collection.name,
+            canisterId: collection.principal_id.toString(),
+            standard: collection.standard,
+            description: collection.description,
+            icon: collection.icon,
+            tokens: details.map((detail) => ({
+              ...detail,
+              collection: collection.name,
+            })),
+          };
+          if (callback) {
+            await callback?.(collectionDetails);
+          }
+          return collectionDetails;
+        } catch (e) {
+          console.warn(`Error while fetching collection ${collection?.name} (${collection?.principal_id?.toString()}). \n${e.message}`);
+          return {
+            name: collection.name,
+            canisterId: collection.principal_id.toString(),
+            standard: collection.standard,
+            tokens: [],
+          };
+        }
+      })
+    );
+    result = [...result, ...batchResult];
+  }
+  return result.filter((element) => element?.tokens?.length);
 };
 
 export default {};
