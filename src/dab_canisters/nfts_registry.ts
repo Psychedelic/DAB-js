@@ -116,11 +116,12 @@ const BATCH_AMOUNT = 5;
 
 interface GetBatchedNFTsParams {
   principal: Principal;
-  callback?: (NFTCollection) => void;
+  callback?: (collection: NFTCollection) => void;
   batchSize?: number;
+  onFinish?: (collections: NFTCollection[]) => void;
 }
 
-export const getBatchedNFTs = async ({ principal, callback, batchSize = BATCH_AMOUNT }: GetBatchedNFTsParams) => {
+export const getBatchedNFTs = async ({ principal, callback, batchSize = BATCH_AMOUNT, onFinish }: GetBatchedNFTsParams) => {
   const agent = new HttpAgent({ fetch, host: 'https://ic0.app' });
   const NFTCollections = await getAllNFTS(agent);
   let result: NFTCollection[] = [];
@@ -162,6 +163,9 @@ export const getBatchedNFTs = async ({ principal, callback, batchSize = BATCH_AM
       })
     );
     result = [...result, ...batchResult];
+  }
+  if (onFinish) {
+    await onFinish?.(result);
   }
   return result.filter((element) => element?.tokens?.length);
 };
