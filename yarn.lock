@@ -352,10 +352,10 @@
     buffer-pipe "0.0.4"
     tweetnacl "^1.0.1"
 
-"@dfinity/principal@^0.9.3":
-  version "0.9.3"
-  resolved "https://registry.yarnpkg.com/@dfinity/principal/-/principal-0.9.3.tgz#52e4980bac8dd35e7a6bb2564bea89df97383e06"
-  integrity sha512-DSL3b/gGm+f57+3XkFjlK4DigtKXe9MVO8UYXDQWkVIhy0UF1KYjRNGs6awc1GTQoOTxeQ8UTFwXuvnEvJ1hpQ==
+"@dfinity/principal@^0.10.1":
+  version "0.10.1"
+  resolved "https://registry.yarnpkg.com/@dfinity/principal/-/principal-0.10.1.tgz#2472aa0eef8b46000394720ef40bbd4bd330c000"
+  integrity sha512-1/r726xwVlSsCc+Fl2szM+P9xNfsu5TItC56n/KRuhGEE9sN8NLnorxcNvpzoII0f99XBNCNMRJPUkWSZPLpbw==
 
 "@eslint/eslintrc@^0.4.3":
   version "0.4.3"
