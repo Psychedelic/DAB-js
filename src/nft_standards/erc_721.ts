@@ -5,9 +5,10 @@ import { NFTDetails } from '../interfaces/nft';
 import Interface from '../interfaces/erc_721';
 import IDL from '../idls/erc_721.did';
 import NFT from './default';
+import standards from '../constants/standards';
 
 export default class ERC721 extends NFT {
-  standard = 'ERC721';
+  standard = standards.erc721;
 
   actor: ActorSubclass<Interface>;
 

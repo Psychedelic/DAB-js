@@ -7,3 +7,4 @@ import ICPunks from './nft_standards/ic_punks';
 
 export * from './interfaces/nft';
 export * from './dab_canisters';
+export { default as standards } from './constants/standards';
