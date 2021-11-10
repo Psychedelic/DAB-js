@@ -14,6 +14,7 @@ import DepartureLabs from '../nft_standards/departure_labs';
 import NFT from '../nft_standards/default';
 
 const DAB_CANISTER_ID = 'aipdg-waaaa-aaaah-aaq5q-cai';
+const DEFAULT_AGENT = new HttpAgent({ fetch, host: 'https://ic0.app' });
 
 const NFT_STANDARDS: { [key: string]: NFTStandards } = {
   EXT: EXT,
@@ -119,10 +120,10 @@ interface GetBatchedNFTsParams {
   callback?: (collection: NFTCollection) => void;
   batchSize?: number;
   onFinish?: (collections: NFTCollection[]) => void;
+  agent?: HttpAgent;
 }
 
-export const getBatchedNFTs = async ({ principal, callback, batchSize = BATCH_AMOUNT, onFinish }: GetBatchedNFTsParams) => {
-  const agent = new HttpAgent({ fetch, host: 'https://ic0.app' });
+export const getBatchedNFTs = async ({ principal, callback, batchSize = BATCH_AMOUNT, onFinish, agent = DEFAULT_AGENT }: GetBatchedNFTsParams) => {
   const NFTCollections = await getAllNFTS(agent);
   let result: NFTCollection[] = [];
   for (let i = 0; i < NFTCollections.length; i+= batchSize) {
