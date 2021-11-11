@@ -29,7 +29,7 @@
     "test": "jest",
     "lint": "eslint --ext ts,js ./src",
     "watch": "tsc --watch",
-    "publish": "npm run build && npm publish"
+    "package:publish": "npm run build && npm publish"
   },
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^4.32.0",
