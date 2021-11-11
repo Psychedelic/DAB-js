@@ -12,13 +12,16 @@ import EXT from '../nft_standards/ext';
 import ICPunks from '../nft_standards/ic_punks';
 import DepartureLabs from '../nft_standards/departure_labs';
 import NFT from '../nft_standards/default';
+import ERC721 from '../nft_standards/erc_721';
+import standards from '../constants/standards';
 
 const DAB_CANISTER_ID = 'aipdg-waaaa-aaaah-aaq5q-cai';
 
 const NFT_STANDARDS: { [key: string]: NFTStandards } = {
-  EXT: EXT,
-  ICPunks: ICPunks,
-  DepartureLabs: DepartureLabs,
+  [standards.ext]: EXT,
+  [standards.icpunks]: ICPunks,
+  [standards.departuresLabs]: DepartureLabs,
+  [standards.erc721]: ERC721,
 };
 
 export const getNFTActor = (
@@ -121,11 +124,16 @@ interface GetBatchedNFTsParams {
   onFinish?: (collections: NFTCollection[]) => void;
 }
 
-export const getBatchedNFTs = async ({ principal, callback, batchSize = BATCH_AMOUNT, onFinish }: GetBatchedNFTsParams) => {
+export const getBatchedNFTs = async ({
+  principal,
+  callback,
+  batchSize = BATCH_AMOUNT,
+  onFinish,
+}: GetBatchedNFTsParams) => {
   const agent = new HttpAgent({ fetch, host: 'https://ic0.app' });
   const NFTCollections = await getAllNFTS(agent);
   let result: NFTCollection[] = [];
-  for (let i = 0; i < NFTCollections.length; i+= batchSize) {
+  for (let i = 0; i < NFTCollections.length; i += batchSize) {
     const batch = NFTCollections.slice(i, i + batchSize);
     const batchResult = await Promise.all(
       batch.map(async (collection) => {
@@ -152,7 +160,11 @@ export const getBatchedNFTs = async ({ principal, callback, batchSize = BATCH_AM
           }
           return collectionDetails;
         } catch (e) {
-          console.warn(`Error while fetching collection ${collection?.name} (${collection?.principal_id?.toString()}). \n${e.message}`);
+          console.warn(
+            `Error while fetching collection ${
+              collection?.name
+            } (${collection?.principal_id?.toString()}). \n${e.message}`
+          );
           return {
             name: collection.name,
             canisterId: collection.principal_id.toString(),
