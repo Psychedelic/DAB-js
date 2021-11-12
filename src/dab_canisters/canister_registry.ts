@@ -25,17 +25,17 @@ const generateActor = (agent: HttpAgent): ActorSubclass<DABRegistry> =>
     canisterId: Principal.fromText(CANISTER_ID),
   });
 
+  const DEFAULT_AGENT = new HttpAgent({ fetch, host: IC_HOST });
+
 export const getCanisterInfo = async (
   { canisterId,
-    agent }: GetCanisterInfoParams
+    agent = DEFAULT_AGENT }: GetCanisterInfoParams
 ): Promise<CanisterMetadata | undefined> => {
-  const defaultAgent = agent ? agent : new HttpAgent({ fetch, host: IC_HOST });
-
   const principalId =
     typeof canisterId === 'string'
       ? Principal.fromText(canisterId)
       : canisterId;
-  const actor = generateActor(defaultAgent);
+  const actor = generateActor(agent);
   const result = await actor.get_info([principalId]);
   if (result.length === 0 || result[0].length === 0) return;
   return result[0][0];
@@ -43,15 +43,13 @@ export const getCanisterInfo = async (
 
 export const getMultipleCanisterInfo = async (
   { canisterIds,
-    agent
+    agent = DEFAULT_AGENT
   }: GetMultipleCanisterInfoParams): Promise<CanisterMetadata[]> => {
-  const defaultAgent = agent ? agent : new HttpAgent({ fetch, host: IC_HOST });
-
   const principals = canisterIds.map((canisterId) =>
     typeof canisterId === 'string' ? Principal.fromText(canisterId) : canisterId
   );
 
-  const actor = generateActor(defaultAgent);
+  const actor = generateActor(agent);
   const result = await actor.get_info(principals);
 
   if (result.length === 0) return [];
