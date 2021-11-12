@@ -14,6 +14,7 @@ import DepartureLabs from '../nft_standards/departure_labs';
 import NFT from '../nft_standards/default';
 import ERC721 from '../nft_standards/erc_721';
 import standards from '../constants/standards';
+import { IC_HOST } from '../constants';
 
 const DAB_CANISTER_ID = 'aipdg-waaaa-aaaah-aaq5q-cai';
 
@@ -24,10 +25,26 @@ const NFT_STANDARDS: { [key: string]: NFTStandards } = {
   [standards.erc721]: ERC721,
 };
 
-export const getNFTActor = (
+interface GetNFTActorParams {
   canisterId: string,
-  agent: HttpAgent,
-  standard: string
+  standard: string,
+  agent: HttpAgent
+}
+
+interface GetNFTInfoParams {
+  nftCanisterId: string,
+  agent?: HttpAgent
+}
+
+interface GetAllUserNFTsParams {
+  user: string | Principal,
+  agent?: HttpAgent
+}
+
+export const getNFTActor = (
+  { canisterId,
+    agent,
+    standard }: GetNFTActorParams
 ): NFT => {
   if (!(standard in NFT_STANDARDS)) {
     console.error(`Standard ${standard} is not implemented`);
@@ -37,11 +54,13 @@ export const getNFTActor = (
 };
 
 export const getNFTInfo = async (
-  nftCanisterId: string,
-  agent: HttpAgent
+  { nftCanisterId,
+    agent }: GetNFTInfoParams
 ): Promise<DABCollection | undefined> => {
+  const defaultAgent = agent ? agent : new HttpAgent({ fetch, host: IC_HOST });
+
   const dabActor = Actor.createActor<dabInterface>(dabDid, {
-    agent,
+    agent: defaultAgent,
     canisterId: Principal.fromText(DAB_CANISTER_ID),
   });
 
@@ -52,20 +71,23 @@ export const getNFTInfo = async (
 };
 
 export const getAllNFTS = async (
-  agent: HttpAgent
+  { agent }: { agent?: HttpAgent } = {}
 ): Promise<DABCollection[]> => {
+  const defaultAgent = agent ? agent : new HttpAgent({ fetch, host: IC_HOST });
   const dabActor = Actor.createActor<dabInterface>(dabDid, {
-    agent,
+    agent: defaultAgent,
     canisterId: Principal.fromText(DAB_CANISTER_ID),
   });
   return dabActor.get_all();
 };
 
 export const getAllUserNFTs = async (
-  agent: HttpAgent,
-  user: Principal
+  { user,
+    agent }: GetAllUserNFTsParams
 ): Promise<NFTCollection[]> => {
-  const NFTCollections = await getAllNFTS(agent);
+  const defaultAgent = agent ? agent : new HttpAgent({ fetch, host: IC_HOST });
+  const NFTCollections = await getAllNFTS({ agent: defaultAgent });
+  const userPrincipal = user instanceof Principal ? user : Principal.fromText(user);
   // REMOVE WHEN COLLECTION IS ADDED TO DAB
   if (
     !NFTCollections.some(
@@ -85,11 +107,13 @@ export const getAllUserNFTs = async (
     NFTCollections.map(async (collection) => {
       try {
         const NFTActor = getNFTActor(
-          collection.principal_id.toString(),
-          agent,
-          collection.standard
+          {
+            canisterId: collection.principal_id.toString(),
+            agent: defaultAgent,
+            standard: collection.standard
+          }
         );
-        const details = await NFTActor.getUserTokens(user);
+        const details = await NFTActor.getUserTokens(userPrincipal);
         return {
           name: collection.name,
           canisterId: collection.principal_id.toString(),
@@ -122,6 +146,7 @@ interface GetBatchedNFTsParams {
   callback?: (collection: NFTCollection) => void;
   batchSize?: number;
   onFinish?: (collections: NFTCollection[]) => void;
+  agent?: HttpAgent;
 }
 
 export const getBatchedNFTs = async ({
@@ -129,9 +154,10 @@ export const getBatchedNFTs = async ({
   callback,
   batchSize = BATCH_AMOUNT,
   onFinish,
+  agent,
 }: GetBatchedNFTsParams) => {
-  const agent = new HttpAgent({ fetch, host: 'https://ic0.app' });
-  const NFTCollections = await getAllNFTS(agent);
+  const defaultAgent = agent ? agent : new HttpAgent({ fetch, host: 'https://ic0.app' });
+  const NFTCollections = await getAllNFTS({ agent: defaultAgent });
   let result: NFTCollection[] = [];
   for (let i = 0; i < NFTCollections.length; i += batchSize) {
     const batch = NFTCollections.slice(i, i + batchSize);
@@ -139,9 +165,11 @@ export const getBatchedNFTs = async ({
       batch.map(async (collection) => {
         try {
           const NFTActor = getNFTActor(
-            collection.principal_id.toString(),
-            agent,
-            collection.standard
+            {
+              canisterId: collection.principal_id.toString(),
+              agent: defaultAgent,
+              standard: collection.standard
+            }
           );
           const details = await NFTActor.getUserTokens(principal);
           const collectionDetails = {
@@ -161,8 +189,7 @@ export const getBatchedNFTs = async ({
           return collectionDetails;
         } catch (e) {
           console.warn(
-            `Error while fetching collection ${
-              collection?.name
+            `Error while fetching collection ${collection?.name
             } (${collection?.principal_id?.toString()}). \n${e.message}`
           );
           return {
