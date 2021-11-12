@@ -1,4 +1,5 @@
 import { HttpAgent, Actor, ActorSubclass } from '@dfinity/agent';
+import fetch from 'cross-fetch';
 
 import DABRegistry, { CanisterMetadata } from '../interfaces/dab_registry';
 import IDL from '../idls/dab_registry.did';
