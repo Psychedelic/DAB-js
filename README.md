@@ -80,8 +80,8 @@ In this step, you will use the getAllUserNFTs method to get an array with all th
 Here, DAB takes the identity you pass, and checks in every NFT collection currently on the DAB list (ICPunks, Starverse, etc...) for the individual assets the user owns (Punk#1230).
 
 You need to pass:
-- An agent (an Http agent, instantiated with agent-js or Plug)
-- A Principal object (a user's Principal ID instantiated as a principal object)
+- `agent`: An agent (an Http agent, instantiated with agent-js or Plug) <optional>
+- `user`: A Principal object (a user's Principal ID instantiated as a principal object)
 
 ```js
 import { Principal } from '@dfinity/principal';
@@ -89,10 +89,10 @@ import { getAllUserNFTs } from '@psychedelic/dab-js'
 ...
 const getNFTCollections = async () => {
   const principal = 'r4rmh-mbkzp-gv2na-yvly3-zcp3r-ocllf-pt3p3-zsri5-6gqvr-stvs2-4ae';
-  const collections = await getAllUserNFTs(
+  const collections = await getAllUserNFTs({
     agent,
-    Principal.fromText(principal)
-  );
+    user: Principal.fromText(principal)
+  });
 }
 getNFTCollections();
 ```
@@ -102,10 +102,10 @@ This call will return an array that includes an NFTCollection interface with the
 Inside that interface the **tokens object** includes an array with each individual NFT the user owns in the collection (e.g Punk#), and its details (index, canister, id, name, url, metadata, standard, collection). This is **all the data you need to surface in the UI for your user.**
 
 ```js
-const getAllUserNFTs = async (
+const getAllUserNFTs = async ({
   agent: HttpAgent,
   user: Principal
-): Promise<Array<{
+}): Promise<Array<{
   name: string;
   canisterId: string;
   standard: string;
@@ -147,10 +147,10 @@ interface NFTCollection {
   description: string;
 }
 
-const getAllUserNFTs = async (
+const getAllUserNFTs = async ({
   agent: HttpAgent,
   user: Principal
-): Promise<NFTCollection[]>
+}): Promise<NFTCollection[]>
 ```
 
 ### 2. 🌯 Interacting with NFTs using NFTActor (getUserTokens, transfer, details)
@@ -166,11 +166,11 @@ To interact with the user's NFTs and, for example, trigger a transfer, you need 
 ```js
 import { getAllUserNFTs } from '@psychedelic/dab-js'
 
-export const getNFTActor = (
+export const getNFTActor = ({
   canisterId: string,
   agent: HttpAgent,
   standard: string
-): NFT => {
+}): NFT => {
   return new NFT_STANDARDS[standard](canisterId, agent);
 };
 ```
@@ -225,7 +225,7 @@ const getUserNFTs = async () => {
   const principal = 'r4rmh-mbkzp-gv2na-yvly3-zcp3r-ocllf-pt3p3-zsri5-6gqvr-stvs2-4ae';
   const canisterId = 'qcg3w-tyaaa-aaaah-qakea-cai';
   const standard = 'ICPunks';
-  const NFTActor = getNFTActor(canisterId, agent, standard);
+  const NFTActor = getNFTActor({ canisterId, agent, standard });
   const userTokens = await NFTActor.getUserTokens(Principal.fromText(principal));
 }
 getUserNFTs();
@@ -267,7 +267,7 @@ const sendNFT = async () => {
   const index = 5;
   const standard = 'ICPunks'
   const canisterId = 'qcg3w-tyaaa-aaaah-qakea-cai';
-  const NFTActor = getNFTActor(canisterId, agent, standard);
+  const NFTActor = getNFTActor({ canisterId, agent, standard });
   await NFTActor.transfer(Principal.fromText(to), index);
 }
 sendNFT();
@@ -296,7 +296,7 @@ const getTokenDetails = async () => {
   const tokenIndex = 5;
   const canisterId = 'qcg3w-tyaaa-aaaah-qakea-cai';
   const standard = 'ICPunks';
-  const NFTActor = getNFTActor(canisterId, agent, standard);
+  const NFTActor = getNFTActor({ canisterId, agent, standard });
 
   const details = await NFTActor.details(tokenIndex);
 }
@@ -322,7 +322,7 @@ This method allows you to query the DAB canister registry to fetch the metadata 
 import { getCanisterInfo } from '@psychedelic/dab-js';
 const agent = new HttpAgent();
 const nnsCanisterId = 'ryjl3-tyaaa-aaaaa-aaaba-cai';
-const nnsMetadata = await getCanisterInfo(nnsCanisterId, agent);
+const nnsMetadata = await getCanisterInfo({ canisterId: nnsCanisterId, agent });
 console.log(nnsMetadata);
 ```
 
@@ -345,14 +345,14 @@ interface CanisterMetadata {
 This second method is a variation that allows you to query DAB to check the metadata of **multiple canisters at once**. The main differences is that you will pass:
 
 - `canisterIDs`: An array of **several canister IDs** of the canisters you want to check in DAB.
-- `agent`: and HttpAgent (instantiated with agent-js or Plug).
+- `agent`: and HttpAgent (instantiated with agent-js or Plug) <optional>.
 
 ```ts
 import { getMultipleCanisterInfo } from '@psychedelic/dab-js';
 
 const agent = HttpAgent();
 const canisterIds = ['e3izy-jiaaa-aaaah-qacbq-cai', 'qcg3w-tyaaa-aaaah-qakea-cai']; // Cronic + ICPunks
-const nftsInfo = await getMultipleCanisterInfoFromDab(canisterIds, agent);
+const nftsInfo = await getMultipleCanisterInfoFromDab({ canisterIds, agent });
 console.log(nftsInfo);
 ```
 
