@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/naming-convention */
-import type { Principal } from "@dfinity/principal";
+import type { Principal } from '@dfinity/principal';
 
 export type AccountIdentifier = string;
 export type AccountIdentifier__1 = string;

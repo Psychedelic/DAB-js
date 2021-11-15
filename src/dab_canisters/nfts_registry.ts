@@ -26,28 +26,28 @@ const NFT_STANDARDS: { [key: string]: NFTStandards } = {
 };
 
 interface GetNFTActorParams {
-  canisterId: string,
-  standard: string,
-  agent: HttpAgent
+  canisterId: string;
+  standard: string;
+  agent: HttpAgent;
 }
 
 interface GetNFTInfoParams {
-  nftCanisterId: string,
-  agent?: HttpAgent
+  nftCanisterId: string;
+  agent?: HttpAgent;
 }
 
 interface GetAllUserNFTsParams {
-  user: string | Principal,
-  agent?: HttpAgent
+  user: string | Principal;
+  agent?: HttpAgent;
 }
 
-const DEFAULT_AGENT = new HttpAgent({ fetch, host: IC_HOST })
+const DEFAULT_AGENT = new HttpAgent({ fetch, host: IC_HOST });
 
-export const getNFTActor = (
-  { canisterId,
-    agent,
-    standard }: GetNFTActorParams
-): NFT => {
+export const getNFTActor = ({
+  canisterId,
+  agent,
+  standard,
+}: GetNFTActorParams): NFT => {
   if (!(standard in NFT_STANDARDS)) {
     console.error(`Standard ${standard} is not implemented`);
     throw new Error(`standard is not supported: ${standard}`);
@@ -55,10 +55,10 @@ export const getNFTActor = (
   return new NFT_STANDARDS[standard](canisterId, agent);
 };
 
-export const getNFTInfo = async (
-  { nftCanisterId,
-    agent = DEFAULT_AGENT }: GetNFTInfoParams
-): Promise<DABCollection | undefined> => {
+export const getNFTInfo = async ({
+  nftCanisterId,
+  agent = DEFAULT_AGENT,
+}: GetNFTInfoParams): Promise<DABCollection | undefined> => {
   const dabActor = Actor.createActor<dabInterface>(dabDid, {
     agent,
     canisterId: Principal.fromText(DAB_CANISTER_ID),
@@ -70,9 +70,9 @@ export const getNFTInfo = async (
   return result[0];
 };
 
-export const getAllNFTS = async (
-  { agent = DEFAULT_AGENT }: { agent?: HttpAgent } = {}
-): Promise<DABCollection[]> => {
+export const getAllNFTS = async ({
+  agent = DEFAULT_AGENT,
+}: { agent?: HttpAgent } = {}): Promise<DABCollection[]> => {
   const dabActor = Actor.createActor<dabInterface>(dabDid, {
     agent,
     canisterId: Principal.fromText(DAB_CANISTER_ID),
@@ -80,12 +80,13 @@ export const getAllNFTS = async (
   return dabActor.get_all();
 };
 
-export const getAllUserNFTs = async (
-  { user,
-    agent = DEFAULT_AGENT }: GetAllUserNFTsParams
-): Promise<NFTCollection[]> => {
+export const getAllUserNFTs = async ({
+  user,
+  agent = DEFAULT_AGENT,
+}: GetAllUserNFTsParams): Promise<NFTCollection[]> => {
   const NFTCollections = await getAllNFTS({ agent });
-  const userPrincipal = user instanceof Principal ? user : Principal.fromText(user);
+  const userPrincipal =
+    user instanceof Principal ? user : Principal.fromText(user);
   // REMOVE WHEN COLLECTION IS ADDED TO DAB
   if (
     !NFTCollections.some(
@@ -104,13 +105,11 @@ export const getAllUserNFTs = async (
   const result = await Promise.all(
     NFTCollections.map(async (collection) => {
       try {
-        const NFTActor = getNFTActor(
-          {
-            canisterId: collection.principal_id.toString(),
-            agent,
-            standard: collection.standard
-          }
-        );
+        const NFTActor = getNFTActor({
+          canisterId: collection.principal_id.toString(),
+          agent,
+          standard: collection.standard,
+        });
         const details = await NFTActor.getUserTokens(userPrincipal);
         return {
           name: collection.name,
@@ -161,13 +160,11 @@ export const getBatchedNFTs = async ({
     const batchResult = await Promise.all(
       batch.map(async (collection) => {
         try {
-          const NFTActor = getNFTActor(
-            {
-              canisterId: collection.principal_id.toString(),
-              agent,
-              standard: collection.standard
-            }
-          );
+          const NFTActor = getNFTActor({
+            canisterId: collection.principal_id.toString(),
+            agent,
+            standard: collection.standard,
+          });
           const details = await NFTActor.getUserTokens(principal);
           const collectionDetails = {
             name: collection.name,
@@ -186,7 +183,8 @@ export const getBatchedNFTs = async ({
           return collectionDetails;
         } catch (e) {
           console.warn(
-            `Error while fetching collection ${collection?.name
+            `Error while fetching collection ${
+              collection?.name
             } (${collection?.principal_id?.toString()}). \n${e.message}`
           );
           return {

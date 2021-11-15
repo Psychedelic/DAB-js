@@ -49,19 +49,19 @@ export interface TransactionResult {
 }
 export type TransactionType =
   | {
-    Approve: { to: Principal; token_id: bigint; from: Principal };
-  }
+      Approve: { to: Principal; token_id: bigint; from: Principal };
+    }
   | { Burn: { token_id: bigint } }
   | { Mint: { token_id: bigint } }
   | { SetApprovalForAll: { to: Principal; from: Principal } }
   | {
-    TransferFrom: {
-      to: Principal;
-      token_id: bigint;
-      from: Principal;
-      caller: [] | [Principal];
+      TransferFrom: {
+        to: Principal;
+        token_id: bigint;
+        from: Principal;
+        caller: [] | [Principal];
+      };
     };
-  };
 
 export type TxReceipt = { Ok: bigint } | { Err: ApiError };
 export interface erc721_token {

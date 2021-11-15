@@ -89,7 +89,7 @@ export default ({ IDL }) => {
       callback: IDL.Func(
         [HttpStreamingCallbackToken],
         [HttpStreamingCallbackResponse],
-        ["query"]
+        ['query']
       ),
     }),
   });
@@ -157,35 +157,35 @@ export default ({ IDL }) => {
     allPayments: IDL.Func(
       [],
       [IDL.Vec(IDL.Tuple(IDL.Principal, IDL.Vec(SubAccount__1)))],
-      ["query"]
+      ['query']
     ),
     allSettlements: IDL.Func(
       [],
       [IDL.Vec(IDL.Tuple(TokenIndex, Settlement))],
-      ["query"]
+      ['query']
     ),
-    availableCycles: IDL.Func([], [IDL.Nat], ["query"]),
-    balance: IDL.Func([BalanceRequest], [BalanceResponse], ["query"]),
-    bearer: IDL.Func([TokenIdentifier__1], [Result_5], ["query"]),
+    availableCycles: IDL.Func([], [IDL.Nat], ['query']),
+    balance: IDL.Func([BalanceRequest], [BalanceResponse], ['query']),
+    bearer: IDL.Func([TokenIdentifier__1], [Result_5], ['query']),
     clearPayments: IDL.Func([IDL.Principal, IDL.Vec(SubAccount__1)], [], []),
-    details: IDL.Func([TokenIdentifier__1], [Result_6], ["query"]),
-    extensions: IDL.Func([], [IDL.Vec(Extension)], ["query"]),
-    getMinter: IDL.Func([], [IDL.Principal], ["query"]),
+    details: IDL.Func([TokenIdentifier__1], [Result_6], ['query']),
+    extensions: IDL.Func([], [IDL.Vec(Extension)], ['query']),
+    getMinter: IDL.Func([], [IDL.Principal], ['query']),
     getRegistry: IDL.Func(
       [],
       [IDL.Vec(IDL.Tuple(TokenIndex, AccountIdentifier))],
-      ["query"]
+      ['query']
     ),
     getTokens: IDL.Func(
       [],
       [IDL.Vec(IDL.Tuple(TokenIndex, Metadata))],
-      ["query"]
+      ['query']
     ),
-    http_request: IDL.Func([HttpRequest], [HttpResponse], ["query"]),
+    http_request: IDL.Func([HttpRequest], [HttpResponse], ['query']),
     http_request_streaming_callback: IDL.Func(
       [HttpStreamingCallbackToken],
       [HttpStreamingCallbackResponse],
-      ["query"]
+      ['query']
     ),
     list: IDL.Func([ListRequest], [Result_3], []),
     list_bulk: IDL.Func(
@@ -196,34 +196,34 @@ export default ({ IDL }) => {
     listings: IDL.Func(
       [],
       [IDL.Vec(IDL.Tuple(TokenIndex, Listing, Metadata))],
-      ["query"]
+      ['query']
     ),
     lock: IDL.Func(
       [TokenIdentifier__1, IDL.Nat64, AccountIdentifier, SubAccount__1],
       [Result_5],
       []
     ),
-    metadata: IDL.Func([TokenIdentifier__1], [Result_4], ["query"]),
+    metadata: IDL.Func([TokenIdentifier__1], [Result_4], ['query']),
     mintNFT: IDL.Func([MintingRequest], [TokenIndex], []),
-    payments: IDL.Func([], [IDL.Opt(IDL.Vec(SubAccount__1))], ["query"]),
+    payments: IDL.Func([], [IDL.Opt(IDL.Vec(SubAccount__1))], ['query']),
     removePayments: IDL.Func([IDL.Vec(SubAccount__1)], [], []),
     setMinter: IDL.Func([IDL.Principal], [], []),
     settle: IDL.Func([TokenIdentifier__1], [Result_3], []),
     settlements: IDL.Func(
       [],
       [IDL.Vec(IDL.Tuple(TokenIndex, AccountIdentifier, IDL.Nat64))],
-      ["query"]
+      ['query']
     ),
     stats: IDL.Func(
       [],
       [IDL.Nat64, IDL.Nat64, IDL.Nat64, IDL.Nat64, IDL.Nat, IDL.Nat, IDL.Nat],
-      ["query"]
+      ['query']
     ),
     streamAsset: IDL.Func([IDL.Nat, IDL.Bool, IDL.Vec(IDL.Nat8)], [], []),
-    supply: IDL.Func([TokenIdentifier__1], [Result_2], ["query"]),
-    tokens: IDL.Func([AccountIdentifier], [Result_1], ["query"]),
-    tokens_ext: IDL.Func([AccountIdentifier], [Result], ["query"]),
-    transactions: IDL.Func([], [IDL.Vec(Transaction)], ["query"]),
+    supply: IDL.Func([TokenIdentifier__1], [Result_2], ['query']),
+    tokens: IDL.Func([AccountIdentifier], [Result_1], ['query']),
+    tokens_ext: IDL.Func([AccountIdentifier], [Result], ['query']),
+    transactions: IDL.Func([], [IDL.Vec(Transaction)], ['query']),
     transfer: IDL.Func([TransferRequest], [TransferResponse], []),
     transfer_bulk: IDL.Func(
       [IDL.Vec(IDL.Tuple(TokenIndex, AccountIdentifier))],
