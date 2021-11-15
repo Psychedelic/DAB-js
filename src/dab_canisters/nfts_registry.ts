@@ -14,7 +14,7 @@ import DepartureLabs from '../nft_standards/departure_labs';
 import NFT from '../nft_standards/default';
 import ERC721 from '../nft_standards/erc_721';
 import standards from '../constants/standards';
-import { IC_HOST, KYASHU_URL } from '../constants';
+import { IC_HOST, KYASSHU_URL } from '../constants';
 import axios from 'axios';
 
 const DAB_CANISTER_ID = 'aipdg-waaaa-aaaah-aaq5q-cai';
@@ -208,7 +208,7 @@ export const getBatchedNFTs = async ({
 };
 
 export const getCachedUserNFTs = async ({ userPID, refresh }: { userPID: string, refresh?: boolean }) => {
-  const url = `${KYASHU_URL}/dab/user/nfts/${userPID}${refresh ? '?refresh=true' : ''}`;
+  const url = `${KYASSHU_URL}/dab/user/nfts/${userPID}${refresh ? '?refresh=true' : ''}`;
   const result = await axios.get(url);
   if (!refresh)
     axios.get(`${url}?refresh=true`);
