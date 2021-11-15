@@ -26,7 +26,14 @@ const generateActor = (agent: HttpAgent): ActorSubclass<DABRegistry> =>
     canisterId: Principal.fromText(CANISTER_ID),
   });
 
-  const DEFAULT_AGENT = new HttpAgent({ fetch, host: IC_HOST });
+const DEFAULT_AGENT = new HttpAgent({ fetch, host: IC_HOST });
+
+export const getAll = async (
+  { agent = DEFAULT_AGENT }: { agent: HttpAgent }
+): Promise<CanisterMetadata[]> => {
+  const actor = generateActor(agent);
+  return actor.get_all();
+}
 
 export const getCanisterInfo = async (
   { canisterId,
