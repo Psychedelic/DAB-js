@@ -87,19 +87,18 @@ export const getAllUserNFTs = async (
 ): Promise<NFTCollection[]> => {
   const NFTCollections = await getAllNFTS({ agent });
   const userPrincipal = user instanceof Principal ? user : Principal.fromText(user);
-  // REMOVE WHEN COLLECTION IS ADDED TO DAB
   if (
     !NFTCollections.some(
-      (c) => c.principal_id.toText() === 'lhq4n-3yaaa-aaaai-qaniq-cai'
+      (c) => c.principal_id.toText() === 'rpvd4-zaaaa-aaaam-qaaia-cai'
     )
   ) {
     NFTCollections.push({
-      icon: 'https://storageapi.fleek.co/fleek-team-bucket/principia.png',
-      name: 'Principia Mathematica',
-      principal_id: Principal.fromText('lhq4n-3yaaa-aaaai-qaniq-cai'),
+      icon: 'https://storageapi.fleek.co/fleek-team-bucket/crowns-ooo.png',
+      name: 'CAP Crowns',
+      principal_id: Principal.fromText('rpvd4-zaaaa-aaaam-qaaia-cai'),
       description:
-        'An Ode to Mathematics, a silent tribute to the greatest minds of all time.',
-      standard: 'DepartureLabs',
+        'Cap Crown',
+      standard: standards.erc721,
     });
   }
   const result = await Promise.all(
@@ -157,6 +156,20 @@ export const getBatchedNFTs = async ({
 }: GetBatchedNFTsParams) => {
   const NFTCollections = await getAllNFTS({ agent });
   let result: NFTCollection[] = [];
+  if (
+    !NFTCollections.some(
+      (c) => c.principal_id.toText() === 'rpvd4-zaaaa-aaaam-qaaia-cai'
+    )
+  ) {
+    NFTCollections.push({
+      icon: 'https://storageapi.fleek.co/fleek-team-bucket/crowns-ooo.png',
+      name: 'CAP Crowns',
+      principal_id: Principal.fromText('rpvd4-zaaaa-aaaam-qaaia-cai'),
+      description:
+        'Cap Crowns',
+      standard: 'erc721',
+    });
+  }
   for (let i = 0; i < NFTCollections.length; i += batchSize) {
     const batch = NFTCollections.slice(i, i + batchSize);
     const batchResult = await Promise.all(
