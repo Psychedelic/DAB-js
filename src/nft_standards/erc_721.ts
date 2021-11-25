@@ -22,7 +22,6 @@ export default class ERC721 extends NFT {
 
   async getUserTokens(principal: Principal): Promise<NFTDetails[]> {
     const userTokensResult = await this.actor.getMetadataForUserDip721(principal);
-
     const tokens = userTokensResult || [];
 
     return tokens.map((token) => {
@@ -69,7 +68,7 @@ export default class ERC721 extends NFT {
       index: BigInt(tokenIndex),
       canister: this.canisterId,
       metadata: metadata,
-      url: metadata?.location,
+      url: metadata?.location?.value?.TextContent || '',
       standard: this.standard,
     };
   }

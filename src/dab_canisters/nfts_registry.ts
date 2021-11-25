@@ -17,6 +17,15 @@ import standards from '../constants/standards';
 import { IC_HOST, KYASSHU_URL } from '../constants';
 import axios from 'axios';
 
+const CROWNS_MOCK = {
+  icon: 'https://storageapi.fleek.co/fleek-team-bucket/logos/crowns-ooo.png',
+  name: 'CAP Crowns',
+  principal_id: Principal.fromText('rpvd4-zaaaa-aaaam-qaaia-cai'),
+  description:
+    'Crowns are a collection of 10,000 uniquely generated NFTs on the Internet Computer. With a mix of traditional and psychedelic materials, and a CAP-powered transaction history for full provenance.',
+  standard: standards.erc721,
+}
+
 const DAB_CANISTER_ID = 'aipdg-waaaa-aaaah-aaq5q-cai';
 
 const NFT_STANDARDS: { [key: string]: NFTStandards } = {
@@ -87,20 +96,12 @@ export const getAllUserNFTs = async (
 ): Promise<NFTCollection[]> => {
   const NFTCollections = await getAllNFTS({ agent });
   const userPrincipal = user instanceof Principal ? user : Principal.fromText(user);
-  // REMOVE WHEN COLLECTION IS ADDED TO DAB
   if (
     !NFTCollections.some(
-      (c) => c.principal_id.toText() === 'lhq4n-3yaaa-aaaai-qaniq-cai'
+      (c) => c.principal_id.toText() === CROWNS_MOCK.principal_id.toText()
     )
   ) {
-    NFTCollections.push({
-      icon: 'https://storageapi.fleek.co/fleek-team-bucket/principia.png',
-      name: 'Principia Mathematica',
-      principal_id: Principal.fromText('lhq4n-3yaaa-aaaai-qaniq-cai'),
-      description:
-        'An Ode to Mathematics, a silent tribute to the greatest minds of all time.',
-      standard: 'DepartureLabs',
-    });
+    NFTCollections.push(CROWNS_MOCK);
   }
   const result = await Promise.all(
     NFTCollections.map(async (collection) => {
@@ -157,6 +158,13 @@ export const getBatchedNFTs = async ({
 }: GetBatchedNFTsParams) => {
   const NFTCollections = await getAllNFTS({ agent });
   let result: NFTCollection[] = [];
+  if (
+    !NFTCollections.some(
+      (c) => c.principal_id.toText() === CROWNS_MOCK.principal_id.toText()
+    )
+  ) {
+    NFTCollections.push(CROWNS_MOCK);
+  }
   for (let i = 0; i < NFTCollections.length; i += batchSize) {
     const batch = NFTCollections.slice(i, i + batchSize);
     const batchResult = await Promise.all(
