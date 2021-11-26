@@ -2,10 +2,26 @@ import { Actor, ActorSubclass, HttpAgent } from '@dfinity/agent';
 import { Principal } from '@dfinity/principal';
 
 import { NFTDetails } from '../interfaces/nft';
-import Interface, { MetadataPart } from '../interfaces/erc_721';
+import Interface, { MetadataPart, MetadataVal, MetadataPurpose } from '../interfaces/erc_721';
 import IDL from '../idls/erc_721.did';
 import NFT from './default';
 import standards from '../constants/standards';
+
+interface Property {
+  name: string;
+  value: string;
+}
+
+interface Metadata {
+  [key: string]: { value: MetadataVal , purpose: string } | Array<Property>;
+  properties: Array<Property>;
+}
+
+const extractMetadataValue = (metadata: any) => {
+  const metadataKey = Object.keys(metadata)[0];
+  const value = metadata[metadataKey];
+  return typeof value === 'object' ? JSON.stringify(value) : value;
+};
 
 export default class ERC721 extends NFT {
   standard = standards.erc721;
@@ -23,7 +39,6 @@ export default class ERC721 extends NFT {
   async getUserTokens(principal: Principal): Promise<NFTDetails[]> {
     const userTokensResult = await this.actor.getMetadataForUserDip721(principal);
     const tokens = userTokensResult || [];
-
     return tokens.map((token) => {
       const tokenIndex = token.token_id;
       const formatedMetadata = this.formatMetadata(token.metadata_desc);
@@ -67,18 +82,22 @@ export default class ERC721 extends NFT {
     return {
       index: BigInt(tokenIndex),
       canister: this.canisterId,
-      metadata: metadata,
+      metadata,
       url: metadata?.location?.value?.TextContent || '',
       standard: this.standard,
     };
   }
 
-  private formatMetadata(metadata: Array<MetadataPart>) {
-    const metadataResult = {}
+  private formatMetadata(metadata: Array<MetadataPart>): Metadata {
+    const metadataResult: Metadata = { properties: [] };
     for (const part of metadata) {
       const purpose = Object.keys(part.purpose)[0];
-      part.key_val_data.forEach(({ key, val }) => metadataResult[key] = { value: val, purpose });
+      part.key_val_data.forEach(({ key, val }) => {
+        metadataResult[key] = { value: val, purpose };
+        metadataResult.properties = [...metadataResult.properties, { name: key, value: extractMetadataValue(val) } ];
+      });
     }
-    return metadataResult
+    metadataResult.properties = metadataResult.properties.filter(({ name }) => name !== 'location');
+    return metadataResult;
   }
 }
