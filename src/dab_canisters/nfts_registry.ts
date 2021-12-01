@@ -17,15 +17,6 @@ import standards from '../constants/standards';
 import { IC_HOST, KYASSHU_URL } from '../constants';
 import axios from 'axios';
 
-const CROWNS_MOCK = {
-  icon: 'https://storageapi.fleek.co/fleek-team-bucket/logos/crowns-ooo.png',
-  name: 'CAP Crowns',
-  principal_id: Principal.fromText('vlhm2-4iaaa-aaaam-qaatq-cai'),
-  description:
-    'Crowns are a collection of 10,000 uniquely generated NFTs on the Internet Computer. With a mix of traditional and psychedelic materials, and a CAP-powered transaction history for full provenance.',
-  standard: standards.erc721,
-}
-
 const DAB_CANISTER_ID = 'aipdg-waaaa-aaaah-aaq5q-cai';
 
 const NFT_STANDARDS: { [key: string]: NFTStandards } = {
@@ -96,13 +87,7 @@ export const getAllUserNFTs = async (
 ): Promise<NFTCollection[]> => {
   const NFTCollections = await getAllNFTS({ agent });
   const userPrincipal = user instanceof Principal ? user : Principal.fromText(user);
-  if (
-    !NFTCollections.some(
-      (c) => c.principal_id.toText() === CROWNS_MOCK.principal_id.toText()
-    )
-  ) {
-    NFTCollections.push(CROWNS_MOCK);
-  }
+  
   const result = await Promise.all(
     NFTCollections.map(async (collection) => {
       try {
@@ -158,13 +143,7 @@ export const getBatchedNFTs = async ({
 }: GetBatchedNFTsParams) => {
   const NFTCollections = await getAllNFTS({ agent });
   let result: NFTCollection[] = [];
-  if (
-    !NFTCollections.some(
-      (c) => c.principal_id.toText() === CROWNS_MOCK.principal_id.toText()
-    )
-  ) {
-    NFTCollections.push(CROWNS_MOCK);
-  }
+  
   for (let i = 0; i < NFTCollections.length; i += batchSize) {
     const batch = NFTCollections.slice(i, i + batchSize);
     const batchResult = await Promise.all(
