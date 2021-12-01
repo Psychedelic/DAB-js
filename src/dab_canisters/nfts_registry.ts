@@ -20,7 +20,7 @@ import axios from 'axios';
 const CROWNS_MOCK = {
   icon: 'https://storageapi.fleek.co/fleek-team-bucket/logos/crowns-ooo.png',
   name: 'CAP Crowns',
-  principal_id: Principal.fromText('rpvd4-zaaaa-aaaam-qaaia-cai'),
+  principal_id: Principal.fromText('vlhm2-4iaaa-aaaam-qaatq-cai'),
   description:
     'Crowns are a collection of 10,000 uniquely generated NFTs on the Internet Computer. With a mix of traditional and psychedelic materials, and a CAP-powered transaction history for full provenance.',
   standard: standards.erc721,
