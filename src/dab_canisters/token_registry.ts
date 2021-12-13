@@ -2,11 +2,13 @@ import { HttpAgent, Actor, ActorSubclass } from '@dfinity/agent';
 import { Principal } from '@dfinity/principal';
 import fetch from 'cross-fetch';
 
-import TokenRegistry, { input_add_token, input_edit_token, operation_error, operation_response, token } from '../interfaces/dab_tokens';
+import TokenRegistry, { input_add_token, input_edit_token, operation_response, token } from '../interfaces/dab_tokens';
 import IDL from '../idls/dab_tokens.did';
 import { IC_HOST } from '../constants';
+import { createTokenActor } from '../token_standards';
+import standards from '../constants/standards';
 
-const CANISTER_ID = 'qxtlu-aiaaa-aaaah-aaupq-cai';
+const CANISTER_ID = 'qwt65-nyaaa-aaaah-qcl4q-cai';
 const TOKEN_ATTR = ['logo',
   'name',
   'description',
@@ -50,15 +52,40 @@ const generateActor = (agent: HttpAgent): ActorSubclass<TokenRegistry> =>
 
 const DEFAULT_AGENT = new HttpAgent({ fetch, host: IC_HOST });
 
+export const TOKEN_STANDARDS = [
+  standards.ext,
+  standards.dip20,
+  standards.xtc, 
+  standards.wicp
+]
+
+interface GetTokenActorParams {
+  canisterId: string,
+  standard: string,
+  agent: HttpAgent
+}
+
+export const getTokenActor = <T = {}>(
+  { canisterId,
+    agent,
+    standard }: GetTokenActorParams
+) => {
+  if (!(TOKEN_STANDARDS.includes(standard))) {
+    console.error(`Standard ${standard} is not implemented`);
+    throw new Error(`standard is not supported: ${standard}`);
+  }
+  return createTokenActor<T>(canisterId, agent, standard)
+};
+
 export const getTokens = ({ agent = DEFAULT_AGENT }): Promise<token[]> => {
   const dabActor = generateActor(agent);
   return dabActor.get_all();
 }
 
-export const getTokenInfo = ({ agent = DEFAULT_AGENT, canisterId }: GetTokenInfoParams): Promise<token> => {
-  const dabActor = generateActor(agent);
-  return dabActor.get_token(canisterId);
-}
+// export const getTokenInfo = ({ agent = DEFAULT_AGENT, canisterId }: GetTokenInfoParams): Promise<token> => {
+//   const dabActor = generateActor(agent);
+//   return dabActor.get_token(canisterId);
+// }
 
 export const addToken = ({ agent = DEFAULT_AGENT, tokenInfo }: AddTokenInfoParams): Promise<operation_response> => {
   const dabActor = generateActor(agent);
