@@ -5,7 +5,7 @@ import { NFTDetails } from '../interfaces/nft';
 import Interface, { MetadataPart, MetadataVal, MetadataPurpose } from '../interfaces/erc_721';
 import IDL from '../idls/erc_721.did';
 import NFT from './default';
-import standards from '../constants/standards';
+import { NFT as NFTStandard} from '../constants/standards';
 
 interface Property {
   name: string;
@@ -24,7 +24,7 @@ const extractMetadataValue = (metadata: any) => {
 };
 
 export default class ERC721 extends NFT {
-  standard = standards.erc721;
+  standard = NFTStandard.erc721;
 
   actor: ActorSubclass<Interface>;
 

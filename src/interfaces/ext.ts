@@ -42,7 +42,7 @@ export interface ResultOk<T> {
 }
 
 export interface ResultError<T> {
-  err: T;
+  error: T;
 }
 
 export type Result<Ok, Error> = ResultOk<Ok> | ResultError<Error>;
@@ -58,6 +58,14 @@ export interface Listing {
   price: bigint;
 }
 
+export interface TokenMetaData {
+  name: string;
+  decimals: number;
+  symbol: string;
+}
+
+export type Extension = string;
+
 type Details = [AccountIdentifier, Listing];
 
 type BalanceResult = Result<Balance, CommonError>;
@@ -69,6 +77,9 @@ type TokensResult = Result<Tokens, CommonError>;
 type TokenExt = [TokenIndex, Listing[], Int8Array[]];
 
 type TokensExtResult = Result<TokenExt[], CommonError>;
+
+type SupplyResponse = Result<Balance, CommonError>;
+
 
 interface TransferRequest {
   to: User;
@@ -90,22 +101,30 @@ type TransferError =
 
 type TransferResult = Result<Balance, TransferError>;
 
+export interface FungibleMetadata {
+  fungible: TokenMetaData & {
+    metadata?: Int8Array[];
+  };
+}
+
 export interface NonFungibleMetadata {
   nonfungible: {
     metadata: Int8Array[];
   };
 }
-export type Metadata = NonFungibleMetadata;
+export type Metadata = FungibleMetadata | NonFungibleMetadata;
 
 export type MetadataResponse = Result<Metadata, CommonError>;
 
 export default interface _SERVICE {
+  extensions: () => Promise<Extension[]>;
   balance: (arg_0: BalanceRequest) => Promise<BalanceResult>;
   details: (token: TokenIdentifier) => Promise<DetailsResult>;
   tokens: (account: AccountIdentifier) => Promise<TokensResult>;
   tokens_ext: (account: AccountIdentifier) => Promise<TokensExtResult>;
   transfer: (arg_0: TransferRequest) => Promise<TransferResult>;
   metadata: (token: TokenIdentifier) => Promise<MetadataResponse>;
+  supply: (token: TokenIdentifier) => Promise<SupplyResponse>;
 }
 export const init = () => {
   return [];

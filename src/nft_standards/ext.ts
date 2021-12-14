@@ -8,7 +8,7 @@ import NFT from './default';
 import { getAccountId } from '../utils/account';
 import { to32bits } from '../utils/number';
 import { NFT_CANISTERS } from '../constants/canisters';
-import standards from '../constants/standards';
+import { NFT as NFTStandard} from '../constants/standards';
 
 const getTokenIdentifier = (canister: string, index: number): string => {
   const padding = Buffer.from('\x0Atid');
@@ -28,7 +28,7 @@ const extImageUrl = (canisterId, index, tokenIdentifier) =>
   `https://${canisterId}.raw.ic0.app/?type=thumbnail&tokenid=${tokenIdentifier}`);
 
 export default class EXT extends NFT {
-  standard = standards.ext;
+  standard = NFTStandard.ext;
 
   actor: ActorSubclass<NTF_EXT>;
 
@@ -44,10 +44,10 @@ export default class EXT extends NFT {
   async getUserTokens(principal: Principal): Promise<NFTDetails[]> {
     const accountId = getAccountId(principal);
     const userTokensResult = await this.actor.tokens_ext(accountId);
-    if ('err' in userTokensResult)
+    if ('error' in userTokensResult)
       throw new Error(
-        `${Object.keys(userTokensResult.err)[0]}: ${
-          Object.values(userTokensResult.err)[0]
+        `${Object.keys(userTokensResult.error)[0]}: ${
+          Object.values(userTokensResult.error)[0]
         }`
       );
 
@@ -79,10 +79,10 @@ export default class EXT extends NFT {
       notify: false,
       subaccount: [],
     });
-    if ('err' in transferResult)
+    if ('error' in transferResult)
       throw new Error(
-        `${Object.keys(transferResult.err)[0]}: ${
-          Object.values(transferResult.err)[0]
+        `${Object.keys(transferResult.error)[0]}: ${
+          Object.values(transferResult.error)[0]
         }`
       );
   }
@@ -91,13 +91,14 @@ export default class EXT extends NFT {
     const tokenIdentifier = getTokenIdentifier(this.canisterId, tokenIndex);
     const metadataResult = await this.actor.metadata(tokenIdentifier);
 
-    if ('err' in metadataResult)
+    if ('error' in metadataResult)
       throw new Error(
-        `${Object.keys(metadataResult.err)[0]}: ${
-          Object.values(metadataResult.err)[0]
+        `${Object.keys(metadataResult.error)[0]}: ${
+          Object.values(metadataResult.error)[0]
         }`
       );
-    const { metadata } = metadataResult.ok.nonfungible;
+
+    const { metadata = {} } = 'nonfungible' in metadataResult.ok ? metadataResult.ok.nonfungible : {} ; 
 
     return this.serializeTokenData(metadata, tokenIdentifier, tokenIndex);
   }
