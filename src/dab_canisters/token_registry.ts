@@ -6,7 +6,7 @@ import TokenRegistry, { input_add_token, input_edit_token, operation_response, t
 import IDL from '../idls/dab_tokens.did';
 import { IC_HOST } from '../constants';
 import { createTokenActor } from '../token_standards';
-import standards from '../constants/standards';
+import { TOKEN } from '../constants/standards';
 
 const CANISTER_ID = 'qwt65-nyaaa-aaaah-qcl4q-cai';
 const TOKEN_ATTR = ['logo',
@@ -52,12 +52,7 @@ const generateActor = (agent: HttpAgent): ActorSubclass<TokenRegistry> =>
 
 const DEFAULT_AGENT = new HttpAgent({ fetch, host: IC_HOST });
 
-export const TOKEN_STANDARDS = [
-  standards.ext,
-  standards.dip20,
-  standards.xtc, 
-  standards.wicp
-]
+export const TOKEN_STANDARDS = Object.values(TOKEN)
 
 interface GetTokenActorParams {
   canisterId: string,

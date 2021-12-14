@@ -8,7 +8,7 @@ import NFT from './default';
 import { getAccountId } from '../utils/account';
 import { to32bits } from '../utils/number';
 import { NFT_CANISTERS } from '../constants/canisters';
-import standards from '../constants/standards';
+import { NFT as NFTStandard} from '../constants/standards';
 
 const getTokenIdentifier = (canister: string, index: number): string => {
   const padding = Buffer.from('\x0Atid');
@@ -28,7 +28,7 @@ const extImageUrl = (canisterId, index, tokenIdentifier) =>
   `https://${canisterId}.raw.ic0.app/?type=thumbnail&tokenid=${tokenIdentifier}`);
 
 export default class EXT extends NFT {
-  standard = standards.ext;
+  standard = NFTStandard.ext;
 
   actor: ActorSubclass<NTF_EXT>;
 

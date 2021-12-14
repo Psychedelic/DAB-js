@@ -5,10 +5,10 @@ import NFT_DEPARTURE_LABS, { Metadata } from '../interfaces/departure_labs';
 import IDL from '../idls/departure_labs.did';
 import NFT from './default';
 import { NFTDetails } from '../interfaces/nft';
-import standards from '../constants/standards';
+import { NFT as NFTStandard} from '../constants/standards';
 
 export default class DepartureLabs extends NFT {
-  standard = standards.departuresLabs;
+  standard = NFTStandard.departuresLabs;
 
   actor: ActorSubclass<NFT_DEPARTURE_LABS>;
 

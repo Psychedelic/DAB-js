@@ -14,24 +14,24 @@ import dip20Methods from './dip20Methods';
 import extIDL from '../idls/ext.did';
 import xtcIDL from '../idls/xtc.did';
 import dip20IDL from '../idls/dip_20.did';
-import standards from '../constants/standards'
+import { TOKEN } from '../constants/standards'
 import wicpIDL from '../idls/wicp.did';
 import wicpMethods from './wicpMethods';
 
 const getMethods = (standard: string): InternalTokenMethods =>
   ({
-    [standards.xtc]: xtcMethods,
-    [standards.ext]: extMethods,
-    [standards.dip20]: dip20Methods,
-    [standards.wicp]: wicpMethods
+    [TOKEN.xtc]: xtcMethods,
+    [TOKEN.ext]: extMethods,
+    [TOKEN.dip20]: dip20Methods,
+    [TOKEN.wicp]: wicpMethods
   }[standard] || defaultMethods);
 
 const getIdl = (standard: string): IDL.InterfaceFactory => {
   const idl = {
-    [standards.xtc]: xtcIDL,
-    [standards.ext]: extIDL,
-    [standards.dip20]: dip20IDL,
-    [standards.wicp]: wicpIDL
+    [TOKEN.xtc]: xtcIDL,
+    [TOKEN.ext]: extIDL,
+    [TOKEN.dip20]: dip20IDL,
+    [TOKEN.wicp]: wicpIDL
   }[standard];
   if (!idl) throw new Error(`Standard ${standard} Not Implemented`);
   return idl;
