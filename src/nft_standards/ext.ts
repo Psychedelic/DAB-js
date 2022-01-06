@@ -44,10 +44,10 @@ export default class EXT extends NFT {
   async getUserTokens(principal: Principal): Promise<NFTDetails[]> {
     const accountId = getAccountId(principal);
     const userTokensResult = await this.actor.tokens_ext(accountId);
-    if ('error' in userTokensResult)
+    if ('err' in userTokensResult)
       throw new Error(
-        `${Object.keys(userTokensResult.error)[0]}: ${
-          Object.values(userTokensResult.error)[0]
+        `${Object.keys(userTokensResult.err)[0]}: ${
+          Object.values(userTokensResult.err)[0]
         }`
       );
 
@@ -79,10 +79,10 @@ export default class EXT extends NFT {
       notify: false,
       subaccount: [],
     });
-    if ('error' in transferResult)
+    if ('err' in transferResult)
       throw new Error(
-        `${Object.keys(transferResult.error)[0]}: ${
-          Object.values(transferResult.error)[0]
+        `${Object.keys(transferResult.err)[0]}: ${
+          Object.values(transferResult.err)[0]
         }`
       );
   }
@@ -91,10 +91,10 @@ export default class EXT extends NFT {
     const tokenIdentifier = getTokenIdentifier(this.canisterId, tokenIndex);
     const metadataResult = await this.actor.metadata(tokenIdentifier);
 
-    if ('error' in metadataResult)
+    if ('err' in metadataResult)
       throw new Error(
-        `${Object.keys(metadataResult.error)[0]}: ${
-          Object.values(metadataResult.error)[0]
+        `${Object.keys(metadataResult.err)[0]}: ${
+          Object.values(metadataResult.err)[0]
         }`
       );
 

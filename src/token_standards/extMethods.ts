@@ -28,7 +28,7 @@ const getMetadata = async (
 
   if ('ok' in metadataResult) return metadataResult.ok;
 
-  throw new Error(Object.keys(metadataResult.error)[0]);
+  throw new Error(Object.keys(metadataResult.err)[0]);
 };
 
 const send = async (
@@ -56,7 +56,7 @@ const send = async (
 
   if ('ok' in transferResult) return { amount: transferResult.ok.toString() };
 
-  throw new Error(Object.keys(transferResult.error)[0]);
+  throw new Error(Object.keys(transferResult.err)[0]);
 };
 
 const getBalance = async (
@@ -75,7 +75,7 @@ const getBalance = async (
   if ('ok' in balanceResult)
     return { value: balanceResult.ok.toString(), decimals };
 
-  throw new Error(Object.keys(balanceResult.error)[0]);
+  throw new Error(Object.keys(balanceResult.err)[0]);
 };
 
 const burnXTC = async (
