@@ -42,7 +42,7 @@ export interface ResultOk<T> {
 }
 
 export interface ResultError<T> {
-  error: T;
+  err: T;
 }
 
 export type Result<Ok, Error> = ResultOk<Ok> | ResultError<Error>;
