@@ -51,7 +51,7 @@ To pull and install from [@Psychedelic](https://github.com/psychedelic) via the 
 Once you have those ready, run:
 
 ```
-npm login --registry=https://npm.pkg.github.com --scope=@Psychedelic
+npm login --registry=https://npm.pkg.github.com --scope=@psychedelic
 ```
 
 > **Note:** You only need to configure this once to install the package!
