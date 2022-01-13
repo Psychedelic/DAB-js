@@ -12,7 +12,7 @@ import EXT from '../nft_standards/ext';
 import ICPunks from '../nft_standards/ic_punks';
 import DepartureLabs from '../nft_standards/departure_labs';
 import NFT from '../nft_standards/default';
-import ERC721 from '../nft_standards/erc_721';
+import DIP721 from '../nft_standards/dip_721';
 import {  NFT as NFTStandard } from '../constants/standards';
 import { IC_HOST, KYASSHU_URL } from '../constants';
 import axios from 'axios';
@@ -23,7 +23,8 @@ const NFT_STANDARDS: { [key: string]: NFTStandards } = {
   [NFTStandard.ext]: EXT,
   [NFTStandard.icpunks]: ICPunks,
   [NFTStandard.departuresLabs]: DepartureLabs,
-  [NFTStandard.erc721]: ERC721,
+  [NFTStandard.erc721]: DIP721,
+  [NFTStandard.dip721]: DIP721,
 };
 
 interface GetNFTActorParams {
