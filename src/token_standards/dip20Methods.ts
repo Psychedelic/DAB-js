@@ -9,7 +9,6 @@ import {
   BurnParams,
   getDecimalsFromMetadata,
   InternalTokenMethods,
-  parseAmountToSend,
   SendParams,
   SendResponse,
 } from './methods';
@@ -34,13 +33,9 @@ const send = async (
   actor: ActorSubclass<BaseDip20Service>,
   { to, amount }: SendParams
 ): Promise<SendResponse> => {
-  const decimals = await getDecimals(actor);
-
-  const parsedAmount = parseAmountToSend(amount, decimals);
-
   const transferResult = await actor._transfer(
     Principal.fromText(to),
-    parsedAmount
+    amount
   );
 
   if ('ok' in transferResult)

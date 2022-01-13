@@ -34,12 +34,9 @@ const send = async (
   actor: ActorSubclass<BaseXtcService>,
   { to, amount }: SendParams
 ): Promise<SendResponse> => {
-  const decimals = await getDecimals(actor);
-  const parsedAmount = parseAmountToSend(amount, decimals);
-
   const transferResult = await actor._transferErc20(
     Principal.fromText(to),
-    parsedAmount
+    amount
   );
 
   if ('Ok' in transferResult)

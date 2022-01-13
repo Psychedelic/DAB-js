@@ -13,7 +13,7 @@ export type SendResponse =
 export interface SendParams {
   to: string;
   from: string;
-  amount: string;
+  amount: bigint;
   opts?: any;
 }
 

@@ -9,7 +9,6 @@ import {
   BurnParams,
   getDecimalsFromMetadata,
   InternalTokenMethods,
-  parseAmountToSend,
   SendParams,
   SendResponse,
 } from './methods';
@@ -40,11 +39,10 @@ const send = async (
       fee: BigInt(10000),
       memo: BigInt(0),
     };
-    const parsedAmount = parseAmountToSend(amount, DECIMALS);
     const response = await actor._send_dfx({
       to,
       fee: { e8s: opts?.fee || defaultArgs.fee },
-      amount: { e8s: parsedAmount },
+      amount: { e8s: amount },
       memo: opts?.memo ? BigInt(opts.memo) : defaultArgs.memo,
       from_subaccount: [], // For now, using default subaccount to handle ICP
       created_at_time: [],

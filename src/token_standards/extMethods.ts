@@ -10,7 +10,6 @@ import {
   InternalTokenMethods,
   SendParams,
   SendResponse,
-  parseAmountToSend,
 } from './methods';
 
 type BaseExtService = BaseMethodsExtendedActor<ExtService>
@@ -37,14 +36,10 @@ const send = async (
 ): Promise<SendResponse> => {
   const dummyMemmo = new Array(32).fill(0);
   const token = Actor.canisterIdOf(actor).toText();
-
-  const decimals = await getDecimals(actor);
-  const parsedAmount = parseAmountToSend(amount, decimals);
-
   const data = {
     to: { principal: Principal.fromText(to) },
     from: { principal: Principal.from(from) },
-    amount: parsedAmount,
+    amount,
     token,
     memo: dummyMemmo,
     notify: false,
