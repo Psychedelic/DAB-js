@@ -58,7 +58,7 @@ const getBalance = async (
   user: Principal
 ): Promise<Balance> => {
   const balanceArgs = { account: getAccountId(user) }
-  const decimals = getDecimalsFromMetadata(await getMetadata(actor));
+  const decimals = await getDecimals(actor);
   const value = (await actor._account_balance_dfx(balanceArgs)).toString();
   return { value, decimals };
 };

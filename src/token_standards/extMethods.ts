@@ -38,7 +38,7 @@ const send = async (
   const dummyMemmo = new Array(32).fill(0);
   const token = Actor.canisterIdOf(actor).toText();
 
-  const decimals = getDecimalsFromMetadata(await getMetadata(actor));
+  const decimals = await getDecimals(actor);
   const parsedAmount = parseAmountToSend(amount, decimals);
 
   const data = {
@@ -70,7 +70,7 @@ const getBalance = async (
     user: { principal: user },
   });
 
-  const decimals = getDecimalsFromMetadata(await getMetadata(actor));
+  const decimals = await getDecimals(actor);
 
   if ('ok' in balanceResult)
     return { value: balanceResult.ok.toString(), decimals };

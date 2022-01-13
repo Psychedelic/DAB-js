@@ -34,7 +34,7 @@ const send = async (
   actor: ActorSubclass<BaseXtcService>,
   { to, amount }: SendParams
 ): Promise<SendResponse> => {
-  const decimals = getDecimalsFromMetadata(await getMetadata(actor));
+  const decimals = await getDecimals(actor);
   const parsedAmount = parseAmountToSend(amount, decimals);
 
   const transferResult = await actor._transferErc20(
@@ -52,7 +52,7 @@ const getBalance = async (
   actor: ActorSubclass<BaseXtcService>,
   user: Principal
 ): Promise<Balance> => {
-  const decimals = getDecimalsFromMetadata(await getMetadata(actor));
+  const decimals = await getDecimals(actor);
   const value = (await actor._balance([user])).toString();
   return { value, decimals };
 };
@@ -61,7 +61,7 @@ const burnXTC = async (
   actor: ActorSubclass<BaseXtcService>,
   { to, amount }: BurnParams
 ): Promise<BurnResult> => {
-  const decimals = getDecimalsFromMetadata(await getMetadata(actor));
+  const decimals = await getDecimals(actor);
   const parsedAmount = parseAmountToSend(amount, decimals);
   return actor._burn({ canister_id: to, amount: parsedAmount });
 };

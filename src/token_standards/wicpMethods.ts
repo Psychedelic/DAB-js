@@ -34,7 +34,7 @@ const send = async (
   actor: ActorSubclass<BaseWICPService>,
   { to, amount }: SendParams
 ): Promise<SendResponse> => {
-  const decimals = getDecimalsFromMetadata(await getMetadata(actor));
+  const decimals = await getDecimals(actor);
 
   const parsedAmount = parseAmountToSend(amount, decimals);
 
@@ -53,7 +53,7 @@ const getBalance = async (
   actor: ActorSubclass<BaseWICPService>,
   user: Principal
 ): Promise<Balance> => {
-  const decimals = getDecimalsFromMetadata(await getMetadata(actor));
+  const decimals = await getDecimals(actor);
   const value = (await actor._balanceOf(user)).toString();
   return { value, decimals };
 };
