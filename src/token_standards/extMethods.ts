@@ -2,18 +2,18 @@ import { ActorSubclass, Actor } from '@dfinity/agent';
 import { Principal } from '@dfinity/principal';
 
 import ExtService, { Metadata } from '../interfaces/ext';
-import { BaseMethodsExtendedActor } from '../utils/actorFactory';
+import { BaseMethodsExtendedActor } from '../utils/actorFactory';
 import {
   Balance,
   BurnParams,
-  getDecimals,
+  getDecimalsFromMetadata,
   InternalTokenMethods,
   SendParams,
   SendResponse,
   parseAmountToSend,
 } from './methods';
 
-type BaseExtService = BaseMethodsExtendedActor<ExtService>
+type BaseExtService = BaseMethodsExtendedActor<ExtService>
 
 const getMetadata = async (
   actor: ActorSubclass<BaseExtService>
@@ -38,7 +38,7 @@ const send = async (
   const dummyMemmo = new Array(32).fill(0);
   const token = Actor.canisterIdOf(actor).toText();
 
-  const decimals = getDecimals(await getMetadata(actor));
+  const decimals = getDecimalsFromMetadata(await getMetadata(actor));
   const parsedAmount = parseAmountToSend(amount, decimals);
 
   const data = {
@@ -70,7 +70,7 @@ const getBalance = async (
     user: { principal: user },
   });
 
-  const decimals = getDecimals(await getMetadata(actor));
+  const decimals = getDecimalsFromMetadata(await getMetadata(actor));
 
   if ('ok' in balanceResult)
     return { value: balanceResult.ok.toString(), decimals };
@@ -85,9 +85,13 @@ const burnXTC = async (
   throw new Error('BURN NOT SUPPORTED');
 };
 
+const getDecimals = async (actor: ActorSubclass<BaseExtService>) => getDecimalsFromMetadata(await getMetadata(actor))
+
+
 export default {
   send,
   getMetadata,
   getBalance,
   burnXTC,
+  getDecimals
 } as InternalTokenMethods;

@@ -7,15 +7,15 @@ import { Metadata } from '../interfaces/ext';
 import {
   Balance,
   BurnParams,
-  getDecimals,
+  getDecimalsFromMetadata,
   InternalTokenMethods,
   parseAmountToSend,
   SendParams,
   SendResponse,
 } from './methods';
-import { BaseMethodsExtendedActor } from '../utils/actorFactory';
+import { BaseMethodsExtendedActor } from '../utils/actorFactory';
 
-type BaseXtcService = BaseMethodsExtendedActor<XtcService>
+type BaseXtcService = BaseMethodsExtendedActor<XtcService>
 
 const getMetadata = async (
   actor: ActorSubclass<BaseXtcService>
@@ -34,7 +34,7 @@ const send = async (
   actor: ActorSubclass<BaseXtcService>,
   { to, amount }: SendParams
 ): Promise<SendResponse> => {
-  const decimals = getDecimals(await getMetadata(actor));
+  const decimals = getDecimalsFromMetadata(await getMetadata(actor));
   const parsedAmount = parseAmountToSend(amount, decimals);
 
   const transferResult = await actor._transferErc20(
@@ -52,7 +52,7 @@ const getBalance = async (
   actor: ActorSubclass<BaseXtcService>,
   user: Principal
 ): Promise<Balance> => {
-  const decimals = getDecimals(await getMetadata(actor));
+  const decimals = getDecimalsFromMetadata(await getMetadata(actor));
   const value = (await actor._balance([user])).toString();
   return { value, decimals };
 };
@@ -61,14 +61,17 @@ const burnXTC = async (
   actor: ActorSubclass<BaseXtcService>,
   { to, amount }: BurnParams
 ): Promise<BurnResult> => {
-  const decimals = getDecimals(await getMetadata(actor));
+  const decimals = getDecimalsFromMetadata(await getMetadata(actor));
   const parsedAmount = parseAmountToSend(amount, decimals);
   return actor._burn({ canister_id: to, amount: parsedAmount });
 };
+
+const getDecimals = async (actor: ActorSubclass<BaseXtcService>) => getDecimalsFromMetadata(await getMetadata(actor))
 
 export default {
   send,
   getMetadata,
   getBalance,
   burnXTC,
+  getDecimals
 } as InternalTokenMethods;

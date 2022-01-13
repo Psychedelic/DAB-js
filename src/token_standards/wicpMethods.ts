@@ -7,15 +7,15 @@ import { Metadata } from '../interfaces/ext';
 import {
   Balance,
   BurnParams,
-  getDecimals,
+  getDecimalsFromMetadata,
   InternalTokenMethods,
   parseAmountToSend,
   SendParams,
   SendResponse,
 } from './methods';
-import { BaseMethodsExtendedActor } from '../utils/actorFactory';
+import { BaseMethodsExtendedActor } from '../utils/actorFactory';
 
-type BaseWICPService = BaseMethodsExtendedActor<WICPService>;
+type BaseWICPService = BaseMethodsExtendedActor<WICPService>;
 
 const getMetadata = async (
   actor: ActorSubclass<BaseWICPService>
@@ -34,7 +34,7 @@ const send = async (
   actor: ActorSubclass<BaseWICPService>,
   { to, amount }: SendParams
 ): Promise<SendResponse> => {
-  const decimals = getDecimals(await getMetadata(actor));
+  const decimals = getDecimalsFromMetadata(await getMetadata(actor));
 
   const parsedAmount = parseAmountToSend(amount, decimals);
 
@@ -53,7 +53,7 @@ const getBalance = async (
   actor: ActorSubclass<BaseWICPService>,
   user: Principal
 ): Promise<Balance> => {
-  const decimals = getDecimals(await getMetadata(actor));
+  const decimals = getDecimalsFromMetadata(await getMetadata(actor));
   const value = (await actor._balanceOf(user)).toString();
   return { value, decimals };
 };
@@ -65,9 +65,12 @@ const burnXTC = async (
   throw new Error('BURN NOT SUPPORTED');
 };
 
+const getDecimals = async (actor: ActorSubclass<BaseWICPService>) => getDecimalsFromMetadata(await getMetadata(actor))
+
 export default {
   send,
   getMetadata,
   getBalance,
   burnXTC,
+  getDecimals,
 } as InternalTokenMethods;
