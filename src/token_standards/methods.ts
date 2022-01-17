@@ -3,7 +3,7 @@ import { Principal } from '@dfinity/principal';
 
 import { Metadata } from '../interfaces/ext';
 import { BurnResult } from '../interfaces/xtc';
-import { BaseMethodsExtendedActor } from '../utils/actorFactory';
+import { BaseMethodsExtendedActor } from '../utils/actorFactory';
 
 export type SendResponse =
   | { height: string }
@@ -13,7 +13,8 @@ export type SendResponse =
 export interface SendParams {
   to: string;
   from: string;
-  amount: string;
+  amount: bigint;
+  opts?: any;
 }
 
 export interface BurnParams {
@@ -31,9 +32,10 @@ interface AddedMehtodsToken {
   getMetadata: () => Promise<Metadata>;
   getBalance: (user: Principal) => Promise<Balance>;
   burnXTC: ({ to, amount }: BurnParams) => Promise<BurnResult>;
+  getDecimals: () => Promise<number>;
 }
 
-export type TokenServiceExtended<T> = BaseMethodsExtendedActor<T> & AddedMehtodsToken
+export type TokenServiceExtended<T> = BaseMethodsExtendedActor<T> & AddedMehtodsToken
 
 export interface InternalTokenMethods {
   send: (
@@ -46,6 +48,7 @@ export interface InternalTokenMethods {
     actor: ActorSubclass<any>,
     { to, amount }: BurnParams
   ) => Promise<BurnResult>;
+  getDecimals: (actor: ActorSubclass<any>) => Promise<number>;
 }
 
 const send = async (
@@ -70,7 +73,12 @@ const burnXTC = async (_actor: ActorSubclass<any>, _params: BurnParams) => {
   throw Error('Standard Not Implemented');
 };
 
-export const getDecimals = (metadata: Metadata): number => {
+const getDecimals = async (_actor: ActorSubclass<any>) => {
+  throw Error('Standard Not Implemented');
+};
+
+
+export const getDecimalsFromMetadata = (metadata: Metadata): number => {
   return 'fungible' in metadata ? metadata.fungible.decimals : 0;
 };
 
@@ -83,4 +91,5 @@ export default {
   getMetadata,
   getBalance,
   burnXTC,
+  getDecimals,
 } as InternalTokenMethods;
