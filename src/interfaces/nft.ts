@@ -1,9 +1,19 @@
+import { Principal } from '@dfinity/principal';
+
 import DepartureLabs from '../nft_standards/departure_labs';
 import DIP721 from '../nft_standards/dip_721';
 import EXT from '../nft_standards/ext';
 import ICPunks from '../nft_standards/ic_punks';
 
 export type NFTStandards = typeof EXT | typeof ICPunks | typeof DepartureLabs | typeof DIP721;
+
+export interface DABCollection {
+  icon : string,
+  name : string,
+  description : string,
+  principal_id : Principal,
+  standard : string,
+};
 
 export interface NFTCollection {
   name: string;
