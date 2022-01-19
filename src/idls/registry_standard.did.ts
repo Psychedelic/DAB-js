@@ -1,4 +1,4 @@
-export const idlFactory = ({ IDL }) => {
+export default ({ IDL }) => {
     const detail_value = IDL.Rec();
     detail_value.fill(
       IDL.Variant({
