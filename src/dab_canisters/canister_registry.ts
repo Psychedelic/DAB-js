@@ -34,4 +34,5 @@ export class CanisterRegistry extends Registry {
   };
 }
 
+// Exporting an instance to keep backwards compatibility.
 export default new CanisterRegistry();
