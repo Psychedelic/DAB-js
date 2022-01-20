@@ -1,4 +1,4 @@
-import { DetailType, DetailValue, Metadata } from "../interfaces/registry_standard";
+import { DetailType, DetailValue, Metadata } from "../interfaces/dab_registries/registry_standard";
 
 export type FormattedMetadata = Omit<Metadata, 'details'> & { details: Details };
 

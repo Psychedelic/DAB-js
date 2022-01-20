@@ -5,7 +5,7 @@ import fetch from 'cross-fetch';
 import TokenRegistry, { input_add_token, input_edit_token, operation_response, token } from '../interfaces/dab_tokens';
 import IDL from '../idls/dab_tokens.did';
 import { IC_HOST } from '../constants';
-import { createTokenActor } from '../token_standards';
+import { createTokenActor } from '../standard_wrappers/token_standards';
 import { TOKEN } from '../constants/standards';
 
 const CANISTER_ID = 'qwt65-nyaaa-aaaah-qcl4q-cai';

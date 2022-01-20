@@ -1,14 +1,14 @@
 import { Actor, ActorSubclass, HttpAgent } from '@dfinity/agent';
 import { Principal } from '@dfinity/principal';
 
-import { NFTDetails } from '../interfaces/nft';
-import NTF_EXT from '../interfaces/ext';
-import IDL from '../idls/ext.did';
+import { NFTDetails } from '../../interfaces/nft';
+import NTF_EXT from '../../interfaces/ext';
+import IDL from '../../idls/ext.did';
 import NFT from './default';
-import { getAccountId } from '../utils/account';
-import { to32bits } from '../utils/number';
-import { NFT_CANISTERS } from '../constants/canisters';
-import { NFT as NFTStandard} from '../constants/standards';
+import { getAccountId } from '../../utils/account';
+import { to32bits } from '../../utils/number';
+import { NFT_CANISTERS } from '../../constants/canisters';
+import { NFT as NFTStandard} from '../../constants/standards';
 
 const getTokenIdentifier = (canister: string, index: number): string => {
   const padding = Buffer.from('\x0Atid');

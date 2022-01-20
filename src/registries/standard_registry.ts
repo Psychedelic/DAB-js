@@ -1,8 +1,8 @@
 import { Actor, ActorSubclass, HttpAgent } from "@dfinity/agent";
 import { Principal } from "@dfinity/principal";
 import { IC_HOST } from "../constants";
-import RegistryStandardIDL from "../idls/registry_standard.did";
-import RegistryStandard, { Metadata } from "../interfaces/registry_standard";
+import RegistryStandardIDL from "../idls/dab_registries/registry_standard.did";
+import RegistryStandard, { Metadata } from "../interfaces/dab_registries/registry_standard";
 
 const DEFAULT_AGENT = new HttpAgent({ fetch, host: IC_HOST });
 

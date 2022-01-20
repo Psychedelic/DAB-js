@@ -1,11 +1,11 @@
 import { Actor, ActorSubclass, HttpAgent } from '@dfinity/agent';
 import { Principal } from '@dfinity/principal';
 
-import NFT_DEPARTURE_LABS, { Metadata } from '../interfaces/departure_labs';
-import IDL from '../idls/departure_labs.did';
+import NFT_DEPARTURE_LABS, { Metadata } from '../../interfaces/departure_labs';
+import IDL from '../../idls/departure_labs.did';
 import NFT from './default';
-import { NFTDetails } from '../interfaces/nft';
-import { NFT as NFTStandard} from '../constants/standards';
+import { NFTDetails } from '../../interfaces/nft';
+import { NFT as NFTStandard} from '../../constants/standards';
 
 export default class DepartureLabs extends NFT {
   standard = NFTStandard.departuresLabs;

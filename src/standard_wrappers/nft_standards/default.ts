@@ -1,7 +1,7 @@
 import { HttpAgent } from '@dfinity/agent';
 import { Principal } from '@dfinity/principal';
 
-import { NFTDetails } from '../interfaces/nft';
+import { NFTDetails } from '../../interfaces/nft';
 
 export default abstract class NFT {
   abstract standard: string;

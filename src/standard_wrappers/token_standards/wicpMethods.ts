@@ -2,23 +2,22 @@
 import { Principal } from '@dfinity/principal';
 import { ActorSubclass } from '@dfinity/agent';
 
-import XtcService, { BurnResult } from '../interfaces/xtc';
-import { Metadata } from '../interfaces/ext';
+import WICPService from '../../interfaces/wicp';
+import { Metadata } from '../../interfaces/ext';
 import {
   Balance,
   BurnParams,
   getDecimalsFromMetadata,
   InternalTokenMethods,
-  parseAmountToSend,
   SendParams,
   SendResponse,
 } from './methods';
-import { BaseMethodsExtendedActor } from '../utils/actorFactory';
+import { BaseMethodsExtendedActor } from '../../utils/actorFactory';
 
-type BaseXtcService = BaseMethodsExtendedActor<XtcService>
+type BaseWICPService = BaseMethodsExtendedActor<WICPService>;
 
 const getMetadata = async (
-  actor: ActorSubclass<BaseXtcService>
+  actor: ActorSubclass<BaseWICPService>
 ): Promise<Metadata> => {
   const metadataResult = await actor._getMetadata();
   return {
@@ -31,10 +30,10 @@ const getMetadata = async (
 };
 
 const send = async (
-  actor: ActorSubclass<BaseXtcService>,
+  actor: ActorSubclass<BaseWICPService>,
   { to, amount }: SendParams
 ): Promise<SendResponse> => {
-  const transferResult = await actor._transferErc20(
+  const transferResult = await actor._transfer(
     Principal.fromText(to),
     amount
   );
@@ -46,29 +45,27 @@ const send = async (
 };
 
 const getBalance = async (
-  actor: ActorSubclass<BaseXtcService>,
+  actor: ActorSubclass<BaseWICPService>,
   user: Principal
 ): Promise<Balance> => {
   const decimals = await getDecimals(actor);
-  const value = (await actor._balance([user])).toString();
+  const value = (await actor._balanceOf(user)).toString();
   return { value, decimals };
 };
 
 const burnXTC = async (
-  actor: ActorSubclass<BaseXtcService>,
-  { to, amount }: BurnParams
-): Promise<BurnResult> => {
-  const decimals = await getDecimals(actor);
-  const parsedAmount = parseAmountToSend(amount, decimals);
-  return actor._burn({ canister_id: to, amount: parsedAmount });
+  _actor: ActorSubclass<BaseWICPService>,
+  _params: BurnParams
+) => {
+  throw new Error('BURN NOT SUPPORTED');
 };
 
-const getDecimals = async (actor: ActorSubclass<BaseXtcService>) => getDecimalsFromMetadata(await getMetadata(actor))
+const getDecimals = async (actor: ActorSubclass<BaseWICPService>) => getDecimalsFromMetadata(await getMetadata(actor))
 
 export default {
   send,
   getMetadata,
   getBalance,
   burnXTC,
-  getDecimals
+  getDecimals,
 } as InternalTokenMethods;

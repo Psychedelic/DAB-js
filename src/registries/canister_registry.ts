@@ -1,12 +1,12 @@
 import { HttpAgent, ActorSubclass } from '@dfinity/agent';
 import fetch from 'cross-fetch';
 
-import CanisterRegistryInterface from '../interfaces/canister_registry';
-import IDL from '../idls/canister_registry.did';
+import CanisterRegistryInterface from '../interfaces/dab_registries/canister_registry';
+import IDL from '../idls/dab_registries/canister_registry.did';
 import { IC_HOST } from '../constants';
 import Registry from './standard_registry';
 import { generateActor } from '../utils/actorFactory';
-import { Metadata } from '../interfaces/registry_standard';
+import { Metadata } from '../interfaces/dab_registries/registry_standard';
 import { formatRegistryDetails, FormattedMetadata } from '../utils/registry';
 
 const CANISTER_ID = 'qxtlu-aiaaa-aaaah-aaupq-cai';

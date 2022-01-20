@@ -8,11 +8,11 @@ import dabInterface, {
 } from '../interfaces/dab_nfts';
 import dabDid from '../idls/dab_nfts.did';
 import { NFTStandards, NFTCollection } from '../interfaces/nft';
-import EXT from '../nft_standards/ext';
-import ICPunks from '../nft_standards/ic_punks';
-import DepartureLabs from '../nft_standards/departure_labs';
-import NFT from '../nft_standards/default';
-import DIP721 from '../nft_standards/dip_721';
+import EXT from '../standard_wrappers/nft_standards/ext';
+import ICPunks from '../standard_wrappers/nft_standards/ic_punks';
+import DepartureLabs from '../standard_wrappers/nft_standards/departure_labs';
+import NFT from '../standard_wrappers/nft_standards/default';
+import DIP721 from '../standard_wrappers/nft_standards/dip_721';
 import {  NFT as NFTStandard } from '../constants/standards';
 import { IC_HOST, KYASSHU_URL } from '../constants';
 import axios from 'axios';
