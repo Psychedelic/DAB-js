@@ -14,12 +14,11 @@ const CANISTER_ID = 'qxtlu-aiaaa-aaaah-aaupq-cai';
 const DEFAULT_AGENT = new HttpAgent({ fetch, host: IC_HOST });
 
 export class CanisterRegistry extends Registry {
-  extendedActor: ActorSubclass<CanisterRegistryInterface>;
   constructor(agent?: HttpAgent) {
     super(CANISTER_ID, agent);
-    this.extendedActor = generateActor({ agent: agent || DEFAULT_AGENT, canisterId: CANISTER_ID, IDL });
+    this.actor = generateActor({ agent: agent || DEFAULT_AGENT, canisterId: CANISTER_ID, IDL });
   }
-  public getAll = async (): Promise<Metadata[]> => this.extendedActor.get_all();
+  public getAll = async (): Promise<Metadata[]> => (this.actor as ActorSubclass<CanisterRegistryInterface>).get_all();
 
   public getCanisterInfo = async (canisterId: string): Promise<FormattedMetadata | undefined> => {
     const result = await this.get(canisterId);
