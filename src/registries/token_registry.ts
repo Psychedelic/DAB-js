@@ -2,7 +2,7 @@ import { HttpAgent, Actor, ActorSubclass } from '@dfinity/agent';
 import { Principal } from '@dfinity/principal';
 import fetch from 'cross-fetch';
 
-import TokenRegistry, { input_add_token, input_edit_token, operation_response, token } from '../interfaces/dab_tokens';
+import TokenRegistry, { input_add_token, input_edit_token, operation_response, Token } from '../interfaces/dab_tokens';
 import IDL from '../idls/dab_tokens.did';
 import { IC_HOST } from '../constants';
 import { createTokenActor } from '../standard_wrappers/token_standards';
@@ -72,12 +72,12 @@ export const getTokenActor = <T = {}>(
   return createTokenActor<T>(canisterId, agent, standard)
 };
 
-export const getTokens = ({ agent = DEFAULT_AGENT }): Promise<token[]> => {
+export const getTokens = ({ agent = DEFAULT_AGENT }): Promise<Token[]> => {
   const dabActor = generateActor(agent);
   return dabActor.get_all();
 }
 
-// export const getTokenInfo = ({ agent = DEFAULT_AGENT, canisterId }: GetTokenInfoParams): Promise<token> => {
+// export const getTokenInfo = ({ agent = DEFAULT_AGENT, canisterId }: GetTokenInfoParams): Promise<Token> => {
 //   const dabActor = generateActor(agent);
 //   return dabActor.get_token(canisterId);
 // }
