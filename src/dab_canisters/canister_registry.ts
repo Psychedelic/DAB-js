@@ -28,7 +28,7 @@ export class CanisterRegistry extends Registry {
   }
 
   public getMultipleCanisterInfo = async ({ canisterIds }: { canisterIds: string[] }): Promise<FormattedMetadata[]> => {
-    const canistersMetadata = await Promise.all(canisterIds.map((principal) => this.getCanisterInfo(principal.toString())));
+    const canistersMetadata = await Promise.all(canisterIds.map(this.getCanisterInfo));
     if (canistersMetadata.length === 0) return [];
     return canistersMetadata.filter(canister => !!canister) as FormattedMetadata[];
   };
