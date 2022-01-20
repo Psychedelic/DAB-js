@@ -1,4 +1,5 @@
 import type { Principal } from '@dfinity/principal';
+import RegistryStandard from './registry_standard';
 export interface CanisterMetadata {
   url: string;
   name: string;
@@ -12,7 +13,7 @@ export interface InputCanisterMetadata {
   description: string;
   logo_url: string;
 }
-export default interface _SERVICE {
+export default interface CanisterRegistry extends RegistryStandard {
   add_canister: (
     canisterId: Principal,
     canisterMetadata: InputCanisterMetadata

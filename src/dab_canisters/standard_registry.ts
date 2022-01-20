@@ -8,8 +8,8 @@ const DEFAULT_AGENT = new HttpAgent({ fetch, host: IC_HOST });
 
 
 class Registry {
-    private actor: ActorSubclass<RegistryStandard>;
-    public canisterId: string
+    protected actor: ActorSubclass<RegistryStandard>; // Set as protected so that subclasses can override it
+    public canisterId: string;
     constructor(canisterId, agent) {
         this.actor = Actor.createActor<RegistryStandard>(RegistryStandardIDL, {
             agent: agent || DEFAULT_AGENT,
@@ -33,6 +33,7 @@ class Registry {
     public remove = async (principalId: string) => {
         return this.actor.remove(Principal.fromText(principalId));
     }
+
 }
 
 export default Registry;
