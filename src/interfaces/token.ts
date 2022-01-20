@@ -5,7 +5,6 @@ export interface Token {
     'name' : string,
     'description' : string,
     'website' : string,
-    'timestamp' : bigint,
     'principal_id' : Principal,
     'standard' : string,
     'total_supply' : [] | [bigint],

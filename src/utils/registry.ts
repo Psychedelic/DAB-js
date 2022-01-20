@@ -21,3 +21,8 @@ export const formatRegistryDetails = (details: Metadata['details']): Details => 
   }
   return formattedDetails;
 };
+
+export const formatMetadata = (metadata: Metadata): FormattedMetadata => ({
+  ...metadata,
+  details: formatRegistryDetails(metadata.details),
+});

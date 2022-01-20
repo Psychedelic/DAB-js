@@ -11,6 +11,7 @@ export interface CanisterMetadata {
   'name' : string,
   'frontend' : [] | [string],
   'description' : string,
+  'principal_id' : Principal,
   'details' : Array<[string, DetailValue]>,
 }
 export type DetailType = bigint | Array<DetailType> | Array<number> | string | true | false | number | Principal
@@ -27,7 +28,7 @@ export type DetailValue = { 'I64' : bigint } |
 export type OperationError = { 'NotAuthorized' : null } |
   { 'BadParameters' : null } |
   { 'Unknown' : string } |
-  { 'NonExistentCanister' : null };
+  { 'NonExistentItem' : null };
 export type OperationResponse = { 'Ok' : [] | [string] } |
   { 'Err' : OperationError };
 export default interface CanisterRegistry extends RegistryStandard {

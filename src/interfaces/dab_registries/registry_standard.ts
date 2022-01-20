@@ -12,12 +12,13 @@ export type DetailValue = { 'I64' : bigint } |
 export type Error = { 'NotAuthorized' : null } |
   { 'BadParameters' : null } |
   { 'Unknown' : string } |
-  { 'NonExistentCanister' : null };
+  { 'NonExistentItem' : null };
 export interface Metadata {
   'thumbnail' : string,
   'name' : string,
   'frontend' : [] | [string],
   'description' : string,
+  'principal_id' : Principal,
   'details' : Array<[string, DetailValue]>,
 }
 export type Response = { 'Ok' : [] | [string] } |

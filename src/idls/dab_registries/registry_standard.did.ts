@@ -18,6 +18,7 @@ export default ({ IDL }) => {
       'name' : IDL.Text,
       'frontend' : IDL.Opt(IDL.Text),
       'description' : IDL.Text,
+      'principal_id' : IDL.Principal,
       'details' : IDL.Vec(IDL.Tuple(IDL.Text, detail_value)),
     });
     const error = IDL.Variant({

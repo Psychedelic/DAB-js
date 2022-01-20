@@ -13,7 +13,7 @@ export default ({ IDL }) => {
       'Principal' : IDL.Principal,
     })
   );
-  const canister_metadata = IDL.Record({
+  const token = IDL.Record({
     'thumbnail' : IDL.Text,
     'name' : IDL.Text,
     'frontend' : IDL.Opt(IDL.Text),
@@ -31,19 +31,12 @@ export default ({ IDL }) => {
     'Err' : operation_error,
   });
   return IDL.Service({
-    'add' : IDL.Func(
-        [IDL.Principal, canister_metadata],
-        [operation_response],
-        [],
-      ),
-    'get' : IDL.Func(
-        [IDL.Principal],
-        [IDL.Opt(canister_metadata)],
-        ['query'],
-      ),
-    'get_all' : IDL.Func([], [IDL.Vec(canister_metadata)], ['query']),
+    'add' : IDL.Func([IDL.Principal, token], [operation_response], []),
+    'get' : IDL.Func([IDL.Principal], [IDL.Opt(token)], ['query']),
+    'get_all' : IDL.Func([], [IDL.Vec(token)], ['query']),
     'name' : IDL.Func([], [IDL.Text], ['query']),
     'remove' : IDL.Func([IDL.Principal], [operation_response], []),
+    'set_controller' : IDL.Func([IDL.Principal], [operation_response], []),
   });
 };
 export const init = ({ IDL }) => { return []; };

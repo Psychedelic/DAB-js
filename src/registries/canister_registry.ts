@@ -6,8 +6,7 @@ import IDL from '../idls/dab_registries/canister_registry.did';
 import { IC_HOST } from '../constants';
 import Registry from './standard_registry';
 import { generateActor } from '../utils/actorFactory';
-import { Metadata } from '../interfaces/dab_registries/registry_standard';
-import { formatRegistryDetails, FormattedMetadata } from '../utils/registry';
+import { formatMetadata, FormattedMetadata } from '../utils/registry';
 
 const CANISTER_ID = 'qxtlu-aiaaa-aaaah-aaupq-cai';
 
@@ -18,13 +17,15 @@ export class CanisterRegistry extends Registry {
     super(CANISTER_ID, agent);
     this.actor = generateActor({ agent: agent || DEFAULT_AGENT, canisterId: CANISTER_ID, IDL });
   }
-  public getAll = async (): Promise<Metadata[]> => (this.actor as ActorSubclass<CanisterRegistryInterface>).get_all();
+  public getAll = async (): Promise<FormattedMetadata[]> => {
+    const canistersMetadata = await (this.actor as ActorSubclass<CanisterRegistryInterface>).get_all();
+    return canistersMetadata.map(formatMetadata);
+  }
 
   public getCanisterInfo = async (canisterId: string): Promise<FormattedMetadata | undefined> => {
     const result = await this.get(canisterId);
     if (result?.length === 0 || result?.[0]?.details?.length === 0) return;
-    const { details, ...canisterInfo } = result[0];
-    return { details: formatRegistryDetails(details), ...canisterInfo };
+    return formatMetadata(result[0]);
   }
 
   public getMultipleCanisterInfo = async ({ canisterIds }: { canisterIds: string[] }): Promise<FormattedMetadata[]> => {

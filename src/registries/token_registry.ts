@@ -1,54 +1,19 @@
-import { HttpAgent, Actor, ActorSubclass } from '@dfinity/agent';
-import { Principal } from '@dfinity/principal';
+import { HttpAgent, ActorSubclass } from '@dfinity/agent';
 import fetch from 'cross-fetch';
 
-import TokenRegistry, { input_add_token, input_edit_token, operation_response, Token } from '../interfaces/dab_tokens';
-import IDL from '../idls/dab_tokens.did';
+import TokenRegistryInterface from '../interfaces/dab_registries/token_registry';
+import IDL from '../idls/dab_registries/token_registry.did';
+
+import Registry from './standard_registry';
+import { generateActor } from '../utils/actorFactory';
+import { formatMetadata, FormattedMetadata } from '../utils/registry';
+
 import { IC_HOST } from '../constants';
 import { createTokenActor } from '../standard_wrappers/token_standards';
 import { TOKEN } from '../constants/standards';
+import { Token } from '../interfaces/token';
 
 const CANISTER_ID = 'qwt65-nyaaa-aaaah-qcl4q-cai';
-const TOKEN_ATTR = ['logo',
-  'name',
-  'description',
-  'website',
-  'principal_id',
-  'standard',
-  'total_supply',
-  'symbol']
-
-interface GetTokenInfoParams {
-  agent: HttpAgent,
-  canisterId: string
-}
-
-type RemoveTokenInfoParams = GetTokenInfoParams;
-
-interface AddTokenInfoParams {
-  agent: HttpAgent,
-  tokenInfo: input_add_token
-}
-
-interface EditTokenInfoParams {
-  agent: HttpAgent,
-  tokenInfo: {
-    'logo'?: string,
-    'name': string,
-    'description'?: string,
-    'website'?: string,
-    'principal_id'?: Principal,
-    'standard'?: string,
-    'total_supply'?: bigint,
-    'symbol'?: string
-  }
-}
-
-const generateActor = (agent: HttpAgent): ActorSubclass<TokenRegistry> =>
-  Actor.createActor<TokenRegistry>(IDL, {
-    agent,
-    canisterId: Principal.fromText(CANISTER_ID),
-  });
 
 const DEFAULT_AGENT = new HttpAgent({ fetch, host: IC_HOST });
 
@@ -72,32 +37,29 @@ export const getTokenActor = <T = {}>(
   return createTokenActor<T>(canisterId, agent, standard)
 };
 
-export const getTokens = ({ agent = DEFAULT_AGENT }): Promise<Token[]> => {
-  const dabActor = generateActor(agent);
-  return dabActor.get_all();
-}
-
-// export const getTokenInfo = ({ agent = DEFAULT_AGENT, canisterId }: GetTokenInfoParams): Promise<Token> => {
-//   const dabActor = generateActor(agent);
-//   return dabActor.get_token(canisterId);
-// }
-
-export const addToken = ({ agent = DEFAULT_AGENT, tokenInfo }: AddTokenInfoParams): Promise<operation_response> => {
-  const dabActor = generateActor(agent);
-  return dabActor.add(tokenInfo);
-}
-
-export const editToken = ({ agent = DEFAULT_AGENT, tokenInfo }: EditTokenInfoParams): Promise<operation_response> => {
-  const dabActor = generateActor(agent);
-  const normalizedTokenInfo : input_edit_token = {} as input_edit_token;
-  for (const attr in TOKEN_ATTR) {
-    normalizedTokenInfo[attr] = attr in tokenInfo ? [tokenInfo[attr]] : [];
+export class TokenRegistry extends Registry {
+  constructor(agent?: HttpAgent) {
+    super(CANISTER_ID, agent);
+    this.actor = generateActor({ agent: agent || DEFAULT_AGENT, canisterId: CANISTER_ID, IDL });
   }
-  return dabActor.edit(normalizedTokenInfo);
+  public getAll = async (): Promise<FormattedMetadata[]> => {
+    const tokenCanistersMetadata = await (this.actor as ActorSubclass<TokenRegistryInterface>).get_all();
+    return tokenCanistersMetadata.map(formatMetadata);
+  }
+  public getTokens = async (): Promise<Token[]> => {
+    const tokenCanisters = await this.getAll();
+    return tokenCanisters.map((token) => ({
+      logo: token.thumbnail,
+      name: token.name,
+      description: token.description,
+      website: token.frontend.length ? token.frontend[0] : '',
+      principal_id: token.principal_id,
+      standard: token.details.standard as string,
+      total_supply : [token.details.total_supply as bigint],
+      symbol: token.details.symbol as string,
+    }));
+  };
 }
 
-export const remoteToken = ({agent = DEFAULT_AGENT, canisterId}: RemoveTokenInfoParams): Promise<operation_response> => {
-  const dabActor = generateActor(agent);
-  return dabActor.remove(canisterId);
-}
-
+// Exporting an instance to keep backwards compatibility.
+export default new TokenRegistry();

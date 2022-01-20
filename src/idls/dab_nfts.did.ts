@@ -12,7 +12,7 @@ export default ({ IDL }) => {
   const OperationError = IDL.Variant({
     'NotAuthorized' : IDL.Null,
     'BadParameters' : IDL.Null,
-    'NonExistentCanister' : IDL.Null,
+    'NonExistentItem' : IDL.Null,
     'ParamatersNotPassed' : IDL.Null,
   });
   const OperationResponse = IDL.Variant({

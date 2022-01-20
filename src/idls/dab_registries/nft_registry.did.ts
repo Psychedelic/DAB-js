@@ -9,7 +9,7 @@ export const idlFactory = ({ IDL }) => {
   const operation_error = IDL.Variant({
     'NotAuthorized' : IDL.Null,
     'BadParameters' : IDL.Null,
-    'NonExistentCanister' : IDL.Null,
+    'NonExistentItem' : IDL.Null,
     'ParamatersNotPassed' : IDL.Null,
   });
   const operation_response = IDL.Variant({

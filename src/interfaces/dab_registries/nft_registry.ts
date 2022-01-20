@@ -16,7 +16,7 @@ export interface nft_canister {
 }
 export type operation_error = { 'NotAuthorized' : null } |
   { 'BadParameters' : null } |
-  { 'NonExistentCanister' : null } |
+  { 'NonExistentItem' : null } |
   { 'ParamatersNotPassed' : null };
 export type operation_response = { 'Ok' : boolean } |
   { 'Err' : operation_error };
