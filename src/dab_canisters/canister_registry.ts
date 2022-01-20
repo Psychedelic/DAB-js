@@ -1,66 +1,38 @@
-import { HttpAgent, Actor, ActorSubclass } from '@dfinity/agent';
+import { HttpAgent, ActorSubclass } from '@dfinity/agent';
 import fetch from 'cross-fetch';
 
-import DABRegistry, { CanisterMetadata } from '../interfaces/dab_registry';
-import IDL from '../idls/dab_registry.did';
-import { Principal } from '@dfinity/principal';
+import CanisterRegistryInterface from '../interfaces/canister_registry';
+import IDL from '../idls/canister_registry.did';
 import { IC_HOST } from '../constants';
+import Registry from './standard_registry';
+import { generateActor } from '../utils/actorFactory';
+import { Metadata } from '../interfaces/registry_standard';
+import { formatRegistryDetails, FormattedMetadata } from '../utils/registry';
 
 const CANISTER_ID = 'qxtlu-aiaaa-aaaah-aaupq-cai';
 
-type CanisterId = Principal | string;
-
-interface GetCanisterInfoParams {
-  canisterId: CanisterId,
-  agent?: HttpAgent
-}
-
-interface GetMultipleCanisterInfoParams {
-  canisterIds: CanisterId[],
-  agent?: HttpAgent
-}
-
-const generateActor = (agent: HttpAgent): ActorSubclass<DABRegistry> =>
-  Actor.createActor<DABRegistry>(IDL, {
-    agent,
-    canisterId: Principal.fromText(CANISTER_ID),
-  });
-
 const DEFAULT_AGENT = new HttpAgent({ fetch, host: IC_HOST });
 
-export const getAll = async (
-  { agent = DEFAULT_AGENT }: { agent: HttpAgent }
-): Promise<CanisterMetadata[]> => {
-  const actor = generateActor(agent);
-  return actor.get_all();
+export class CanisterRegistry extends Registry {
+  extendedActor: ActorSubclass<CanisterRegistryInterface>;
+  constructor(agent?: HttpAgent) {
+    super(CANISTER_ID, agent);
+    this.extendedActor = generateActor({ agent: agent || DEFAULT_AGENT, canisterId: CANISTER_ID, IDL });
+  }
+  public getAll = async (): Promise<Metadata[]> => this.extendedActor.get_all();
+
+  public getCanisterInfo = async (canisterId: string): Promise<FormattedMetadata | undefined> => {
+    const result = await this.get(canisterId);
+    if (result?.length === 0 || result?.[0]?.details?.length === 0) return;
+    const { details, ...canisterInfo } = result[0];
+    return { details: formatRegistryDetails(details), ...canisterInfo };
+  }
+
+  public getMultipleCanisterInfo = async ({ canisterIds }: { canisterIds: string[] }): Promise<FormattedMetadata[]> => {
+    const canistersMetadata = await Promise.all(canisterIds.map((principal) => this.getCanisterInfo(principal.toString())));
+    if (canistersMetadata.length === 0) return [];
+    return canistersMetadata.filter(canister => !!canister) as FormattedMetadata[];
+  };
 }
 
-export const getCanisterInfo = async (
-  { canisterId,
-    agent = DEFAULT_AGENT }: GetCanisterInfoParams
-): Promise<CanisterMetadata | undefined> => {
-  const principalId =
-    typeof canisterId === 'string'
-      ? Principal.fromText(canisterId)
-      : canisterId;
-  const actor = generateActor(agent);
-  const result = await actor.get_info([principalId]);
-  if (result.length === 0 || result[0].length === 0) return;
-  return result[0][0];
-};
-
-export const getMultipleCanisterInfo = async (
-  { canisterIds,
-    agent = DEFAULT_AGENT
-  }: GetMultipleCanisterInfoParams): Promise<CanisterMetadata[]> => {
-  const principals = canisterIds.map((canisterId) =>
-    typeof canisterId === 'string' ? Principal.fromText(canisterId) : canisterId
-  );
-
-  const actor = generateActor(agent);
-  const result = await actor.get_info(principals);
-
-  if (result.length === 0) return [];
-
-  return result[0];
-};
+export default new CanisterRegistry();

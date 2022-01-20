@@ -1,29 +1,30 @@
 import type { Principal } from '@dfinity/principal';
-export type detail_value = { 'I64' : bigint } |
+export type DetailType = bigint | Array<DetailType> | Array<number> | string | true | false | number | Principal
+export type DetailValue = { 'I64' : bigint } |
   { 'U64' : bigint } |
-  { 'Vec' : Array<detail_value> } |
+  { 'Vec' : Array<DetailValue> } |
   { 'Slice' : Array<number> } |
   { 'Text' : string } |
   { 'True' : null } |
   { 'False' : null } |
   { 'Float' : number } |
   { 'Principal' : Principal };
-export type error = { 'NotAuthorized' : null } |
+export type Error = { 'NotAuthorized' : null } |
   { 'BadParameters' : null } |
   { 'Unknown' : string } |
   { 'NonExistantCanister' : null };
-export interface metadata {
+export interface Metadata {
   'thumbnail' : string,
   'name' : string,
   'frontend' : [] | [string],
   'description' : string,
-  'details' : Array<[string, detail_value]>,
+  'details' : Array<[string, DetailValue]>,
 }
-export type response = { 'Ok' : [] | [string] } |
-  { 'Err' : error };
+export type Response = { 'Ok' : [] | [string] } |
+  { 'Err' : Error };
 export default interface RegistryStandard {
-  'add' : (arg_0: Principal, arg_1: metadata) => Promise<response>,
-  'get' : (arg_0: Principal) => Promise<[] | [metadata]>,
+  'add' : (arg_0: Principal, arg_1: Metadata) => Promise<Response>,
+  'get' : (arg_0: Principal) => Promise<[] | [Metadata]>,
   'name' : () => Promise<string>,
-  'remove' : (arg_0: Principal) => Promise<response>,
+  'remove' : (arg_0: Principal) => Promise<Response>,
 }
