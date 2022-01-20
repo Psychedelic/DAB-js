@@ -1,5 +1,10 @@
 import { Principal } from "@dfinity/principal";
 
+export type SendResponse =
+  | { height: string }
+  | { amount: string }
+  | { transactionId: string };
+
 export interface Token {
     'logo' : string,
     'name' : string,
