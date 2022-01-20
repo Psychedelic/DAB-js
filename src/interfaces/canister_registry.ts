@@ -1,4 +1,5 @@
 import type { Principal } from '@dfinity/principal';
+import RegistryStandard from './registry_standard';
 export type CanisterCategory = { 'NFT' : null } |
   { 'Games' : null } |
   { 'Social' : null } |
@@ -29,11 +30,11 @@ export type OperationError = { 'NotAuthorized' : null } |
   { 'NonExistentCanister' : null };
 export type OperationResponse = { 'Ok' : [] | [string] } |
   { 'Err' : OperationError };
-export default interface CanisterRegistry {
+export default interface CanisterRegistry extends RegistryStandard {
   'add' : (arg_0: Principal, arg_1: CanisterMetadata) => Promise<
       OperationResponse
     >,
-  'get' : (arg_0: Array<Principal>) => Promise<Array<[] | [CanisterMetadata]>>,
+  'get' : (arg_0: Principal) => Promise<[] | [CanisterMetadata]>,
   'get_all' : () => Promise<Array<CanisterMetadata>>,
   'name' : () => Promise<string>,
   'remove' : (arg_0: Principal) => Promise<OperationResponse>,

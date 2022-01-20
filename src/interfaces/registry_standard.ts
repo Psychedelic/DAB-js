@@ -12,7 +12,7 @@ export type DetailValue = { 'I64' : bigint } |
 export type Error = { 'NotAuthorized' : null } |
   { 'BadParameters' : null } |
   { 'Unknown' : string } |
-  { 'NonExistantCanister' : null };
+  { 'NonExistentCanister' : null };
 export interface Metadata {
   'thumbnail' : string,
   'name' : string,

@@ -2,7 +2,7 @@ import { Actor, ActorSubclass, HttpAgent } from "@dfinity/agent";
 import { Principal } from "@dfinity/principal";
 import { IC_HOST } from "../constants";
 import RegistryStandardIDL from "../idls/registry_standard.did";
-import RegistryStandard, { metadata } from "../interfaces/registry_standard";
+import RegistryStandard, { Metadata } from "../interfaces/registry_standard";
 
 const DEFAULT_AGENT = new HttpAgent({ fetch, host: IC_HOST });
 
@@ -22,7 +22,7 @@ class Registry {
         return this.actor.name();
     }
 
-    public add = async (principalId: string, metadata: metadata) => {
+    public add = async (principalId: string, metadata: Metadata) => {
         return this.actor.add(Principal.fromText(principalId), metadata ?? []);
     }
 

@@ -37,8 +37,8 @@ export default ({ IDL }) => {
         [],
       ),
     'get' : IDL.Func(
-        [IDL.Vec(IDL.Principal)],
-        [IDL.Vec(IDL.Opt(canister_metadata))],
+        [IDL.Principal],
+        [IDL.Opt(canister_metadata)],
         ['query'],
       ),
     'get_all' : IDL.Func([], [IDL.Vec(canister_metadata)], ['query']),
