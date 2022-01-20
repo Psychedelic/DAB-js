@@ -3,6 +3,7 @@ import { Principal } from "@dfinity/principal";
 import { IC_HOST } from "../constants";
 import RegistryStandardIDL from "../idls/dab_registries/registry_standard.did";
 import RegistryStandard, { Metadata } from "../interfaces/dab_registries/registry_standard";
+import { formatMetadata } from "../utils/registry";
 
 const DEFAULT_AGENT = new HttpAgent({ fetch, host: IC_HOST });
 
@@ -27,7 +28,9 @@ class Registry {
     }
 
     public get = async (principalId: string) => {
-        return this.actor.get(Principal.fromText(principalId));
+        const data = await this.actor.get(Principal.fromText(principalId));
+        if (data.length === 0) return undefined;
+        return formatMetadata(data[0]);
     }
 
     public remove = async (principalId: string) => {

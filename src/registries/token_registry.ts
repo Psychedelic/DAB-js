@@ -46,20 +46,22 @@ export class TokenRegistry extends Registry {
     const tokenCanistersMetadata = await (this.actor as ActorSubclass<TokenRegistryInterface>).get_all();
     return tokenCanistersMetadata.map(formatMetadata);
   }
-  public getTokens = async (): Promise<Token[]> => {
-    const tokenCanisters = await this.getAll();
-    return tokenCanisters.map((token) => ({
-      logo: token.thumbnail,
-      name: token.name,
-      description: token.description,
-      website: token.frontend.length ? token.frontend[0] : '',
-      principal_id: token.principal_id,
-      standard: token.details.standard as string,
-      total_supply : [token.details.total_supply as bigint],
-      symbol: token.details.symbol as string,
-    }));
-  };
 }
+
+export const getTokens = async (agent = DEFAULT_AGENT): Promise<Token[]> => {
+  const tokenRegistry = new TokenRegistry(agent);
+  const tokenCanisters = await tokenRegistry.getAll();
+  return tokenCanisters.map((token) => ({
+    logo: token.thumbnail,
+    name: token.name,
+    description: token.description,
+    website: token.frontend.length ? token.frontend[0] : '',
+    principal_id: token.principal_id,
+    standard: token.details.standard as string,
+    total_supply : [token.details.total_supply as bigint],
+    symbol: token.details.symbol as string,
+  }));
+};
 
 // Exporting an instance to keep backwards compatibility.
 export default new TokenRegistry();

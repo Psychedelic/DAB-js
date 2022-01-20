@@ -1,4 +1,4 @@
-export const idlFactory = ({ IDL }) => {
+export default ({ IDL }) => {
   const input_nft_canister = IDL.Record({
     'icon' : IDL.Text,
     'name' : IDL.Text,

@@ -21,19 +21,28 @@ export class CanisterRegistry extends Registry {
     const canistersMetadata = await (this.actor as ActorSubclass<CanisterRegistryInterface>).get_all();
     return canistersMetadata.map(formatMetadata);
   }
-
-  public getCanisterInfo = async (canisterId: string): Promise<FormattedMetadata | undefined> => {
-    const result = await this.get(canisterId);
-    if (result?.length === 0 || result?.[0]?.details?.length === 0) return;
-    return formatMetadata(result[0]);
-  }
-
-  public getMultipleCanisterInfo = async ({ canisterIds }: { canisterIds: string[] }): Promise<FormattedMetadata[]> => {
-    const canistersMetadata = await Promise.all(canisterIds.map(this.getCanisterInfo));
-    if (canistersMetadata.length === 0) return [];
-    return canistersMetadata.filter(canister => !!canister) as FormattedMetadata[];
-  };
 }
+
+export const getCanisterInfo = async ({
+  canisterId,
+  agent = DEFAULT_AGENT }: { 
+    canisterId: string, 
+    agent?: HttpAgent
+  }): Promise<FormattedMetadata | undefined> => {
+    const canisterRegistry = new CanisterRegistry(agent);
+    return canisterRegistry.get(canisterId);
+  };
+
+export const getMultipleCanisterInfo = async ({
+  canisterIds,
+  agent = DEFAULT_AGENT }: { 
+    canisterIds: string[], 
+    agent?: HttpAgent
+  }): Promise<FormattedMetadata[] | undefined>  => {
+  const canistersMetadata = await Promise.all(canisterIds.map((canisterId) => getCanisterInfo({ canisterId, agent })));
+  if (canistersMetadata.length === 0) return [];
+  return canistersMetadata.filter(canister => !!canister) as FormattedMetadata[];
+};
 
 // Exporting an instance to keep backwards compatibility.
 export default new CanisterRegistry();
