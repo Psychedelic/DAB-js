@@ -26,7 +26,7 @@ export type Error = { 'NotAuthorized' : null } |
 export type Response = { 'Ok' : [] | [string] } |
   { 'Err' : Error };
 export default interface NFTRegistryInterface extends RegistryStandard {
-  'add' : (arg_0: Principal, arg_1: NFTCanisterMetadata) => Promise<Response>,
+  'add' : (arg_1: NFTCanisterMetadata) => Promise<Response>,
   'edit' : (
       arg_0: Principal,
       arg_1: [] | [string],

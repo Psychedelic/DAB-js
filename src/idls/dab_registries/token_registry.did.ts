@@ -31,7 +31,7 @@ export default ({ IDL }) => {
     'Err' : operation_error,
   });
   return IDL.Service({
-    'add' : IDL.Func([IDL.Principal, token], [operation_response], []),
+    'add' : IDL.Func([token], [operation_response], []),
     'get' : IDL.Func([IDL.Principal], [IDL.Opt(token)], ['query']),
     'get_all' : IDL.Func([], [IDL.Vec(token)], ['query']),
     'name' : IDL.Func([], [IDL.Text], ['query']),

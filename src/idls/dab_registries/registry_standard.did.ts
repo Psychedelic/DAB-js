@@ -29,7 +29,7 @@ export default ({ IDL }) => {
     });
     const response = IDL.Variant({ 'Ok' : IDL.Opt(IDL.Text), 'Err' : error });
     return IDL.Service({
-      'add' : IDL.Func([IDL.Principal, metadata], [response], []),
+      'add' : IDL.Func([metadata], [response], []),
       'get' : IDL.Func([IDL.Principal], [IDL.Opt(metadata)], ['query']),
       'name' : IDL.Func([], [IDL.Text], ['query']),
       'remove' : IDL.Func([IDL.Principal], [response], []),

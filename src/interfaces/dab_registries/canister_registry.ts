@@ -32,7 +32,7 @@ export type OperationError = { 'NotAuthorized' : null } |
 export type OperationResponse = { 'Ok' : [] | [string] } |
   { 'Err' : OperationError };
 export default interface CanisterRegistry extends RegistryStandard {
-  'add' : (arg_0: Principal, arg_1: CanisterMetadata) => Promise<
+  'add' : (arg_1: CanisterMetadata) => Promise<
       OperationResponse
     >,
   'get' : (arg_0: Principal) => Promise<[] | [CanisterMetadata]>,

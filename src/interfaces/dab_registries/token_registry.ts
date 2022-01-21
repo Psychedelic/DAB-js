@@ -24,7 +24,7 @@ export interface token {
   'details' : Array<[string, detail_value]>,
 }
 export default interface TokenRegistry extends RegistryStandard {
-  'add' : (arg_0: Principal, arg_1: token) => Promise<operation_response>,
+  'add' : (arg_1: token) => Promise<operation_response>,
   'get' : (arg_0: Principal) => Promise<[] | [token]>,
   'get_all' : () => Promise<Array<token>>,
   'name' : () => Promise<string>,

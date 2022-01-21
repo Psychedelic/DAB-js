@@ -24,7 +24,7 @@ export interface Metadata {
 export type Response = { 'Ok' : [] | [string] } |
   { 'Err' : Error };
 export default interface RegistryStandard {
-  'add' : (arg_0: Principal, arg_1: Metadata) => Promise<Response>,
+  'add' : (arg_1: Metadata) => Promise<Response>,
   'get' : (arg_0: Principal) => Promise<[] | [Metadata]>,
   'name' : () => Promise<string>,
   'remove' : (arg_0: Principal) => Promise<Response>,

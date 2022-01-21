@@ -32,7 +32,7 @@ export default ({ IDL }) => {
   });
   return IDL.Service({
     'add' : IDL.Func(
-        [IDL.Principal, canister_metadata],
+        [canister_metadata],
         [operation_response],
         [],
       ),
