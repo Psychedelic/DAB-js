@@ -70,7 +70,12 @@ export class NFTRegistry extends Registry {
   }
 }
 
-export const getUserCollectionTokens = async (collection: DABCollection, user: Principal, agent: HttpAgent = DEFAULT_AGENT, callback = (val: any) => {}): Promise<NFTCollection> => {
+export const getUserCollectionTokens = async (
+    collection: DABCollection,
+    user: Principal,
+    agent: HttpAgent = DEFAULT_AGENT,
+    callback = (val: any) => {}
+  ): Promise<NFTCollection> => {
   try {
     const NFTActor = getNFTActor(
       {
