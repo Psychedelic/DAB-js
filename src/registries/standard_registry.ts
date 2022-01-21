@@ -23,8 +23,8 @@ class Registry {
         return this.actor.name();
     }
 
-    public add = async (principalId: string, metadata: Metadata) => {
-        return this.actor.add(Principal.fromText(principalId), metadata ?? []);
+    public add = async (metadata: Metadata) => {
+        return this.actor.add(metadata ?? []);
     }
 
     public get = async (principalId: string) => {
