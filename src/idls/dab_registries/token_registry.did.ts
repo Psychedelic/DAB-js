@@ -39,4 +39,4 @@ export default ({ IDL }) => {
     'set_controller' : IDL.Func([IDL.Principal], [operation_response], []),
   });
 };
-export const init = ({ IDL }) => { return []; };
+export const init = () => { return []; };

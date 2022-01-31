@@ -4,6 +4,7 @@ import { IC_HOST } from "../constants";
 import RegistryStandardIDL from "../idls/dab_registries/registry_standard.did";
 import RegistryStandard, { Metadata } from "../interfaces/dab_registries/registry_standard";
 import { formatMetadata } from "../utils/registry";
+import fetch from "cross-fetch";
 
 const DEFAULT_AGENT = new HttpAgent({ fetch, host: IC_HOST });
 
@@ -11,9 +12,9 @@ const DEFAULT_AGENT = new HttpAgent({ fetch, host: IC_HOST });
 class Registry {
     protected actor: ActorSubclass<RegistryStandard>; // Set as protected so that subclasses can override it
     public canisterId: string;
-    constructor(canisterId, agent) {
+    constructor(canisterId, agent = DEFAULT_AGENT) {
         this.actor = Actor.createActor<RegistryStandard>(RegistryStandardIDL, {
-            agent: agent || DEFAULT_AGENT,
+            agent: agent,
             canisterId: this.canisterId,
         });
         this.canisterId = canisterId;
@@ -36,7 +37,6 @@ class Registry {
     public remove = async (principalId: string) => {
         return this.actor.remove(Principal.fromText(principalId));
     }
-
 }
 
 export default Registry;

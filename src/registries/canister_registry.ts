@@ -8,7 +8,7 @@ import Registry from './standard_registry';
 import { generateActor } from '../utils/actorFactory';
 import { formatMetadata, FormattedMetadata } from '../utils/registry';
 
-const CANISTER_ID = 'qxtlu-aiaaa-aaaah-aaupq-cai';
+const CANISTER_ID = 'rkp4c-7iaaa-aaaaa-aaaca-cai'; // 'qxtlu-aiaaa-aaaah-aaupq-cai';
 
 const DEFAULT_AGENT = new HttpAgent({ fetch, host: IC_HOST });
 
@@ -44,5 +44,10 @@ export const getMultipleCanisterInfo = async ({
   return canistersMetadata.filter(canister => !!canister) as FormattedMetadata[];
 };
 
-// Exporting an instance to keep backwards compatibility.
-export default new CanisterRegistry();
+export const getAll = (agent: HttpAgent) => new CanisterRegistry(agent).getAll();
+
+export default {
+  getCanisterInfo,
+  getMultipleCanisterInfo,
+  getAll: (agent: HttpAgent) => new CanisterRegistry(agent).getAll,
+};

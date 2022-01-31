@@ -21,7 +21,7 @@ import Registry from './standard_registry';
 import { generateActor } from '../utils/actorFactory';
 import { formatMetadata, FormattedMetadata } from '../utils/registry';
 
-const CANISTER_ID = 'aipdg-waaaa-aaaah-aaq5q-cai';
+const CANISTER_ID = 'rrkah-fqaaa-aaaaa-aaaaq-cai' // 'aipdg-waaaa-aaaah-aaq5q-cai';
 
 const BATCH_AMOUNT = 5;
 
@@ -74,7 +74,7 @@ export const getUserCollectionTokens = async (
     collection: DABCollection,
     user: Principal,
     agent: HttpAgent = DEFAULT_AGENT,
-    callback = (val: any) => {}
+    callback: (val?: any) => void = () => {}
   ): Promise<NFTCollection> => {
   try {
     const NFTActor = getNFTActor(
@@ -187,4 +187,12 @@ export const getCachedUserNFTs = async ({ userPID, refresh }: { userPID: string,
   return result.data;
 }
 
-export default new NFTRegistry();
+export default {
+  getBatchedNFTs,
+  getNFTActor,
+  getNFTInfo,
+  getAllNFTS,
+  getAllUserNFTs,
+  getCachedUserNFTs,
+};
+

@@ -13,7 +13,7 @@ import { createTokenActor } from '../standard_wrappers/token_standards';
 import { TOKEN } from '../constants/standards';
 import { Token } from '../interfaces/token';
 
-const CANISTER_ID = 'qwt65-nyaaa-aaaah-qcl4q-cai';
+const CANISTER_ID = 'r7inp-6aaaa-aaaaa-aaabq-cai'; // 'qwt65-nyaaa-aaaah-qcl4q-cai';
 
 const DEFAULT_AGENT = new HttpAgent({ fetch, host: IC_HOST });
 
@@ -63,5 +63,10 @@ export const getTokens = async (agent = DEFAULT_AGENT): Promise<Token[]> => {
   }));
 };
 
-// Exporting an instance to keep backwards compatibility.
-export default new TokenRegistry();
+export default {
+  getTokenActor,
+  getTokens,
+  addToken: async ({ agent, tokenInfo }) => new TokenRegistry(agent).add(tokenInfo),
+  // editToken: async ({ agent, tokenInfo }) => new TokenRegistry(agent).edit(tokenInfo),
+  removeToken: async ({ agent, canisterId }) => new TokenRegistry(agent).remove(canisterId),
+};
