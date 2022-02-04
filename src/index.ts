@@ -6,7 +6,7 @@ import EXT from './nft_standards/ext';
 import ICPunks from './nft_standards/ic_punks';
 
 export * from './interfaces/nft';
-export * as DabNFTInterfaces from './interfaces/nft';
-export * as DabTokenInterfaces from './interfaces/token'
+export * as NFTInterfaces from './interfaces/nft';
+export * as TokenInterfaces from './interfaces/token'
 export * from './dab_canisters';
-export { default as standards } from './constants/standards';
+export { default as Standards } from './constants/standards';

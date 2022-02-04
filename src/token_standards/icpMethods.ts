@@ -5,7 +5,7 @@ import { ActorSubclass } from '@dfinity/agent';
 import LedgerService from '../interfaces/ledger';
 import { Metadata } from '../interfaces/ext';
 import {
-  Balance,
+  BalanceResponse,
   BurnParams,
   getDecimalsFromMetadata,
   InternalTokenMethods,
@@ -54,7 +54,7 @@ const send = async (
 const getBalance = async (
   actor: ActorSubclass<BaseLedgerService>,
   user: Principal
-): Promise<Balance> => {
+): Promise<BalanceResponse> => {
   const balanceArgs = { account: getAccountId(user) }
   const decimals = await getDecimals(actor);
   const value = (await actor._account_balance_dfx(balanceArgs)).toString();

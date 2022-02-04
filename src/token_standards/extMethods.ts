@@ -4,7 +4,7 @@ import { Principal } from '@dfinity/principal';
 import ExtService, { Metadata } from '../interfaces/ext';
 import { BaseMethodsExtendedActor } from '../utils/actorFactory';
 import {
-  Balance,
+  BalanceResponse,
   BurnParams,
   getDecimalsFromMetadata,
   InternalTokenMethods,
@@ -57,7 +57,7 @@ const send = async (
 const getBalance = async (
   actor: ActorSubclass<BaseExtService>,
   user: Principal
-): Promise<Balance> => {
+): Promise<BalanceResponse> => {
   const token = Actor.canisterIdOf(actor).toText();
 
   const balanceResult = await actor._balance({

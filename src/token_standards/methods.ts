@@ -5,6 +5,17 @@ import { Metadata } from '../interfaces/ext';
 import { BurnResult } from '../interfaces/xtc';
 import { BaseMethodsExtendedActor } from '../utils/actorFactory';
 
+interface TimeStamp {
+  timestamp_nanos: bigint;
+}
+export interface SendOpts {
+  fee?: bigint;
+  memo?: string;
+  from_subaccount?: number;
+  created_at_time?: TimeStamp; // TODO: create js Date to TimeStamp function
+}
+
+
 export type SendResponse =
   | { height: string }
   | { amount: string }
@@ -22,7 +33,8 @@ export interface BurnParams {
   amount: string;
 }
 
-export interface Balance {
+
+export interface BalanceResponse {
   value: string;
   decimals: number;
 }
@@ -30,7 +42,7 @@ export interface Balance {
 interface AddedMehtodsToken {
   send: ({ to, from, amount }: SendParams) => Promise<SendResponse>;
   getMetadata: () => Promise<Metadata>;
-  getBalance: (user: Principal) => Promise<Balance>;
+  getBalance: (user: Principal) => Promise<BalanceResponse>;
   burnXTC: ({ to, amount }: BurnParams) => Promise<BurnResult>;
   getDecimals: () => Promise<number>;
 }
@@ -43,7 +55,7 @@ export interface InternalTokenMethods {
     { to, from, amount }: SendParams
   ) => Promise<SendResponse>;
   getMetadata: (actor: ActorSubclass<any>) => Promise<Metadata>;
-  getBalance: (actor: ActorSubclass<any>, user: Principal) => Promise<Balance>;
+  getBalance: (actor: ActorSubclass<any>, user: Principal) => Promise<BalanceResponse>;
   burnXTC: (
     actor: ActorSubclass<any>,
     { to, amount }: BurnParams
@@ -65,7 +77,7 @@ const getMetadata = async (_actor: ActorSubclass<any>): Promise<Metadata> => {
 const getBalance = async (
   _actor: ActorSubclass<any>,
   _user: Principal
-): Promise<Balance> => {
+): Promise<BalanceResponse> => {
   throw Error('Standard Not Implemented');
 };
 
