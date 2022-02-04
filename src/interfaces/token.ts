@@ -1,10 +1,5 @@
 import { Principal } from "@dfinity/principal";
 
-export type SendResponse =
-  | { height: string }
-  | { amount: string }
-  | { transactionId: string };
-
 export interface Token {
     'logo' : string,
     'name' : string,
@@ -16,3 +11,6 @@ export interface Token {
     'total_supply' : [] | [bigint],
     'symbol' : string,
   }
+
+export { SendOpts, SendParams, SendResponse, BalanceResponse, BurnParams } from '../token_standards/methods'
+export { EventDetail, BurnResult } from './xtc'

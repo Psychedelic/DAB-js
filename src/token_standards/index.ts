@@ -4,7 +4,7 @@ import { IDL } from '@dfinity/candid';
 
 import { createExtendedActorClass } from '../utils/actorFactory';
 import defaultMethods, {
-  Balance,
+  BalanceResponse,
   InternalTokenMethods,
   TokenServiceExtended,
 } from './methods';
@@ -53,7 +53,7 @@ export const createTokenActor = async <T>(
   return actor;
 };
 
-export const parseBalance = (balance: Balance): string => {
+export const parseBalance = (balance: BalanceResponse): string => {
   return (parseInt(balance.value, 10) / 10 ** balance.decimals).toString();
 };
 
