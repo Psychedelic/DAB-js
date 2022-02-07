@@ -21,7 +21,7 @@ import Registry from './standard_registry';
 import { generateActor } from '../utils/actorFactory';
 import { formatMetadata, FormattedMetadata } from '../utils/registry';
 
-const CANISTER_ID = 'rrkah-fqaaa-aaaaa-aaaaq-cai' // 'aipdg-waaaa-aaaah-aaq5q-cai';
+const CANISTER_ID = 'ctqxp-yyaaa-aaaah-abbda-cai' // 'aipdg-waaaa-aaaah-aaq5q-cai';
 
 const BATCH_AMOUNT = 5;
 

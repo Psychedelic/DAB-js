@@ -1,42 +1,38 @@
 export default ({ IDL }) => {
-  const input_nft_canister = IDL.Record({
-    'icon' : IDL.Text,
+  const detail_value = IDL.Rec();
+  detail_value.fill(
+    IDL.Variant({
+      'I64' : IDL.Int64,
+      'U64' : IDL.Nat64,
+      'Vec' : IDL.Vec(detail_value),
+      'Slice' : IDL.Vec(IDL.Nat8),
+      'Text' : IDL.Text,
+      'True' : IDL.Null,
+      'False' : IDL.Null,
+      'Float' : IDL.Float64,
+      'Principal' : IDL.Principal,
+    })
+  );
+  const nft_canister = IDL.Record({
+    'thumbnail' : IDL.Text,
     'name' : IDL.Text,
+    'frontend' : IDL.Opt(IDL.Text),
     'description' : IDL.Text,
+    'details' : IDL.Vec(IDL.Tuple(IDL.Text, detail_value)),
     'principal_id' : IDL.Principal,
-    'standard' : IDL.Text,
   });
   const operation_error = IDL.Variant({
     'NotAuthorized' : IDL.Null,
     'BadParameters' : IDL.Null,
+    'Unknown' : IDL.Text,
     'NonExistentItem' : IDL.Null,
-    'ParamatersNotPassed' : IDL.Null,
   });
   const operation_response = IDL.Variant({
-    'Ok' : IDL.Bool,
+    'Ok' : IDL.Opt(IDL.Text),
     'Err' : operation_error,
   });
-  const nft_canister = IDL.Record({
-    'icon' : IDL.Text,
-    'name' : IDL.Text,
-    'description' : IDL.Text,
-    'timestamp' : IDL.Nat64,
-    'principal_id' : IDL.Principal,
-    'standard' : IDL.Text,
-  });
   return IDL.Service({
-    'add' : IDL.Func([input_nft_canister], [operation_response], []),
-    'edit' : IDL.Func(
-        [
-          IDL.Principal,
-          IDL.Opt(IDL.Text),
-          IDL.Opt(IDL.Text),
-          IDL.Opt(IDL.Text),
-          IDL.Opt(IDL.Text),
-        ],
-        [operation_response],
-        [],
-      ),
+    'add' : IDL.Func([nft_canister], [operation_response], []),
     'get' : IDL.Func([IDL.Principal], [IDL.Opt(nft_canister)], ['query']),
     'get_all' : IDL.Func([], [IDL.Vec(nft_canister)], ['query']),
     'name' : IDL.Func([], [IDL.Text], ['query']),

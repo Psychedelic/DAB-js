@@ -7,10 +7,27 @@ import { IC_HOST } from '../constants';
 import Registry from './standard_registry';
 import { generateActor } from '../utils/actorFactory';
 import { formatMetadata, FormattedMetadata } from '../utils/registry';
+import { Principal } from '@dfinity/principal';
 
-const CANISTER_ID = 'rkp4c-7iaaa-aaaaa-aaaca-cai'; // 'qxtlu-aiaaa-aaaah-aaupq-cai';
+const CANISTER_ID = 'curr3-vaaaa-aaaah-abbdq-cai'; // 'qxtlu-aiaaa-aaaah-aaupq-cai';
 
 const DEFAULT_AGENT = new HttpAgent({ fetch, host: IC_HOST });
+
+interface CanisterMetadata {
+  url: string;
+  name: string;
+  description: string;
+  version: number;
+  logo_url: string;
+}
+
+const formatBackwardsCompatible = (metadata?: FormattedMetadata): CanisterMetadata | undefined => {
+  if (!metadata) {
+    return metadata;
+  }
+  const { thumbnail, name, description, frontend, details } = metadata;
+  return { url: frontend?.[0] || '', name, description, version: Number(details.version), logo_url: thumbnail };
+}
 
 export class CanisterRegistry extends Registry {
   constructor(agent?: HttpAgent) {
@@ -26,25 +43,29 @@ export class CanisterRegistry extends Registry {
 export const getCanisterInfo = async ({
   canisterId,
   agent = DEFAULT_AGENT }: { 
-    canisterId: string, 
+    canisterId: Principal | string, 
     agent?: HttpAgent
-  }): Promise<FormattedMetadata | undefined> => {
+  }): Promise<CanisterMetadata | undefined> => {
     const canisterRegistry = new CanisterRegistry(agent);
-    return canisterRegistry.get(canisterId);
+    const canister = await canisterRegistry.get(Principal.from(canisterId).toString());
+    return formatBackwardsCompatible(canister);
   };
 
 export const getMultipleCanisterInfo = async ({
   canisterIds,
   agent = DEFAULT_AGENT }: { 
-    canisterIds: string[], 
+    canisterIds: (string | Principal)[], 
     agent?: HttpAgent
-  }): Promise<FormattedMetadata[] | undefined>  => {
+  }): Promise<CanisterMetadata[] | undefined>  => {
   const canistersMetadata = await Promise.all(canisterIds.map((canisterId) => getCanisterInfo({ canisterId, agent })));
   if (canistersMetadata.length === 0) return [];
-  return canistersMetadata.filter(canister => !!canister) as FormattedMetadata[];
+  return canistersMetadata.filter(canister => !!canister) as CanisterMetadata[];
 };
 
-export const getAll = (agent: HttpAgent) => new CanisterRegistry(agent).getAll();
+export const getAll = async (agent?: HttpAgent): Promise<CanisterMetadata[]> => {
+    const allCanisters = await new CanisterRegistry(agent).getAll();
+    return allCanisters.map(formatBackwardsCompatible) as CanisterMetadata[];
+};
 
 export default {
   getCanisterInfo,
