@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/camelcase */
 import { Principal } from '@dfinity/principal';
 import { ActorSubclass } from '@dfinity/agent';
+import fetch from 'cross-fetch';
 
 import LedgerService from '../interfaces/ledger';
 import { Metadata } from '../interfaces/ext';
@@ -18,6 +19,12 @@ import { getAccountId } from '../utils/account';
 type BaseLedgerService = BaseMethodsExtendedActor<LedgerService>;
 
 const DECIMALS = 8
+
+const NET_ID = {
+  blockchain: 'Internet Computer',
+  network: '00000000000000020101',
+};
+const ROSETTA_URL = 'https://rosetta-api.internetcomputer.org';
 
 const getMetadata = async (
   _actor: ActorSubclass<BaseLedgerService>
@@ -55,10 +62,27 @@ const getBalance = async (
   actor: ActorSubclass<BaseLedgerService>,
   user: Principal
 ): Promise<BalanceResponse> => {
-  const balanceArgs = { account: getAccountId(user) }
+  const accountId = getAccountId(user);
   const decimals = await getDecimals(actor);
-  const value = (await actor._account_balance_dfx(balanceArgs)).toString();
-  return { value, decimals };
+  const response = await fetch(`${ROSETTA_URL}/account/balance`, {
+    method: 'POST',
+    body: JSON.stringify({
+      network_identifier: NET_ID,
+      account_identifier: {
+        address: accountId,
+      },
+    }),
+    headers: {
+      'Content-Type': 'application/json',
+      Accept: '*/*',
+    },
+  });
+  if (!response.ok) {
+    return { value: 'Error', decimals, error: response.statusText };
+  }
+  const { balances } = await response.json();
+  const [{ value, currency }] = balances;
+  return { value, decimals: currency.decimals };
 };
 
 const burnXTC = async (

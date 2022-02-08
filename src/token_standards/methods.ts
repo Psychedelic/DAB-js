@@ -37,6 +37,7 @@ export interface BurnParams {
 export interface BalanceResponse {
   value: string;
   decimals: number;
+  error?: string;
 }
 
 interface AddedMehtodsToken {
