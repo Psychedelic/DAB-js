@@ -9,8 +9,7 @@ import { generateActor } from '../utils/actorFactory';
 import { formatMetadata, FormattedMetadata } from '../utils/registry';
 import { Principal } from '@dfinity/principal';
 
-const CANISTER_ID = 'curr3-vaaaa-aaaah-abbdq-cai'; // 'qxtlu-aiaaa-aaaah-aaupq-cai';
-
+const CANISTER_ID = 'curr3-vaaaa-aaaah-abbdq-cai';
 const DEFAULT_AGENT = new HttpAgent({ fetch, host: IC_HOST });
 
 interface CanisterMetadata {

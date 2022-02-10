@@ -21,8 +21,7 @@ import Registry from './standard_registry';
 import { generateActor } from '../utils/actorFactory';
 import { formatMetadata, FormattedMetadata } from '../utils/registry';
 
-const CANISTER_ID = 'ctqxp-yyaaa-aaaah-abbda-cai' // 'aipdg-waaaa-aaaah-aaq5q-cai';
-
+const CANISTER_ID = 'ctqxp-yyaaa-aaaah-abbda-cai';
 const BATCH_AMOUNT = 5;
 
 const NFT_STANDARDS: { [key: string]: NFTStandards } = {
