@@ -13,7 +13,7 @@ import { createTokenActor } from '../standard_wrappers/token_standards';
 import { TOKEN } from '../constants/standards';
 import { Token } from '../interfaces/token';
 
-const CANISTER_ID = 'r7inp-6aaaa-aaaaa-aaabq-cai'; // 'qwt65-nyaaa-aaaah-qcl4q-cai';
+const CANISTER_ID = 'b7hhy-tyaaa-aaaah-abbja-cai';
 
 const DEFAULT_AGENT = new HttpAgent({ fetch, host: IC_HOST });
 

@@ -7,7 +7,8 @@ export interface Details {
 }
 
 export const parseDetailValue = (detailValue: DetailValue): DetailType => {
-  const value: DetailType = Object.values(detailValue)[0];
+  const key = Object.keys(detailValue)[0];
+  const value: DetailType = ['True', 'False'].includes(key) ? Boolean(key) : Object.values(detailValue)[0];
   if (Array.isArray(value)) {
     return value.map((v) => typeof value === 'number' ? v : parseDetailValue(v));
   }
