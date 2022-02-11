@@ -52,6 +52,7 @@ export const getTokens = async (agent = DEFAULT_AGENT): Promise<Token[]> => {
   const tokenRegistry = new TokenRegistry(agent);
   const tokenCanisters = await tokenRegistry.getAll();
   return tokenCanisters.map((token) => ({
+    ...token,
     logo: token.thumbnail,
     name: token.name,
     description: token.description,
