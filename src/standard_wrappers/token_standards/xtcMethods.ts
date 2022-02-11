@@ -5,7 +5,7 @@ import { ActorSubclass } from '@dfinity/agent';
 import XtcService, { BurnResult } from '../../interfaces/xtc';
 import { Metadata } from '../../interfaces/ext';
 import {
-  Balance,
+  BalanceResponse,
   BurnParams,
   getDecimalsFromMetadata,
   InternalTokenMethods,
@@ -48,7 +48,7 @@ const send = async (
 const getBalance = async (
   actor: ActorSubclass<BaseXtcService>,
   user: Principal
-): Promise<Balance> => {
+): Promise<BalanceResponse> => {
   const decimals = await getDecimals(actor);
   const value = (await actor._balance([user])).toString();
   return { value, decimals };

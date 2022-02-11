@@ -16,7 +16,8 @@ export const createExtendedActorClass = (
 ): ExtendedActorConstructor => {
   class ExtendedActor extends Actor.createActorClass(IDLFactory) {
     constructor() {
-      super({ agent, canisterId });
+      const principalCanisterId = typeof canisterId === 'string' ? Principal.fromText(canisterId) : canisterId;
+      super({ agent, canisterId: principalCanisterId });
 
       Object.keys(this).forEach(methodName => {
         this[`_${methodName}`] = this[methodName];

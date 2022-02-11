@@ -5,7 +5,7 @@ import { ActorSubclass } from '@dfinity/agent';
 import Dip20Service from '../../interfaces/dip_20';
 import { Metadata } from '../../interfaces/ext';
 import {
-  Balance,
+  BalanceResponse,
   BurnParams,
   getDecimalsFromMetadata,
   InternalTokenMethods,
@@ -47,7 +47,7 @@ const send = async (
 const getBalance = async (
   actor: ActorSubclass<BaseDip20Service>,
   user: Principal
-): Promise<Balance> => {
+): Promise<BalanceResponse> => {
   const decimals = await getDecimals(actor);
   const value = (await actor._balanceOf(user)).toString();
   return { value, decimals };

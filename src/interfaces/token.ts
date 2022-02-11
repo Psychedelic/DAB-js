@@ -10,3 +10,6 @@ export interface Token {
     'total_supply' : [] | [bigint],
     'symbol' : string,
   }
+
+export { SendOpts, SendParams, SendResponse, BalanceResponse, BurnParams } from '../token_standards/methods'
+export { EventDetail, BurnResult } from './xtc'

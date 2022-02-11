@@ -4,7 +4,7 @@ import { IDL } from '@dfinity/candid';
 
 import { createExtendedActorClass } from '../../utils/actorFactory';
 import defaultMethods, {
-  Balance,
+  BalanceResponse,
   InternalTokenMethods,
   TokenServiceExtended,
 } from './methods';
@@ -17,13 +17,16 @@ import dip20IDL from '../../idls/dip_20.did';
 import { TOKEN } from '../../constants/standards'
 import wicpIDL from '../../idls/wicp.did';
 import wicpMethods from './wicpMethods';
+import icpMethods from './icpMethods';
+import icpIDL from '../idls/ledger.did'
 
 const getMethods = (standard: string): InternalTokenMethods =>
   ({
     [TOKEN.xtc]: xtcMethods,
     [TOKEN.ext]: extMethods,
     [TOKEN.dip20]: dip20Methods,
-    [TOKEN.wicp]: wicpMethods
+    [TOKEN.wicp]: wicpMethods,
+    [TOKEN.icp]: icpMethods,
   }[standard] || defaultMethods);
 
 const getIdl = (standard: string): IDL.InterfaceFactory => {
@@ -31,7 +34,8 @@ const getIdl = (standard: string): IDL.InterfaceFactory => {
     [TOKEN.xtc]: xtcIDL,
     [TOKEN.ext]: extIDL,
     [TOKEN.dip20]: dip20IDL,
-    [TOKEN.wicp]: wicpIDL
+    [TOKEN.wicp]: wicpIDL,
+    [TOKEN.icp]: icpIDL
   }[standard];
   if (!idl) throw new Error(`Standard ${standard} Not Implemented`);
   return idl;
@@ -53,7 +57,7 @@ export const createTokenActor = async <T>(
   return actor;
 };
 
-export const parseBalance = (balance: Balance): string => {
+export const parseBalance = (balance: BalanceResponse): string => {
   return (parseInt(balance.value, 10) / 10 ** balance.decimals).toString();
 };
 
