@@ -1,11 +1,6 @@
 import type { Principal } from '@dfinity/principal';
 import RegistryStandard from './registry_standard';
-export type CanisterCategory = { 'NFT' : null } |
-  { 'Games' : null } |
-  { 'Social' : null } |
-  { 'Token' : null } |
-  { 'Tools' : null } |
-  { 'Service' : null };
+
 export interface CanisterMetadata {
   'thumbnail' : string,
   'name' : string,
