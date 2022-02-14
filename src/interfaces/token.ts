@@ -11,5 +11,5 @@ export interface Token {
     'symbol' : string,
   }
 
-export { SendOpts, SendParams, SendResponse, BalanceResponse, BurnParams } from '../token_standards/methods'
+export { SendOpts, SendParams, SendResponse, BalanceResponse, BurnParams } from '../standard_wrappers/token_standards/methods'
 export { EventDetail, BurnResult } from './xtc'

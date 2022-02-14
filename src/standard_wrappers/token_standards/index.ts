@@ -14,11 +14,11 @@ import dip20Methods from './dip20Methods';
 import extIDL from '../../idls/ext.did';
 import xtcIDL from '../../idls/xtc.did';
 import dip20IDL from '../../idls/dip_20.did';
+import icpIDL from '../../idls/ledger.did';
 import { TOKEN } from '../../constants/standards'
 import wicpIDL from '../../idls/wicp.did';
 import wicpMethods from './wicpMethods';
 import icpMethods from './icpMethods';
-import icpIDL from '../idls/ledger.did'
 
 const getMethods = (standard: string): InternalTokenMethods =>
   ({
