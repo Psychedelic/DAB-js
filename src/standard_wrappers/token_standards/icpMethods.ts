@@ -3,8 +3,8 @@ import { Principal } from '@dfinity/principal';
 import { ActorSubclass } from '@dfinity/agent';
 import fetch from 'cross-fetch';
 
-import LedgerService from '../interfaces/ledger';
-import { Metadata } from '../interfaces/ext';
+import LedgerService from '../../interfaces/ledger';
+import { Metadata } from '../../interfaces/ext';
 import {
   BalanceResponse,
   BurnParams,
@@ -13,8 +13,8 @@ import {
   SendParams,
   SendResponse,
 } from './methods';
-import { BaseMethodsExtendedActor } from '../utils/actorFactory';
-import { getAccountId } from '../utils/account';
+import { BaseMethodsExtendedActor } from '../../utils/actorFactory';
+import { getAccountId } from '../../utils/account';
 
 type BaseLedgerService = BaseMethodsExtendedActor<LedgerService>;
 

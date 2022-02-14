@@ -2,8 +2,8 @@
 import { Principal } from '@dfinity/principal';
 import { ActorSubclass } from '@dfinity/agent';
 
-import WICPService from '../interfaces/wicp';
-import { Metadata } from '../interfaces/ext';
+import Dip20Service from '../../interfaces/dip_20';
+import { Metadata } from '../../interfaces/ext';
 import {
   BalanceResponse,
   BurnParams,
@@ -12,12 +12,12 @@ import {
   SendParams,
   SendResponse,
 } from './methods';
-import { BaseMethodsExtendedActor } from '../utils/actorFactory';
+import { BaseMethodsExtendedActor } from '../../utils/actorFactory';
 
-type BaseWICPService = BaseMethodsExtendedActor<WICPService>;
+type BaseDip20Service = BaseMethodsExtendedActor<Dip20Service>;
 
 const getMetadata = async (
-  actor: ActorSubclass<BaseWICPService>
+  actor: ActorSubclass<BaseDip20Service>
 ): Promise<Metadata> => {
   const metadataResult = await actor._getMetadata();
   return {
@@ -30,7 +30,7 @@ const getMetadata = async (
 };
 
 const send = async (
-  actor: ActorSubclass<BaseWICPService>,
+  actor: ActorSubclass<BaseDip20Service>,
   { to, amount }: SendParams
 ): Promise<SendResponse> => {
   const transferResult = await actor._transfer(
@@ -38,14 +38,14 @@ const send = async (
     amount
   );
 
-  if ('Ok' in transferResult)
-    return { transactionId: transferResult.Ok.toString() };
+  if ('ok' in transferResult)
+    return { transactionId: transferResult.ok.toString() };
 
-  throw new Error(Object.keys(transferResult.Err)[0]);
+  throw new Error(Object.keys(transferResult.err)[0]);
 };
 
 const getBalance = async (
-  actor: ActorSubclass<BaseWICPService>,
+  actor: ActorSubclass<BaseDip20Service>,
   user: Principal
 ): Promise<BalanceResponse> => {
   const decimals = await getDecimals(actor);
@@ -54,18 +54,18 @@ const getBalance = async (
 };
 
 const burnXTC = async (
-  _actor: ActorSubclass<BaseWICPService>,
+  _actor: ActorSubclass<BaseDip20Service>,
   _params: BurnParams
 ) => {
   throw new Error('BURN NOT SUPPORTED');
 };
 
-const getDecimals = async (actor: ActorSubclass<BaseWICPService>) => getDecimalsFromMetadata(await getMetadata(actor))
+const getDecimals = async (actor: ActorSubclass<BaseDip20Service>) => getDecimalsFromMetadata(await getMetadata(actor))
 
 export default {
   send,
   getMetadata,
   getBalance,
   burnXTC,
-  getDecimals,
+  getDecimals
 } as InternalTokenMethods;

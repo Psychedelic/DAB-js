@@ -2,7 +2,7 @@ import { HttpAgent, ActorSubclass } from '@dfinity/agent';
 import { Principal } from '@dfinity/principal';
 import { IDL } from '@dfinity/candid';
 
-import { createExtendedActorClass } from '../utils/actorFactory';
+import { createExtendedActorClass } from '../../utils/actorFactory';
 import defaultMethods, {
   BalanceResponse,
   InternalTokenMethods,
@@ -11,14 +11,14 @@ import defaultMethods, {
 import xtcMethods from './xtcMethods';
 import extMethods from './extMethods';
 import dip20Methods from './dip20Methods';
-import extIDL from '../idls/ext.did';
-import xtcIDL from '../idls/xtc.did';
-import dip20IDL from '../idls/dip_20.did';
-import { TOKEN } from '../constants/standards'
-import wicpIDL from '../idls/wicp.did';
+import extIDL from '../../idls/ext.did';
+import xtcIDL from '../../idls/xtc.did';
+import dip20IDL from '../../idls/dip_20.did';
+import icpIDL from '../../idls/ledger.did';
+import { TOKEN } from '../../constants/standards'
+import wicpIDL from '../../idls/wicp.did';
 import wicpMethods from './wicpMethods';
 import icpMethods from './icpMethods';
-import icpIDL from '../idls/ledger.did'
 
 const getMethods = (standard: string): InternalTokenMethods =>
   ({

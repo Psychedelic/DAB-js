@@ -1,9 +1,9 @@
 import { ActorSubclass } from '@dfinity/agent';
 import { Principal } from '@dfinity/principal';
 
-import { Metadata } from '../interfaces/ext';
-import { BurnResult } from '../interfaces/xtc';
-import { BaseMethodsExtendedActor } from '../utils/actorFactory';
+import { Metadata } from '../../interfaces/ext';
+import { BurnResult } from '../../interfaces/xtc';
+import { BaseMethodsExtendedActor } from '../../utils/actorFactory';
 
 interface TimeStamp {
   timestamp_nanos: bigint;

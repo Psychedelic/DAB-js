@@ -1,11 +1,11 @@
 import { Actor, ActorSubclass, HttpAgent } from '@dfinity/agent';
 import { Principal } from '@dfinity/principal';
 
-import { NFTDetails } from '../interfaces/nft';
-import Interface, { MetadataPart, MetadataVal, MetadataPurpose } from '../interfaces/dip_721';
-import IDL from '../idls/dip_721.did';
+import { NFTDetails } from '../../interfaces/nft';
+import Interface, { MetadataPart, MetadataVal, MetadataPurpose } from '../../interfaces/dip_721';
+import IDL from '../../idls/dip_721.did';
 import NFT from './default';
-import { NFT as NFTStandard} from '../constants/standards';
+import { NFT as NFTStandard} from '../../constants/standards';
 
 interface Property {
   name: string;
