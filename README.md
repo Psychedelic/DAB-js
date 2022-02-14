@@ -2,44 +2,75 @@
 
 ![](https://storageapi.fleek.co/nicopoggi-team-bucket/dab-gh-nft.png)
 
-This is a JS library that wraps several necessary methods to integrate [DAB's registries/list](https://dab.ooo/) and its two registries:
+This is a JS library that wraps several necessary methods to integrate [DAB's registries/list](https://dab.ooo/) and its three registries:
 
-- The NFT List
-- The Canister Registry.
+- The NFT Registry
+- The Canister Registry
+- The Token Registry
 
-It also includes a **standard wrapper**  that unifies several NFT standards (EXT, ICPunks, etc...) under a common interface; and soon fungible tokens as well.
-
-## 🤔 What is DAB and what registries does it have? 
-
-DAB is an open internet service for data registries. In V0.2.0 it provides two registries you can interact with using the DAB-js library.
-
-1-  **The NFT registry**, a list of NFTs that apps & developers can consume to auto-surface a user's owned NFTs from multiple collections, and support new NFT collections as they are listed in DAB, instead of manually adding them one by one.
-
-2- **The Canister Registry**, a canister registry where you can associate Canister IDs to a metadata profile (name, front-end URL, description, logo...) to make them more discoverable by UIs. **Using DAB-js, you will be able to query this metadata from a UI to show it, instead of just a plain Canister ID**.
+It also includes a **standard wrapper** that unifies several NFT standards (DIP721, EXT, ICPunks, etc...) and token standards (DIP721, EXT, etc..) under a their own common interface.
 
 - [DAB's website](https://docs.dab.ooo)
 - [DAB's main repository](https://github.com/psychedelic/dab)
 - [DAB's documentation](https://docs.dab.ooo)
 
-## 🌯 DAB-js and its Standard Wrapper
+---
 
-DAB's NFT list is **standard agnostic**, meaning any NFT collection can be listed regardless of the NFT standard interface utilized (EXT, ICpunks, Departure Labs, etc...). 
+## TABLE OF CONTENTS
+- [What is DAB?](#what-is-dab-and-what-registries-does-it-have)
+- [What is DAB-js?](#dab-js-and-its-standard-wrapper)
+- [Interaction Guide](#interaction-guide)
+- [Setting up DAB-js](#setting-up-dab-js-in-your-project)
+- [DAB Registry Standard](#dab-registry-standard)
+- [NFT List](#nft-list)
+- [Canister List](#canister-list)
+- [Token List](#token-list)
+- [Verified Registry Objects](#verified-registry-objects)
 
-When integrating and consuming DAB's list, this would quickly become a problem for developers that need to **use different methods, depending on the standard, to do a simple thing like transferring an NFT**.
+---
+## What is DAB and what registries does it have? 
 
-**We solved this with the DAB-js library and its standard wrapper.** DAB-js provides a common javascript interface with standard methods (transfer, getUserTokens, details, etc..) that the developer can use to make calls to any NFT in any collection. **DAB's standard wrapper translates the call** to match the appropiate methods of each standards.
+DAB is an open internet service for data registries. 
 
-### Wrapped Standards & New Additions
+Anyone is able to create their own DAB Registry by following the [DAB Registry Standard](#dab-registry-standard).
+
+As of V1.0.0, the current DAB registries are:
+
+1-  **The NFT Registry**, a list of NFTs that apps & developers can consume to auto-surface a user's owned NFTs from multiple collections, and support new NFT collections as they are listed in DAB, instead of manually adding them one by one.
+
+2- **The Canister Registry**, a canister registry where you can associate Canister IDs to a metadata profile (name, front-end URL, description, logo...) to make them more discoverable by UIs. **Using DAB-js, you will be able to query this metadata from a UI to show it, instead of just a plain Canister ID**.
+
+3- **The Token Registry**, a list that holds metadata (name, symbol, logo, etc...) aginst tokens on the IC. This enables developers to write code once to auto-surface and interact with a user's current and future tokens, instead of manually adding integrations for every new token.
+  
+---
+
+## DAB-js and its Standard Wrapper
+
+DAB's NFT list is **standard agnostic**, meaning any NFT collection or Token can be listed regardless of the standard interface utilized. 
+
+When integrating and consuming DAB's lists, this would quickly become a problem for developers that need to **use different methods, depending on the standard, to do a simple thing like transferring an NFT**.
+
+**We solved this with the DAB-js library and its standard wrapper.** DAB-js provides a common javascript interface with standard methods (transfer, getUserTokens, details, etc..) that the developer can use to make calls to any NFT or Token, regardless of their standatd. **DAB's standard wrapper translates the call** to match the appropiate methods of each standards.
 
 Currently, DAB-js wraps the following standards. **Developers are welcome to open PRs to suggest/help integrate new standards to DAB-js**.
 
+### NFT STANDARDS
+
+- [DIP721](https://github.com/Psychedelic/DIP721)
 - [EXT NFT Standard](https://github.com/Toniq-Labs/extendable-token)
 - [ICPunks NFT Standard](https://github.com/stopak/ICPunks/blob/dev/service/icpunks_rust.did)
 - [Departure Labs](https://github.com/DepartureLabsIC/non-fungible-token)
 
-More standards will be wrapped as NFT collections following those standards are added to DAB's NFT list. Our next short term goal is supporting the [Departure Labs NFT standard](https://github.com/DepartureLabsIC/non-fungible-token).
+### TOKEN STANDARDS
 
-## 🧰 Interaction guide
+- [DIP20](https://github.com/Psychedelic/DIP20)
+- [EXT Token Standard](https://github.com/Toniq-Labs/extendable-token/blob/main/examples/erc20.md)
+- [XTC](https://github.com/Psychedelic/dank/tree/main/xtc)
+- [WICP](https://github.com/Psychedelic/wicp)
+
+---
+
+## Interaction guide
 
 To pull and install from [@Psychedelic](https://github.com/psychedelic) via the NPM CLI, you'll need:
 
@@ -61,7 +92,9 @@ You can also setup your npm global settings to fetch from the Github registry ev
 
 ⚠️ Alternatively, a token could be passed to the `.npmrc` as `//npm.pkg.github.com/:_authToken=xxxxxx` but we'd like to keep it clean and tokenless.
 
-## ⚙️ Setting up DAB-js in your project
+---
+
+## Setting up DAB-js in your project
 
 First, you need to install the DAB-js **npm package** into your project.
 
@@ -71,6 +104,83 @@ npm install @psychedelic/dab-js@latest
 ```
 
 Find more details about installing versions in the package page [here](https://github.com/Psychedelic/DAB-js/packages/987540)
+
+---
+
+## DAB Registry Standard
+
+The DAB Registry Standard represents an interface that registries can follow in order to qualify to interoperate with libraries / dapps that use DAB registries. DAB-js happens to be one of those libraries.
+
+For more information on creating your own registry that follows the DAB Registry Standard, visit our docs [here](https://docs.dab.ooo/standard/getting-started/#create-your-own-registry-registry-standard).
+
+### Interacting With DAB Registry Standard Registries Through DAB-js (name, get, add, remove)
+
+In order to interact with a registry that follows the DAB Registry Standard, we need to create an instance of the Registry Class. This class's methods allow us to interact with the base functionality that every DAB registry must have.
+
+First need to import the Registry class from the @psychedelic/dab-js library.
+
+Next, we can create an instance of this class by passing in two parameters:
+
+- `agent`: An Http agent, instantiated with agent-js (optional paramet, defaults to DFINITY's agent)
+- `canisterID`: A string that represents the canister ID of the registry on IC mainnet.
+
+```js
+import { Registry } from '@psychedelic/dab-js';
+
+const canisterID = 'REGISTRY_ID_HERE';
+
+const createRegistry = (canisterID) => {
+    const my_registry = new Registry(canisterID);
+    return my_registry
+}
+
+const new_registry = createRegistry();
+```
+
+To configure your registry to interact with canisters on your local network, pass in a custom agent like so:
+
+```js
+import { Registry } from '@psychedelic/dab-js';
+
+const canisterID = 'REGISTRY_ID_HERE';
+const localAgent = new HttpAgent({ host: 'https://localhost:8080' }); 
+
+const createLocalRegistry = (canisterID) => {
+    const my_registry = new Registry(canisterID, localAgent);
+    return my_registry
+}
+
+const new_registry = createRegistry();
+```
+
+Once instanciated, you can start to interact with your registry's base `name`, `get`, `add`, and `remove` methods.
+
+Here's an example function to do so:
+
+```js
+const testRegistryMethods = async (registry: Registry, getId: string, addMetadata: Metadata) => {
+    const name = await registry.name();
+    console.log('Registry Name: ', name);
+
+    console.log('Adding Entry: ', addMetadata);
+    const addResponse = await registry.add(addMetadata);
+    console.log('Add response', addResponse);
+
+    console.log('Getting metadata for id', getId);
+    const getResponse = await registry.get(getId);
+    console.log('Get Response: ', getResponse);
+
+    console.log('Removing metadata for id', getId);
+    const removeResponse = await registry.remove(getId);
+    console.log('Remove Response: ', removeResponse);
+
+    console.log('Getting metadata for deleted id', getId);
+    const emptyResponse = await registry.get(getId);
+    console.log('Removed get response: ', emptyResponse);
+};
+```
+
+---
 
 ## NFT List
 ### 1. 🎨 Fetching All NFTs the User Owns (getAllUserNFTs)
@@ -305,6 +415,7 @@ getTokenDetails()
 
 This call returns one object with the metadata of the specific NFT queried.
 
+---
 
 ## Canister List
 
@@ -358,3 +469,97 @@ console.log(nftsInfo);
 
 
 In contrast to the previous method, this will return an **array of metadata objects** for all the canister IDs you entered.
+
+---
+
+## Token List
+
+### 1. Interacting with Tokens (getTokenActor, transfer, details)
+To interact with the user's Tokens and, for example, trigger a transfer, you need to initialize/get an Token actor object. This is done using the **getTokenActor** method, where you need to pass:
+
+- `canisterID`: the Canister ID of the token you want to interact with.
+- `agent`: an HttpAgent (instantiated with agent-js or Plug)
+- `standard`: a str with the name of the Token standard (DIP20, EXT, XTC, WICP)
+
+**It's important to note**: without passing a template interface, you can use the following methods:
+
+send
+getMetadata
+getBalance
+burnXTC (in the case of XTC)
+
+These are the common methods shared across all interfaces/standards that DAB-js wraps in its common universal interface. To **use other methods that are not shared across standards**, you can import and pass that standard's interface into the type variable of getTokenActor and use the base methods as "_method" (e.g. if transfer, do _transfer).
+
+>(Current standards supported and string name: DIP20, EXT, XTC, WICP)
+
+```js
+import { getTokenActor } from '@psychedelic/dab-js'
+
+export const getTokenActor = <T={}>({
+  canisterId: string,
+  agent: HttpAgent,
+  standard: string
+}): TokenActor => {
+  return createTokenActor<T>(canisterID, agent, standard);
+};
+```
+This should return an actor object with the following interfaces:
+
+```js
+export default class TokenActor {
+  agent: HttpAgent;
+
+  canisterId: string;
+
+  constructor(canisterId: string, agent: HttpAgent) {
+    this.agent = agent;
+    this.canisterId = canisterId;
+  }
+
+  abstract send({to: string, from: string, amount: string}): Promise<SendResponse>;
+
+  abstract getBalance(user: Principal): Promise<Balance>;
+
+  abstract getMetadata(): Promise<Metadata>;
+
+  abstract burnXTC({to: Principal, amount: string}): Promise<BurnResult>;
+}
+```
+
+As you can see **this actor contains the standard javascript interface of DAB's Token standard wrapper**. It has generic calls to interact with tokens regardless of their standard (as long as their interface is wrapped in the standard wrapper).
+
+- `send`: Request the transfer of a token balance the user owns to another address.
+- `getMetadata`: Returns the details of the token.
+- `getBalance`: Returns the balance of a specific user.
+- `burnXTC`: Request burning XTC to transfer raw unwrapped cycles to an address.
+
+
+For a more detailed breakdown of the interfaces that are returned & more info on using the `send`, `getBalance`, `getMetadata`, and `burnXTC` methods, [visit our docs](https://docs.dab.ooo/token-list/getting-started/#2-interacting-with-tokens-gettokenactor-transfer-details).
+
+## Verified Registry Objects
+
+Along with V1.0.0, we've added custom objects for each one of the three verified registries that make it easy to interact with the DAB Registry Standard methods (`name`, `get`, `add`, `remove`) of each registry.
+
+Let's go over an example using the `NFTRegistry` object.
+
+```js
+import { NFTRegistry } from '@psychedelic/dab-js';
+
+const nft_registry = new NFTRegistry();
+const getId = "PRINCIPAL-ID-HERE";
+
+const testRegistryMethods = async (registry: Registry, getId: string) => {
+    const name = await registry.name();
+    console.log('Registry Name: ', name);
+
+    console.log('Getting metadata for id', getId);
+    const getResponse = await registry.get(getId);
+    console.log('Get Response: ', getResponse);
+};
+
+testRegistryMethods(nft_registry, getId);
+```
+
+We dont use `add` or `remove` in either of these examples because they require admin priveledges.
+
+Using `TokenRegistry` & `CanisterRegistry` is done in the exact same way as we have just demonstrated with the `NFTRegistry`.
