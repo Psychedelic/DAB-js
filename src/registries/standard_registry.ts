@@ -15,7 +15,7 @@ class Registry {
     constructor(canisterId, agent = DEFAULT_AGENT) {
         this.actor = Actor.createActor<RegistryStandard>(RegistryStandardIDL, {
             agent: agent,
-            canisterId: this.canisterId,
+            canisterId,
         });
         this.canisterId = canisterId;
     }

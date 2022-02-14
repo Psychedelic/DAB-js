@@ -3,6 +3,6 @@ import EXT from './standard_wrappers/nft_standards/ext';
 import ICPunks from './standard_wrappers/nft_standards/ic_punks';
 
 export * from './registries';
-export * as NFTInterfaces from './interfaces/nft';
-export * as TokenInterfaces from './interfaces/token';
+export *  from './interfaces/nft';
+export *  from './interfaces/token';
 export { default as standards } from './constants/standards';
