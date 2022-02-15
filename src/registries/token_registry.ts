@@ -54,9 +54,9 @@ export class TokenRegistry extends Registry {
   };
 }
 
-export const getTokens = async ({
-  agent = DEFAULT_AGENT,
-}): Promise<Token[]> => {
+export const getTokens = async ({ agent = DEFAULT_AGENT } = {}): Promise<
+  Token[]
+> => {
   const tokenRegistry = new TokenRegistry(agent);
   const tokenCanisters = await tokenRegistry.getAll();
   return tokenCanisters.map((token) => ({
