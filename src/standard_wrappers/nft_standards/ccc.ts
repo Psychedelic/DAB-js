@@ -24,29 +24,31 @@ export default class CCC extends NFT {
 
   async getUserTokens(principal: Principal): Promise<NFTDetails[]> {
     const tokensIndexes = await this.actor.getAllNFT(principal);
-    
     const tokensData = await Promise.all(
-      tokensIndexes.map(async(item) => {
-        const res:GetTokenResponse = await this.actor.getTokenById(item[0])
-        return [res.ok, item[1]]
+      tokensIndexes.map(async (item) => {
+        const tokenIndex = item[0]
+        const principal = item[1]
+        const userTokensResult = await this.actor.getTokenById(tokenIndex);
+        if ('err' in userTokensResult)
+          throw new Error(Object.keys(userTokensResult.err)[0]);
+        return {detail: userTokensResult.ok, principal};
       })
     );
-
-    return tokensData.map((token) => this.serializeTokenData(token[0], token[1]));
+    return tokensData.map((token) => this.serializeTokenData(token.detail, token.principal));
   }
 
   async transfer(to: Principal, tokenIndex: number): Promise<void> {
     const from = await this.agent.getPrincipal();
-    const success:TransferResponse = await this.actor.transferFrom(from, to, BigInt(tokenIndex));
-    if (success.err) {
-      for (let key in success.err)
-        throw new Error(`Error transfering ${key}`);
-    }
+    const transferResult:TransferResponse = await this.actor.transferFrom(from, to, BigInt(tokenIndex));
+    if ('err' in transferResult)
+      throw new Error(Object.keys(transferResult.err)[0]);
   }
 
   async details(tokenIndex: number): Promise<NFTDetails> {
     const tokenData = await this.actor.getTokenById(BigInt(tokenIndex));
+    if ('err' in tokenData) throw new Error(Object.keys(tokenData.err)[0]);
     const prinId = await this.actor.getNftStoreCIDByIndex(BigInt(tokenIndex));
+    if (!prinId) throw new Error('Error tokenIndex')
     return this.serializeTokenData(tokenData.ok, prinId);
   }
 
