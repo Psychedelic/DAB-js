@@ -16,7 +16,7 @@ interface Property {
 interface MetadataKeyVal { 'key' : string, 'val' : GenericValue }
 
 interface Metadata {
-  [key: string]: { value: MetadataKeyVal , purpose: string } | Array<Property> | Principal;
+  [key: string]: { value: MetadataKeyVal , purpose: string } | Array<Property> | string;
   properties: Array<Property>;
 }
 
