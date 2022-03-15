@@ -16,7 +16,7 @@ interface Property {
 interface MetadataKeyVal { 'key' : string, 'val' : GenericValue }
 
 interface Metadata {
-  [key: string]: { value: MetadataKeyVal , purpose: string } | Array<Property>;
+  [key: string]: { value: MetadataKeyVal , purpose: string } | Array<Property> | Principal;
   properties: Array<Property>;
 }
 
@@ -41,11 +41,11 @@ export default class ERC721 extends NFT {
 
   async getUserTokens(principal: Principal): Promise<NFTDetails[]> {
     const userTokensResult = await this.actor.ownerTokenMetadata(principal);
-    console.log(userTokensResult);
-    const tokens = userTokensResult || { Ok: [] };
-    return tokens[0].map((token) => {
-      const tokenIndex = token.token_id;
-      const formatedMetadata = this.formatMetadata(token.metadata_desc);
+    const tokens: Array<TokenMetadata> = userTokensResult['Ok'] || [];
+    console.log(tokens)
+    return tokens.map((token) => {
+      const tokenIndex = token.token_identifier;
+      const formatedMetadata = this.formatMetadata(token);
 
       return this.serializeTokenData(
         formatedMetadata,
@@ -93,10 +93,14 @@ export default class ERC721 extends NFT {
   }
 
   private formatMetadata(metadata: TokenMetadata): Metadata {
-    const metadataResult = { properties: new Array<Property>() };
+    const owner = metadata.owner[0] ? metadata.owner[0] : Principal.fromText("aaaaa-aa");
+    const metadataResult = { owner, properties: new Array<Property>() };
         
         metadata.properties.map((prop) => {
           metadataResult[prop[0]] = { value: prop[1] };
+          if (metadata.owner[0]) {
+            metadataResult.owner = metadata.owner[0]
+          }
           metadataResult.properties = [...metadataResult.properties, { name: prop[0], value: extractMetadataValue(prop[1]) }];
         });
 
