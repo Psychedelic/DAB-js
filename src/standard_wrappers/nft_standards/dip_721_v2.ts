@@ -93,19 +93,16 @@ export default class ERC721 extends NFT {
   }
 
   private formatMetadata(metadata: TokenMetadata): Metadata {
-    const owner = metadata.owner[0] ? metadata.owner[0] : Principal.fromText("aaaaa-aa");
-    const metadataResult = { owner, properties: new Array<Property>() };
-        
-        metadata.properties.map((prop) => {
-          metadataResult[prop[0]] = { value: prop[1] };
-          if (metadata.owner[0]) {
-            metadataResult.owner = metadata.owner[0]
-          }
-          metadataResult.properties = [...metadataResult.properties, { name: prop[0], value: extractMetadataValue(prop[1]) }];
-        });
-
-        // Filter out reserved props from the unique traits
-        metadataResult.properties = metadataResult.properties.filter(({ name }) => !['location', 'thumbnail', 'contentHash', 'contentType'].includes(name));
-        return metadataResult;
-  }
+      const owner = metadata.owner[0] ? metadata.owner[0].toText() : "aaaaa-aa";
+      const metadataResult = { owner, properties: new Array<Property>() };
+          
+          metadata.properties.map((prop) => {
+            metadataResult[prop[0]] = { value: prop[1] };
+            metadataResult.properties = [...metadataResult.properties, { name: prop[0], value: extractMetadataValue(prop[1]) }];
+          });
+  
+          // Filter out reserved props from the unique traits
+          metadataResult.properties = metadataResult.properties.filter(({ name }) => !['location', 'thumbnail', 'contentHash', 'contentType'].includes(name));
+          return metadataResult;
+    }
 }
