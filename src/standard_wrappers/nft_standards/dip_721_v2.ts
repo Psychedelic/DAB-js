@@ -42,7 +42,6 @@ export default class ERC721 extends NFT {
   async getUserTokens(principal: Principal): Promise<NFTDetails[]> {
     const userTokensResult = await this.actor.ownerTokenMetadata(principal);
     const tokens: Array<TokenMetadata> = userTokensResult['Ok'] || [];
-    console.log(tokens)
     return tokens.map((token) => {
       const tokenIndex = token.token_identifier;
       const formatedMetadata = this.formatMetadata(token);
