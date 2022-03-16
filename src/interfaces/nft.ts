@@ -1,5 +1,5 @@
 import { Principal } from '@dfinity/principal';
-import dip_721_v2Did from '@psychedelic/dab-js/src/idls/dip_721_v2.did';
+import dip_721_v2Did from '../idls/dip_721_v2.did';
 import DepartureLabs from '../standard_wrappers/nft_standards/departure_labs';
 import DIP721 from '../standard_wrappers/nft_standards/dip_721';
 import DIP721v2 from '../standard_wrappers/nft_standards/dip_721_v2';
