@@ -21,6 +21,7 @@ import IDL from '../idls/dab_registries/nft_registry.did';
 import Registry from './standard_registry';
 import { generateActor } from '../utils/actorFactory';
 import { formatMetadata, FormattedMetadata } from '../utils/registry';
+import CCC from '../standard_wrappers/nft_standards/ccc';
 
 const CANISTER_ID = 'ctqxp-yyaaa-aaaah-abbda-cai';
 const BATCH_AMOUNT = 5;
@@ -31,7 +32,8 @@ const NFT_STANDARDS: { [key: string]: NFTStandards } = {
   [NFTStandard.departuresLabs]: DepartureLabs,
   [NFTStandard.erc721]: DIP721,
   [NFTStandard.dip721]: DIP721,
-  [NFTStandard.dip721v2]: DIP721v2
+  [NFTStandard.dip721v2]: DIP721v2,
+  [NFTStandard.c3]: CCC
 };
 
 interface GetBatchedNFTsParams {
