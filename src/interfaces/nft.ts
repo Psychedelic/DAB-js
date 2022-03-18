@@ -4,9 +4,10 @@ import DepartureLabs from '../standard_wrappers/nft_standards/departure_labs';
 import DIP721 from '../standard_wrappers/nft_standards/dip_721';
 import DIP721v2 from '../standard_wrappers/nft_standards/dip_721_v2';
 import EXT from '../standard_wrappers/nft_standards/ext';
+import CCC from '../standard_wrappers/nft_standards/ccc';
 import ICPunks from '../standard_wrappers/nft_standards/ic_punks';
 
-export type NFTStandards = typeof EXT | typeof ICPunks | typeof DepartureLabs | typeof DIP721 | typeof DIP721v2;
+export type NFTStandards = typeof EXT | typeof ICPunks | typeof DepartureLabs | typeof DIP721 | typeof DIP721v2 | typeof CCC;
 
 export interface DABCollection {
   icon : string,
