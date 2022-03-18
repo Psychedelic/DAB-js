@@ -47,9 +47,8 @@ const send = async (
     fee: BigInt(10000),
     memo: BigInt(0),
   };
-  const isValid = Principal.from(to).toText() === to;
   const response = await actor._send_dfx({
-    to: validatePrincipalId(to) ? to : getAccountId(Principal.fromText(to)),
+    to: validatePrincipalId(to) ? getAccountId(Principal.fromText(to)) : to,
     fee: { e8s: opts?.fee || defaultArgs.fee },
     amount: { e8s: amount },
     memo: opts?.memo ? BigInt(opts.memo) : defaultArgs.memo,
