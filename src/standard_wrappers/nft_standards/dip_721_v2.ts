@@ -91,7 +91,7 @@ export default class ERC721 extends NFT {
       );
     const metadata = metadataResult.Ok;
     const formatedMetadata = this.formatMetadata(metadata);
-    const owner = metadata.owner[0] ? metadata.owner[0].toText() : 'aaaaa-aa';
+    const owner = metadata.owner[0] ? metadata.owner[0].toText() : undefined;
 
     return this.serializeTokenData(formatedMetadata, tokenIndex, owner);
   }
@@ -99,7 +99,7 @@ export default class ERC721 extends NFT {
   private serializeTokenData(
     metadata: any,
     tokenIndex: number | bigint,
-    owner: string
+    owner: string | undefined
   ): NFTDetails {
     return {
       index: BigInt(tokenIndex),
