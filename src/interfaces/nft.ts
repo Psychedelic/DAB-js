@@ -7,15 +7,21 @@ import EXT from '../standard_wrappers/nft_standards/ext';
 import CCC from '../standard_wrappers/nft_standards/ccc';
 import ICPunks from '../standard_wrappers/nft_standards/ic_punks';
 
-export type NFTStandards = typeof EXT | typeof ICPunks | typeof DepartureLabs | typeof DIP721 | typeof DIP721v2 | typeof CCC;
+export type NFTStandards =
+  | typeof EXT
+  | typeof ICPunks
+  | typeof DepartureLabs
+  | typeof DIP721
+  | typeof DIP721v2
+  | typeof CCC;
 
 export interface DABCollection {
-  icon : string,
-  name : string,
-  description : string,
-  principal_id : Principal,
-  standard : string,
-};
+  icon: string;
+  name: string;
+  description: string;
+  principal_id: Principal;
+  standard: string;
+}
 
 export interface NFTCollection {
   name: string;
@@ -35,4 +41,5 @@ export interface NFTDetails {
   metadata: any;
   standard: string;
   collection?: string;
+  owner?: string;
 }
