@@ -5,9 +5,7 @@ import { IC_HOST } from '../constants';
 import AddressBookInterface, { Response as AddressBookResponse, AddressMetadata } from '../interfaces/dab_registries/address_book';
 import addressBookIDL from '../idls/dab_registries/address_book.did';
 
-// TO BE DEFINED ONCE THE ADDRESS BOOK CANISTER IS DEPLOYED
-const CANISTER_ID = 'rrkah-fqaaa-aaaaa-aaaaq-cai';
-
+const CANISTER_ID = 'i73cm-daaaa-aaaah-abhea-cai';
 export interface Address {
     name: string,
     description?: string,
