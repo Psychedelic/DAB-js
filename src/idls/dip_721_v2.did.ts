@@ -1,4 +1,4 @@
-export const idlFactory = ({ IDL }) => {
+export default ({ IDL }) => {
   const Vec = IDL.Rec();
   const InitArgs = IDL.Record({
     'logo' : IDL.Opt(IDL.Text),

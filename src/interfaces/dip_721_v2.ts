@@ -105,7 +105,7 @@ export type Vec = Array<
       { 'TextContent' : string },
   ]
 >;
-export interface _SERVICE {
+export default interface _SERVICE {
   'approve' : (arg_0: Principal, arg_1: bigint) => Promise<Result>,
   'balanceOf' : (arg_0: Principal) => Promise<Result>,
   'burn' : (arg_0: bigint) => Promise<Result>,
