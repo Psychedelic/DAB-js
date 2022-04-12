@@ -75,6 +75,7 @@ export default ({ IDL }) => {
   });
   const MetadataResult = IDL.Variant({ ok: Metadata, err: CommonError });
   return IDL.Service({
+    extensions: IDL.Func([], [IDL.Vec(IDL.Text)], ['query']),
     balance: IDL.Func([BalanceRequest], [BalanceResult], ['query']),
     details: IDL.Func([TokenIdentifier], [DetailsResult], ['query']),
     tokens: IDL.Func([AccountIdentifier], [TokensResult], ['query']),
