@@ -3,7 +3,11 @@ const addressBookIDL = ({ IDL }) => {
       'name' : IDL.Text,
       'description' : IDL.Opt(IDL.Text),
       'emoji' : IDL.Opt(IDL.Text),
-      'principal_id' : IDL.Principal,
+      'value': IDL.Variant({
+        'PrincipalId': IDL.Principal,
+        'AccountId': IDL.Text,
+        'Icns': IDL.Text,
+      }),
     });
     const operation_error = IDL.Variant({
       'NotAuthorized' : IDL.Null,
