@@ -74,6 +74,7 @@ export default ({ IDL }) => {
     nonfungible: IDL.Record({ metadata: IDL.Opt(IDL.Vec(IDL.Nat8)) }),
   });
   const MetadataResult = IDL.Variant({ ok: Metadata, err: CommonError });
+  const SupplyResult = IDL.Variant({ ok: Balance, err: CommonError });
   return IDL.Service({
     extensions: IDL.Func([], [IDL.Vec(IDL.Text)], ['query']),
     balance: IDL.Func([BalanceRequest], [BalanceResult], ['query']),
@@ -82,6 +83,7 @@ export default ({ IDL }) => {
     tokens_ext: IDL.Func([AccountIdentifier], [TokenExtResult], []),
     transfer: IDL.Func([TransferRequest], [TransferResult], []),
     metadata: IDL.Func([TokenIdentifier], [MetadataResult], ['query']),
+    supply: IDL.Func([TokenIdentifier], [SupplyResult], ['query']),
   });
 };
 export const init = () => {
