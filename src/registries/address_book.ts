@@ -6,16 +6,16 @@ import addressBookIDL from '../idls/dab_registries/address_book.did';
 
 const CANISTER_ID = 'i73cm-daaaa-aaaah-abhea-cai';
 
-export const getAddressBookActor = () => {
-    const agent = new HttpAgent({ fetch, host: IC_HOST })
+export const getAddressBookActor = (identity: Identity) => {
+    const agent = new HttpAgent({ fetch, host: IC_HOST, identity })
     
     const actor = Actor.createActor<AddressBookInterface>(addressBookIDL, { agent, canisterId: CANISTER_ID });
     
     return actor;
 }
 
-export const getAddresses = async (): Promise<Array<Address>> => {
-    const actor = getAddressBookActor();
+export const getAddresses = async (identity: Identity): Promise<Array<Address>> => {
+    const actor = getAddressBookActor(identity);
 
     const addresses = await actor.get_all();
 
@@ -27,8 +27,8 @@ export const getAddresses = async (): Promise<Array<Address>> => {
     }) as Address );
 }
 
-export const addAddress = async (newAddress: Address): Promise<Response> => {
-    const actor = getAddressBookActor();
+export const addAddress = async (identity: Identity, newAddress: Address): Promise<Response> => {
+    const actor = getAddressBookActor(identity);
 
     const addResponse = await actor.add({
         name: newAddress.name,
@@ -40,8 +40,8 @@ export const addAddress = async (newAddress: Address): Promise<Response> => {
     return addResponse;
 }
 
-export const removeAddress = async (addressName: string): Promise<Response>=> {
-    const actor = getAddressBookActor();
+export const removeAddress = async (identity: Identity, addressName: string): Promise<Response>=> {
+    const actor = getAddressBookActor(identity);
     
     const removeResponse = await actor.remove(addressName);
     
