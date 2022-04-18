@@ -1,9 +1,16 @@
 const addressBookIDL = ({ IDL }) => {
-    const address_metadata = IDL.Record({
+
+    const valueType = IDL.Variant({
+      'PrincipalId': IDL.Principal,
+      'AccountId': IDL.Text,
+      'Icns': IDL.Text,
+    })
+
+    const address = IDL.Record({
       'name' : IDL.Text,
       'description' : IDL.Opt(IDL.Text),
       'emoji' : IDL.Opt(IDL.Text),
-      'principal_id' : IDL.Principal,
+      'value': valueType,
     });
     const operation_error = IDL.Variant({
       'NotAuthorized' : IDL.Null,
@@ -12,16 +19,16 @@ const addressBookIDL = ({ IDL }) => {
       'NonExistentItem' : IDL.Null,
     });
     const operation_response = IDL.Variant({
-      'Ok' : IDL.Opt(IDL.Text),
+      'Ok' : IDL.Null,
       'Err' : operation_error,
     });
     return IDL.Service({
       'add' : IDL.Func(
-          [address_metadata],
+          [address],
           [operation_response],
           [],
         ),
-      'get_all' : IDL.Func([], [IDL.Vec(address_metadata)], []),
+      'get_all' : IDL.Func([], [IDL.Vec(address)], []),
       'name' : IDL.Func([], [IDL.Text], ['query']),
       'remove' : IDL.Func([IDL.Text], [operation_response], []),
     });
