@@ -36,7 +36,7 @@ const extractMetadataValue = (metadata: any) => {
 };
 
 export default class ERC721 extends NFT {
-  standard = NFTStandard.dip721;
+  standard = NFTStandard.dip721v2;
 
   actor: ActorSubclass<Interface>;
 
