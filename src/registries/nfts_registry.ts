@@ -14,7 +14,7 @@ import DepartureLabs from '../standard_wrappers/nft_standards/departure_labs';
 import NFT from '../standard_wrappers/nft_standards/default';
 import DIP721 from '../standard_wrappers/nft_standards/dip_721';
 
-import {  NFT as NFTStandard } from '../constants/standards';
+import { NFT as NFTStandard } from '../constants/standards';
 import { IC_HOST, KYASSHU_URL } from '../constants';
 
 import IDL from '../idls/dab_registries/nft_registry.did';
@@ -45,33 +45,41 @@ interface GetBatchedNFTsParams {
 }
 
 interface GetNFTActorParams {
-  canisterId: string,
-  standard: string,
-  agent: HttpAgent
+  canisterId: string;
+  standard: string;
+  agent: HttpAgent;
 }
 
 interface GetNFTInfoParams {
-  nftCanisterId: string,
-  agent?: HttpAgent
+  nftCanisterId: string;
+  agent?: HttpAgent;
 }
 
 interface GetAllUserNFTsParams {
   user: string | Principal,
   agent?: HttpAgent,
   debug?: boolean,
+  canisterId?: string,
 }
 
-const DEFAULT_AGENT = new HttpAgent({ fetch, host: IC_HOST })
+const DEFAULT_AGENT = new HttpAgent({ fetch, host: IC_HOST });
 
 export class NFTRegistry extends Registry {
-  constructor(agent?: HttpAgent) {
-    super(CANISTER_ID, agent);
-    this.actor = generateActor({ agent: agent || DEFAULT_AGENT, canisterId: CANISTER_ID, IDL });
+  constructor(agent?: HttpAgent, canisterId?: string) {
+    const cid = canisterId || CANISTER_ID;
+    super(cid, agent);
+    this.actor = generateActor({
+      agent: agent || DEFAULT_AGENT,
+      canisterId: cid,
+      IDL,
+    });
   }
   public getAll = async (): Promise<FormattedMetadata[]> => {
-    const canistersMetadata = await (this.actor as ActorSubclass<NFTRegistryInterface>).get_all();
+    const canistersMetadata = await (
+      this.actor as ActorSubclass<NFTRegistryInterface>
+    ).get_all();
     return canistersMetadata.map(formatMetadata);
-  }
+  };
 }
 
 export const getUserCollectionTokens = async (
@@ -82,13 +90,11 @@ export const getUserCollectionTokens = async (
     debug = false,
     ): Promise<NFTCollection> => {
   try {
-    const NFTActor = getNFTActor(
-      {
-        canisterId: collection.principal_id.toString(),
-        agent,
-        standard: collection.standard
-      }
-    );
+    const NFTActor = getNFTActor({
+      canisterId: collection.principal_id.toString(),
+      agent,
+      standard: collection.standard,
+    });
     const details = await NFTActor.getUserTokens(user);
     const collectionDetails = {
       name: collection.name,
@@ -158,31 +164,43 @@ export const getNFTActor = (
   return new NFT_STANDARDS[standardNormalised](canisterId, agent);
 };
 
-export const getNFTInfo = async (
-  { nftCanisterId,
-    agent = DEFAULT_AGENT }: GetNFTInfoParams
-): Promise<DABCollection | undefined> => {
+export const getNFTInfo = async ({
+  nftCanisterId,
+  agent = DEFAULT_AGENT,
+}: GetNFTInfoParams): Promise<DABCollection | undefined> => {
   const registry = new NFTRegistry(agent);
   const result = await registry.get(nftCanisterId);
   if (!result) return result;
-  return { ...result, icon: result.thumbnail, standard: result.details.standard as string };
+  return {
+    ...result,
+    icon: result.thumbnail,
+    standard: result.details.standard as string,
+  };
 };
 
-export const getAllNFTS = async (
-  { agent = DEFAULT_AGENT }: { agent?: HttpAgent } = {}
-): Promise<DABCollection[]> => {
-  const registry = new NFTRegistry(agent);
+export const getAllNFTS = async ({
+  agent = DEFAULT_AGENT,
+  canisterId,
+}: { agent?: HttpAgent; canisterId?: string } = {}): Promise<
+  DABCollection[]
+> => {
+  const registry = new NFTRegistry(agent, canisterId);
   const allNFTs = await registry.getAll();
-  return allNFTs.map((nft) => ({ ...nft, icon: nft.thumbnail, standard: nft.details.standard as string }));
+  return allNFTs.map((nft) => ({
+    ...nft,
+    icon: nft.thumbnail,
+    standard: nft.details.standard as string,
+  }));
 };
 
 export const getAllUserNFTs = async (
   { user,
     agent = DEFAULT_AGENT,
     debug = false,
+    canisterId,
   }: GetAllUserNFTsParams
 ): Promise<NFTCollection[]> => {
-  const NFTCollections = await getAllNFTS({ agent });
+  const NFTCollections = await getAllNFTS({ agent, canisterId });
   const userPrincipal = user instanceof Principal ? user : Principal.fromText(user);
   
   const result = await Promise.all(
@@ -190,7 +208,6 @@ export const getAllUserNFTs = async (
   );
   return result.filter((element) => element.tokens.length);
 };
-
 
 export const getBatchedNFTs = async ({
   principal,
@@ -201,11 +218,13 @@ export const getBatchedNFTs = async ({
 }: GetBatchedNFTsParams) => {
   const NFTCollections = await getAllNFTS({ agent });
   let result: NFTCollection[] = [];
-  
+
   for (let i = 0; i < NFTCollections.length; i += batchSize) {
     const batch = NFTCollections.slice(i, i + batchSize);
     const batchResult = await Promise.all(
-      batch.map(collection => getUserCollectionTokens(collection, principal, agent, callback)),
+      batch.map((collection) =>
+        getUserCollectionTokens(collection, principal, agent, callback)
+      )
     );
     result = [...result, ...batchResult];
   }
@@ -219,7 +238,7 @@ export const getCachedUserNFTs = async ({ userPID, refresh }: { userPID: string,
   const url = `${KYASSHU_URL}/dab/user/nfts/${userPID}`;
   const result = await axios.get<NFTCollection[]>(url, { params: { refresh } });
   return result.data;
-}
+};
 
 export default {
   getBatchedNFTs,
@@ -229,4 +248,3 @@ export default {
   getAllUserNFTs,
   getCachedUserNFTs,
 };
-
