@@ -4,7 +4,7 @@ import { Actor, ActorSubclass } from '@dfinity/agent';
 import fetch from 'cross-fetch';
 
 import LedgerService from '../../interfaces/ledger';
-import { Metadata } from '../../interfaces/ext';
+import { FungibleMetadata, Metadata } from '../../interfaces/ext';
 import {
   BalanceResponse,
   BurnParams,
@@ -20,14 +20,6 @@ import { TokenRegistry } from '../../registries';
 
 type BaseLedgerService = BaseMethodsExtendedActor<LedgerService>;
 
-const DECIMALS = 8;
-
-const NET_ID = {
-  blockchain: 'Internet Computer',
-  network: '00000000000000020101',
-};
-const ROSETTA_URL = 'https://rosetta-api.internetcomputer.org';
-
 const getMetadata = async (
   _actor: ActorSubclass<BaseLedgerService>
 ): Promise<Metadata> => {
@@ -38,6 +30,7 @@ const getMetadata = async (
       symbol: token?.details?.symbol as string || 'ICP',
       decimals: token?.details?.decimals as number || 8,
       name: token?.name as string || 'ICP',
+      fee: token?.details?.fee as number || 10000,
     },
   };
 };
@@ -46,8 +39,10 @@ const send = async (
   actor: ActorSubclass<BaseLedgerService>,
   { to, amount, opts }: SendParams
 ): Promise<SendResponse> => {
+  const metadata = await getMetadata(actor);
+  const { fee = 0.002, decimals = BigInt(8) } = (metadata as FungibleMetadata)?.fungible || {};
   const defaultArgs = {
-    fee: BigInt(10000),
+    fee: BigInt(fee * (10 ** parseInt(decimals.toString(), 10))),
     memo: BigInt(0),
   };
   const response = await actor._send_dfx({

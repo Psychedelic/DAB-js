@@ -62,6 +62,7 @@ export interface TokenMetaData {
   name: string;
   decimals: number;
   symbol: string;
+  fee?: number;
 }
 
 export type Extension = string;
