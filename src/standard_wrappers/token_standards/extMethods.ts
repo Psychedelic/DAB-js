@@ -44,6 +44,7 @@ const send = async (
     memo: dummyMemmo,
     notify: false,
     subaccount: [],
+    fee: BigInt(0),
   };
 
   const transferResult = await actor._transfer(data);
