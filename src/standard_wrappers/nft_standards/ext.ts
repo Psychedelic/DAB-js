@@ -78,6 +78,7 @@ export default class EXT extends NFT {
       memo: dummyMemmo,
       notify: false,
       subaccount: [],
+      fee: BigInt(0),
     });
     if ('err' in transferResult)
       throw new Error(
