@@ -90,6 +90,7 @@ interface TransferRequest {
   memo: Memo;
   notify: boolean;
   subaccount?: SubAccount;
+  fee: bigint;
 }
 
 type TransferError =
