@@ -19,6 +19,7 @@ import { TOKEN } from '../../constants/standards'
 import wicpIDL from '../../idls/wicp.did';
 import wicpMethods from './wicpMethods';
 import icpMethods from './icpMethods';
+import icpStandardMethods from './icpStandardMethods';
 
 const getMethods = (standard: string): InternalTokenMethods =>
   ({
@@ -26,7 +27,7 @@ const getMethods = (standard: string): InternalTokenMethods =>
     [TOKEN.ext]: extMethods,
     [TOKEN.dip20]: dip20Methods,
     [TOKEN.wicp]: wicpMethods,
-    [TOKEN.icp]: icpMethods,
+    [TOKEN.icp]: icpStandardMethods,
   }[standard] || defaultMethods);
 
 const getIdl = (standard: string): IDL.InterfaceFactory => {
@@ -50,7 +51,7 @@ export const createTokenActor = async <T>(
 
   const actor = (new (createExtendedActorClass(
     agent,
-    getMethods(standard),
+    canisterId === 'ryjl3-tyaaa-aaaaa-aaaba-cai' ? icpMethods : getMethods(standard),
     canisterId,
     idl
   ))() as unknown) as ActorSubclass<TokenServiceExtended<any>>;
