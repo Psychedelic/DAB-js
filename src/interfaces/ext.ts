@@ -62,6 +62,7 @@ export interface TokenMetaData {
   name: string;
   decimals: number;
   symbol: string;
+  fee?: number;
 }
 
 export type Extension = string;
@@ -89,6 +90,7 @@ interface TransferRequest {
   memo: Memo;
   notify: boolean;
   subaccount?: SubAccount;
+  fee: bigint;
 }
 
 type TransferError =

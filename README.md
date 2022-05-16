@@ -7,6 +7,7 @@ This is a JS library that wraps several necessary methods to integrate [DAB's re
 - The NFT Registry
 - The Canister Registry
 - The Token Registry
+- The Address Book
 
 It also includes a **standard wrapper** that unifies several NFT standards (DIP721, EXT, ICPunks, etc...) and token standards (DIP721, EXT, etc..) under a their own common interface.
 

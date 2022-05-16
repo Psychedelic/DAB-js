@@ -52,6 +52,7 @@ export default ({ IDL }) => {
     memo: Memo,
     subaccount: IDL.Opt(SubAccount),
     amount: Balance,
+    fee: IDL.Nat,
   });
   const TransferResult = IDL.Variant({
     ok: Balance,
