@@ -1,22 +1,16 @@
 import { HttpAgent, Actor, Identity } from '@dfinity/agent';
-import fetch from 'cross-fetch';
-import { IC_HOST } from '../constants';
 import AddressBookInterface, { Response, Address } from '../interfaces/dab_registries/address_book';
 import addressBookIDL from '../idls/dab_registries/address_book.did';
 
 const CANISTER_ID = 'i73cm-daaaa-aaaah-abhea-cai';
 
-export const getAddressBookActor = (identity: Identity) => {
-    const agent = new HttpAgent({ fetch, host: IC_HOST, identity })
-    
+export const getAddressBookActor = (agent: HttpAgent) => {
     const actor = Actor.createActor<AddressBookInterface>(addressBookIDL, { agent, canisterId: CANISTER_ID });
-    
     return actor;
 }
 
-export const getAddresses = async (identity: Identity): Promise<Array<Address>> => {
-    const actor = getAddressBookActor(identity);
-
+export const getAddresses = async (agent: HttpAgent): Promise<Array<Address>> => {
+    const actor = getAddressBookActor(agent);
     const addresses = await actor.get_all();
 
     return addresses.map(address => ({
@@ -27,8 +21,8 @@ export const getAddresses = async (identity: Identity): Promise<Array<Address>> 
     }) as Address );
 }
 
-export const addAddress = async (identity: Identity, newAddress: Address): Promise<Response> => {
-    const actor = getAddressBookActor(identity);
+export const addAddress = async (agent: HttpAgent, newAddress: Address): Promise<Response> => {
+    const actor = getAddressBookActor(agent);
 
     const addResponse = await actor.add({
         name: newAddress.name,
@@ -40,8 +34,8 @@ export const addAddress = async (identity: Identity, newAddress: Address): Promi
     return addResponse;
 }
 
-export const removeAddress = async (identity: Identity, addressName: string): Promise<Response>=> {
-    const actor = getAddressBookActor(identity);
+export const removeAddress = async (agent: HttpAgent, addressName: string): Promise<Response>=> {
+    const actor = getAddressBookActor(agent);
     
     const removeResponse = await actor.remove(addressName);
     
