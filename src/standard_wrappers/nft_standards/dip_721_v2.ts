@@ -65,10 +65,7 @@ export default class ERC721 extends NFT {
   }
 
   async transfer(to: Principal, tokenIndex: number): Promise<void> {
-    const from = await this.agent.getPrincipal();
-
-    const transferResult = await this.actor.transferFrom(
-      from,
+    const transferResult = await this.actor.transfer(
       to,
       BigInt(tokenIndex)
     );
