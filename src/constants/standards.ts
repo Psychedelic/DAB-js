@@ -13,7 +13,8 @@ export const NFT = {
   erc721: 'ERC721',
   dip721: 'DIP721',
   dip721v2: 'DIP721v2',
-  c3: 'C3'
+  c3: 'C3',
+  itoka: 'Itoka'
 }
 
 export default {
