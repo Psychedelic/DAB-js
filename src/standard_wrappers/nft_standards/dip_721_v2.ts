@@ -88,10 +88,10 @@ export default class ERC721 extends NFT {
           Object.values(metadataResult.Err)[0]
         }`
       );
-    const metadata = metadataResult.Ok;
+    const metadata = metadataResult?.Ok;
     const formatedMetadata = this.formatMetadata(metadata);
-    const owner = metadata.owner?.[0]?.toText();
-    const operator = metadata.operator?.[0]?.toText();
+    const owner = metadata?.owner?.[0]?.toText?.();
+    const operator = metadata?.operator?.[0]?.toText?.();
 
     return this.serializeTokenData(formatedMetadata, tokenIndex, owner, operator);
   }
@@ -109,6 +109,7 @@ export default class ERC721 extends NFT {
       owner,
       url: metadata?.location?.value?.TextContent || '',
       standard: this.standard,
+      operator,
     };
   }
 

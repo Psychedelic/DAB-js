@@ -42,4 +42,5 @@ export interface NFTDetails {
   standard: string;
   collection?: string;
   owner?: string;
+  operator?: string;
 }
