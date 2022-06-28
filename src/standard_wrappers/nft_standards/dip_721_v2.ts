@@ -55,7 +55,7 @@ export default class ERC721 extends NFT {
     return tokens.map((token) => {
       const tokenIndex = token.token_identifier;
       const formatedMetadata = this.formatMetadata(token);
-      const operator = token.operator[0] ? token.operator[0].toText() : undefined;
+      const operator = token.operator?.[0]?.toText();
 
       return this.serializeTokenData(
         formatedMetadata,
@@ -90,8 +90,8 @@ export default class ERC721 extends NFT {
       );
     const metadata = metadataResult.Ok;
     const formatedMetadata = this.formatMetadata(metadata);
-    const owner = metadata.owner[0] ? metadata.owner[0].toText() : undefined;
-    const operator = metadata.operator[0] ? metadata.operator[0].toText() : undefined;
+    const owner = metadata.owner?.[0]?.toText();
+    const operator = metadata.operator?.[0]?.toText();
 
     return this.serializeTokenData(formatedMetadata, tokenIndex, owner, operator);
   }
