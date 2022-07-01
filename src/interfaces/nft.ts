@@ -32,8 +32,8 @@ export interface NFTCollection {
   description?: string;
 }
 
-export interface NFTDetails {
-  index: bigint;
+export interface NFTDetails<idT = number> {
+  index: idT;
   canister: string;
   id?: string;
   name?: string;
