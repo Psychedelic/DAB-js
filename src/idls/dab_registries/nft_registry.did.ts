@@ -21,6 +21,12 @@ export default ({ IDL }) => {
     'details' : IDL.Vec(IDL.Tuple(IDL.Text, detail_value)),
     'principal_id' : IDL.Principal,
   });
+  const paginated_nft_canisters = IDL.Record({
+    'offset': IDL.Nat64,
+    'limit': IDL.Nat64,
+    'amount': IDL.Nat64,
+    'nft_canisters': IDL.Vec(nft_canister),
+  });
   const operation_error = IDL.Variant({
     'NotAuthorized' : IDL.Null,
     'BadParameters' : IDL.Null,
@@ -35,6 +41,7 @@ export default ({ IDL }) => {
     'add' : IDL.Func([nft_canister], [operation_response], []),
     'get' : IDL.Func([IDL.Principal], [IDL.Opt(nft_canister)], ['query']),
     'get_all' : IDL.Func([], [IDL.Vec(nft_canister)], ['query']),
+    'get_all_paginated' : IDL.Func([IDL.Nat64, IDL.Nat64], [paginated_nft_canisters], 'query'),
     'name' : IDL.Func([], [IDL.Text], ['query']),
     'remove' : IDL.Func([IDL.Principal], [operation_response], []),
     'set_controller' : IDL.Func([IDL.Principal], [operation_response], []),

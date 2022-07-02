@@ -19,6 +19,12 @@ export interface NFTCanisterMetadata {
   'principal_id' : Principal,
   'details' : Array<[string, DetailValue]>,
 }
+export interface PaginatedNftCanisters {
+  'offset': number,
+  'limit': number,
+  'amount': number,
+  'nft_canisters': Array<NFTCanisterMetadata>,
+}
 export type Error = { 'NotAuthorized' : null } |
 { 'BadParameters' : null } |
 { 'Unknown' : string } |
@@ -36,6 +42,7 @@ export default interface NFTRegistryInterface extends RegistryStandard {
     ) => Promise<Response>,
   'get' : (arg_0: Principal) => Promise<[] | [NFTCanisterMetadata]>,
   'get_all' : () => Promise<Array<NFTCanisterMetadata>>,
+  'get_all_paginated': (arg_0: number, arg_1: number) => Promise<PaginatedNftCanisters>
   'name' : () => Promise<string>,
   'remove' : (arg_0: Principal) => Promise<Response>,
   'set_controller' : (arg_0: Principal) => Promise<Response>,
