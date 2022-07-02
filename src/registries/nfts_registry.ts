@@ -22,6 +22,8 @@ import Registry from './standard_registry';
 import { generateActor } from '../utils/actorFactory';
 import { formatMetadata, FormattedMetadata } from '../utils/registry';
 import CCC from '../standard_wrappers/nft_standards/ccc';
+import Itoka from '../standard_wrappers/nft_standards/itoka';
+
 
 const CANISTER_ID = 'ctqxp-yyaaa-aaaah-abbda-cai';
 const BATCH_AMOUNT = 5;
@@ -33,7 +35,8 @@ const NFT_STANDARDS: { [key: string]: NFTStandards } = {
   [NFTStandard.erc721]: DIP721,
   [NFTStandard.dip721]: DIP721,
   [NFTStandard.dip721v2]: DIP721v2,
-  [NFTStandard.c3]: CCC
+  [NFTStandard.c3]: CCC,
+  [NFTStandard.itoka]: Itoka
 };
 
 interface GetBatchedNFTsParams {

@@ -6,6 +6,7 @@ import DIP721v2 from '../standard_wrappers/nft_standards/dip_721_v2';
 import EXT from '../standard_wrappers/nft_standards/ext';
 import CCC from '../standard_wrappers/nft_standards/ccc';
 import ICPunks from '../standard_wrappers/nft_standards/ic_punks';
+import Itoka from '../standard_wrappers/nft_standards/itoka';
 
 export type NFTStandards =
   | typeof EXT
@@ -13,7 +14,8 @@ export type NFTStandards =
   | typeof DepartureLabs
   | typeof DIP721
   | typeof DIP721v2
-  | typeof CCC;
+  | typeof CCC
+  | typeof Itoka;
 
 export interface DABCollection {
   icon: string;

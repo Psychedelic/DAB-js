@@ -16,4 +16,6 @@ export const NFT_CANISTERS = {
     'f5zsx-wqaaa-aaaaf-qaeha-cai',
     'f2yud-3iaaa-aaaaf-qaehq-cai',
   ],
+  ITOKA: '4y4bz-6aaaa-aaaai-acj4a-cai',
+  ITOKA_ASSETS: '5avu2-qaaaa-aaaai-acjya-cai',
 };
