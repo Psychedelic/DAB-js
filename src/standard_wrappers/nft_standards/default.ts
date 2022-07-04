@@ -3,7 +3,7 @@ import { Principal } from '@dfinity/principal';
 
 import { NFTDetails } from '../../interfaces/nft';
 
-export default abstract class NFT<Tid = number> {
+export default abstract class NFT<Tid = number, Tindex = bigint> {
   abstract standard: string;
 
   agent: HttpAgent;
@@ -15,9 +15,9 @@ export default abstract class NFT<Tid = number> {
     this.canisterId = canisterId;
   }
 
-  abstract getUserTokens(principal: Principal): Promise<NFTDetails<Tid>[]>;
+  abstract getUserTokens(principal: Principal): Promise<NFTDetails<Tindex>[]>;
 
   abstract transfer(principal: Principal, tokenIndex: Tid): Promise<void>;
 
-  abstract details(tokenIndex: Tid ): Promise<NFTDetails<Tid>>;
+  abstract details(tokenIndex: Tid ): Promise<NFTDetails<Tindex>>;
 }

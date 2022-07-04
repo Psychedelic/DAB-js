@@ -594,7 +594,7 @@ export interface Nft_Canister {
   '__advance_time' : ActorMethod<[bigint], bigint>,
   '__set_time_mode' : ActorMethod<
     [{ 'test' : null } | { 'standard' : null }],
-    boolean,
+    boolean
     >,
   'balance' : ActorMethod<[BalanceRequest], BalanceResponse__1>,
   'balanceEXT' : ActorMethod<[BalanceRequest], BalanceResponse__1>,
@@ -607,12 +607,12 @@ export interface Nft_Canister {
   'bid_nft_origyn' : ActorMethod<[BidRequest], Result_16>,
   'canister_status' : ActorMethod<
     [{ 'canister_id' : canister_id }],
-    canister_status,
+    canister_status
     >,
   'chunk_nft_origyn' : ActorMethod<[ChunkRequest], Result_15>,
   'collection_nft_origyn' : ActorMethod<
     [[] | [Array<[string, [] | [bigint], [] | [bigint]]>]],
-    Result_14,
+    Result_14
     >,
   'collection_update_origyn' : ActorMethod<[CollectionUpdateRequest], Result_9>,
   'current_log' : ActorMethod<[], Array<LogEntry>>,
@@ -631,36 +631,36 @@ export interface Nft_Canister {
   'harvest_log' : ActorMethod<[bigint], Array<Array<LogEntry>>>,
   'history_nft_origyn' : ActorMethod<
     [string, [] | [bigint], [] | [bigint]],
-    Result_10,
+    Result_10
     >,
   'http_access_key' : ActorMethod<[], Result_2>,
   'http_request' : ActorMethod<[HttpRequest], HTTPResponse>,
   'http_request_streaming_callback' : ActorMethod<
     [StreamingCallbackToken],
-    StreamingCallbackResponse,
+    StreamingCallbackResponse
     >,
   'log_history_page' : ActorMethod<[bigint], Array<LogEntry>>,
   'log_history_page_chunk' : ActorMethod<
     [bigint, bigint, bigint],
-    Array<LogEntry>,
+    Array<LogEntry>
     >,
   'log_history_size' : ActorMethod<[], bigint>,
   'manage_nft_origyn' : ActorMethod<[ManageCommand], Result_9>,
   'manage_storage_nft_origyn' : ActorMethod<[ManageStorageRequest], Result_8>,
   'market_transfer_batch_nft_origyn' : ActorMethod<
     [Array<MarketTransferRequest>],
-    Array<Result_7>,
+    Array<Result_7>
     >,
   'market_transfer_nft_origyn' : ActorMethod<[MarketTransferRequest], Result_7>,
   'metadata' : ActorMethod<[TokenIdentifier], Result_6>,
   'mint__batch_nft_origyn' : ActorMethod<
     [Array<[string, Account]>],
-    Array<Result_2>,
+    Array<Result_2>
     >,
   'mint_nft_origyn' : ActorMethod<[string, Account], Result_2>,
   'nftStreamingCallback' : ActorMethod<
     [StreamingCallbackToken],
-    StreamingCallbackResponse,
+    StreamingCallbackResponse
     >,
   'nft_batch_origyn' : ActorMethod<[Array<string>], Array<Result_5>>,
   'nft_origyn' : ActorMethod<[string], Result_5>,
@@ -671,7 +671,7 @@ export interface Nft_Canister {
   'set_log_harvester_id' : ActorMethod<[Principal], undefined>,
   'stage_batch_nft_origyn' : ActorMethod<
     [Array<{ 'metadata' : CandyValue }>],
-    Array<Result_2>,
+    Array<Result_2>
     >,
   'stage_library_nft_origyn' : ActorMethod<[StageChunkArg], Result_3>,
   'stage_nft_origyn' : ActorMethod<[{ 'metadata' : CandyValue }], Result_2>,
@@ -713,7 +713,6 @@ export type PricingConfig = {
       'decay_per_hour' : number,
     }
   };
-export type Principal = Principal;
 export interface Property {
   'value' : CandyValue,
   'name' : string,
