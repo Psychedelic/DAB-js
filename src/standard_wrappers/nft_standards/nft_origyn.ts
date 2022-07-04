@@ -74,7 +74,7 @@ export default class NFTOrigyn extends NFT<string, string> {
     return {
       index: tokenID,
       canister: this.canisterId,
-      url: `https://${this.canisterId}.raw.ic0.app/token/${tokenID}`, // add "/info" for metadata route
+      url: `https://${this.canisterId}.raw.ic0.app/-/${tokenID}`, // add "/info" for metadata route
       name: tokenID,
       metadata: metadata,
       standard: this.standard,
