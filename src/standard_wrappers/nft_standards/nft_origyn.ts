@@ -49,8 +49,11 @@ export default class NFTOrigyn extends NFT<string, string> {
     }
     const escrow = balance.ok.escrow.find(({token_id}) => token_id === tokenIndex);
     if (!escrow) {
+      // This error occurs if no pending escrows for this NFT exist (see market_transfer_nft_origyn comment)
       throw new Error("No pending escrows for transfer.");
     }
+    // market transfer relies on escrow(payment) existing for NFT, to only be able to sell NFTs directly thru canister
+    // there is owner_transfer_nft_origyn which take "from" and "to" params, but that method is not preferred
     const transferResult = await this.actor.market_transfer_nft_origyn({
       'token_id' : tokenIndex,
       'sales_config' : {
