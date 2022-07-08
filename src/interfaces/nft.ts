@@ -6,11 +6,13 @@ import DIP721v2 from '../standard_wrappers/nft_standards/dip_721_v2';
 import EXT from '../standard_wrappers/nft_standards/ext';
 import CCC from '../standard_wrappers/nft_standards/ccc';
 import ICPunks from '../standard_wrappers/nft_standards/ic_punks';
+import NFTOrigyn from "../standard_wrappers/nft_standards/nft_origyn";
 
 export type NFTStandards =
   | typeof EXT
   | typeof ICPunks
   | typeof DepartureLabs
+  | typeof NFTOrigyn
   | typeof DIP721
   | typeof DIP721v2
   | typeof CCC;
@@ -27,13 +29,13 @@ export interface NFTCollection {
   name: string;
   canisterId: string;
   standard: string;
-  tokens: NFTDetails[];
+  tokens: NFTDetails<bigint | string>[];
   icon?: string;
   description?: string;
 }
 
-export interface NFTDetails {
-  index: bigint;
+export interface NFTDetails<idT = bigint> {
+  index: idT;
   canister: string;
   id?: string;
   name?: string;
