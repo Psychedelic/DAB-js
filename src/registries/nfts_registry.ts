@@ -9,6 +9,7 @@ import { DABCollection } from '../interfaces/dab_nfts';
 
 import EXT from '../standard_wrappers/nft_standards/ext';
 import ICPunks from '../standard_wrappers/nft_standards/ic_punks';
+import NFTOrigyn from '../standard_wrappers/nft_standards/nft_origyn';
 import DepartureLabs from '../standard_wrappers/nft_standards/departure_labs';
 import NFT from '../standard_wrappers/nft_standards/default';
 import DIP721 from '../standard_wrappers/nft_standards/dip_721';
@@ -29,6 +30,7 @@ const BATCH_AMOUNT = 5;
 const NFT_STANDARDS: { [key: string]: NFTStandards } = {
   [NFTStandard.ext]: EXT,
   [NFTStandard.icpunks]: ICPunks,
+  [NFTStandard.nftOrigyn]: NFTOrigyn,
   [NFTStandard.departuresLabs]: DepartureLabs,
   [NFTStandard.erc721]: DIP721,
   [NFTStandard.dip721]: DIP721,
@@ -120,11 +122,11 @@ export const getUserCollectionTokens = async (
   }
 };
 
-export const getNFTActor = ({
-  canisterId,
-  agent,
-  standard,
-}: GetNFTActorParams): NFT => {
+export const getNFTActor = (
+  { canisterId,
+    agent,
+    standard }: GetNFTActorParams
+): NFT<number | string, bigint | string> => {
   if (!(standard in NFT_STANDARDS)) {
     console.error(`Standard ${standard} is not implemented`);
     throw new Error(`standard is not supported: ${standard}`);

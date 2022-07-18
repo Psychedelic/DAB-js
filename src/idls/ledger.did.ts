@@ -44,7 +44,7 @@ export default ({ IDL }) => {
       send_dfx: IDL.Func([SendArgs], [BlockHeight], []),
     });
   };
-  export const init = ({ IDL }) => {
+export const init = ({ IDL }) => {
     const AccountIdentifier = IDL.Text;
     const Duration = IDL.Record({ secs: IDL.Nat64, nanos: IDL.Nat32 });
     const ArchiveOptions = IDL.Record({
@@ -63,4 +63,3 @@ export default ({ IDL }) => {
     });
     return [LedgerCanisterInitPayload];
   };
-  
