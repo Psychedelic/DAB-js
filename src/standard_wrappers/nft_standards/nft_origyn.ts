@@ -30,10 +30,8 @@ export default class NFTOrigyn extends NFT<string, string> {
     }
     const tokensData = await Promise.all(
       tokensIndexes.ok.nfts.map(async (item) => {
-        const tokenIndex = item[0]
-        const principal = item[1]
-        const userTokensResult = await this.actor.nft_origyn(tokenIndex);
-        if ('err' in userTokensResult)
+        const userTokensResult = await this.actor.nft_origyn(item);
+        if ('err' in userTokensResult) 
           throw new Error(Object.keys(userTokensResult.err)[0]);
         return {detail: userTokensResult, principal};
       })
