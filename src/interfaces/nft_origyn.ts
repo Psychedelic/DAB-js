@@ -596,6 +596,7 @@ export interface Nft_Canister {
     [{ 'test' : null } | { 'standard' : null }],
     boolean
     >,
+  '__supports' : ActorMethod<[], Array<[string, string]>>,
   'balance' : ActorMethod<[BalanceRequest], BalanceResponse__1>,
   'balanceEXT' : ActorMethod<[BalanceRequest], BalanceResponse__1>,
   'balanceOfDip721' : ActorMethod<[Principal], bigint>,
@@ -617,13 +618,14 @@ export interface Nft_Canister {
   'collection_update_origyn' : ActorMethod<[CollectionUpdateRequest], Result_9>,
   'current_log' : ActorMethod<[], Array<LogEntry>>,
   'cycles' : ActorMethod<[], bigint>,
+  'end_sale_batch_nft_origyn' : ActorMethod<[Array<string>], Array<Result_13>>,
   'end_sale_nft_origyn' : ActorMethod<[string], Result_13>,
   'escrow_nft_origyn' : ActorMethod<[EscrowRequest], Result_12>,
   'getEXTTokenIdentifier' : ActorMethod<[string], string>,
   'get_access_key' : ActorMethod<[], Result_2>,
-  'get_canister_managers_nft_origyn' : ActorMethod<[], Array<Principal>>,
-  'get_canister_network_nft_origyn' : ActorMethod<[], [] | [Principal]>,
-  'get_canister_owner_nft_origyn' : ActorMethod<[], Principal>,
+  'get_collection_managers_nft_origyn' : ActorMethod<[], Array<Principal>>,
+  'get_collection_network_nft_origyn' : ActorMethod<[], [] | [Principal]>,
+  'get_collection_owner_nft_origyn' : ActorMethod<[], Principal>,
   'get_nat_as_token_id_origyn' : ActorMethod<[bigint], string>,
   'get_owner_soulbound' : ActorMethod<[CandyValue], boolean>,
   'get_storage_metrics' : ActorMethod<[], Result_11>,
@@ -653,7 +655,7 @@ export interface Nft_Canister {
     >,
   'market_transfer_nft_origyn' : ActorMethod<[MarketTransferRequest], Result_7>,
   'metadata' : ActorMethod<[TokenIdentifier], Result_6>,
-  'mint__batch_nft_origyn' : ActorMethod<
+  'mint_batch_nft_origyn' : ActorMethod<
     [Array<[string, Account]>],
     Array<Result_2>
     >,
@@ -672,6 +674,10 @@ export interface Nft_Canister {
   'stage_batch_nft_origyn' : ActorMethod<
     [Array<{ 'metadata' : CandyValue }>],
     Array<Result_2>
+    >,
+  'stage_library_batch_nft_origyn' : ActorMethod<
+    [Array<StageChunkArg>],
+    Array<Result_3>
     >,
   'stage_library_nft_origyn' : ActorMethod<[StageChunkArg], Result_3>,
   'stage_nft_origyn' : ActorMethod<[{ 'metadata' : CandyValue }], Result_2>,
@@ -784,6 +790,7 @@ export interface StakeRecord {
 }
 export interface StorageMetrics {
   'available_space' : bigint,
+  'allocations' : Array<AllocationRecordStable>,
   'allocated_storage' : bigint,
 }
 export interface StreamingCallbackResponse {
