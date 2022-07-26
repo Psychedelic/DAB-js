@@ -319,10 +319,10 @@
   dependencies:
     "@cspotcode/source-map-consumer" "0.8.0"
 
-"@dfinity/agent@^0.11.1":
-  "integrity" "sha512-Z1zw8l3d+AG3uu7d8G/Rd9Q5MWT9gB+Cori/Rqb6IjSEribRhL36ulCSkDYZJU/dhqSUp1VlvX5u51+wgv+MLg=="
-  "resolved" "https://registry.npmjs.org/@dfinity/agent/-/agent-0.11.1.tgz"
-  "version" "0.11.1"
+"@dfinity/agent@^0.12.1":
+  "integrity" "sha512-/KSKh248k4pjzvqCzIgYNNi3pTv+DBZ40+QiTBQeFzp6VEg3gfSv5bK2UwC0Plq9xwk7TeeeGLiTv6DI3RjCOQ=="
+  "resolved" "https://registry.npmjs.org/@dfinity/agent/-/agent-0.12.1.tgz"
+  "version" "0.12.1"
   dependencies:
     "base64-arraybuffer" "^0.2.0"
     "bignumber.js" "^9.0.0"
@@ -330,15 +330,15 @@
     "js-sha256" "0.9.0"
     "simple-cbor" "^0.4.1"
 
-"@dfinity/candid@^0.11.1":
-  "integrity" "sha512-EYZZg+x7OgZxa56D9SWMeTlaMb09HJ7wIfL42+l/e0lgrx+sTXYxKe8bM9FrUW9AWo9/gKkOGV/IxJL/Acncng=="
-  "resolved" "https://registry.npmjs.org/@dfinity/candid/-/candid-0.11.1.tgz"
-  "version" "0.11.1"
+"@dfinity/candid@^0.12.1":
+  "integrity" "sha512-YX8jfyy/8Qmz4f1mbjqXUqOmtYcGru1gfYWxlRhKFSkeLH0VeZkfPEmD6EQ25k+18ATPk83MQiZnu0b6AWxBUw=="
+  "resolved" "https://registry.npmjs.org/@dfinity/candid/-/candid-0.12.1.tgz"
+  "version" "0.12.1"
 
-"@dfinity/identity@^0.11.1":
-  "integrity" "sha512-at8BMq2cQSEvfBWh0NM81b0cwkHLiJJNEqd6wMkDEHFDVayZzOgJrpBgU9JY52q4JCp5Ow6xcR2DVfhgVZrD/g=="
-  "resolved" "https://registry.npmjs.org/@dfinity/identity/-/identity-0.11.1.tgz"
-  "version" "0.11.1"
+"@dfinity/identity@^0.12.1":
+  "integrity" "sha512-FNrjV4/gG9PjQfGLIoH1DycqSAMaoTZCxB+cSVJRFCvGQKc3F3kn5tj6rIv9LV+NNV1f1qfmTXE8rYsMCmEecg=="
+  "resolved" "https://registry.npmjs.org/@dfinity/identity/-/identity-0.12.1.tgz"
+  "version" "0.12.1"
   dependencies:
     "@types/webappsec-credential-management" "^0.6.2"
     "borc" "^2.1.1"
@@ -346,10 +346,10 @@
     "secp256k1" "^4.0.2"
     "tweetnacl" "^1.0.1"
 
-"@dfinity/principal@^0.11.1":
-  "integrity" "sha512-TlYkwq0fLwmY24X/vrw8mXNRYTkelkM0R5wGjhgK7au24zn7lcXYW3HG+se8YYWFICYY4prI1cS8/6N9z14qjg=="
-  "resolved" "https://registry.npmjs.org/@dfinity/principal/-/principal-0.11.1.tgz"
-  "version" "0.11.1"
+"@dfinity/principal@^0.12.1":
+  "integrity" "sha512-aL5y0mpzRex6LRSc4LUZyhn2GTFfHyxkakkOZxEM7+ecz8HsKKK+mSo78gL1TCso2QkCL4BqZzxnoIxxKqM1cw=="
+  "resolved" "https://registry.npmjs.org/@dfinity/principal/-/principal-0.12.1.tgz"
+  "version" "0.12.1"
 
 "@eslint/eslintrc@^0.4.3":
   "integrity" "sha512-J6KFFz5QCYUJq3pf0mjEcCJVERbzv71PUIDczuh9JkwGEzced6CO5ADLHB1rbf/+oPBtoPfMYNOpGDzCANlbXw=="
