@@ -18,7 +18,7 @@ import icpIDL from '../../idls/ledger.did';
 import { TOKEN } from '../../constants/standards'
 import wicpIDL from '../../idls/wicp.did';
 import wicpMethods from './wicpMethods';
-import icpMethods from './icpMethods';
+import rosettaMethods from './rosettaMethods';
 import icpStandardMethods from './icpStandardMethods';
 
 const getMethods = (standard: string): InternalTokenMethods =>
@@ -27,6 +27,7 @@ const getMethods = (standard: string): InternalTokenMethods =>
     [TOKEN.ext]: extMethods,
     [TOKEN.dip20]: dip20Methods,
     [TOKEN.wicp]: wicpMethods,
+    [TOKEN.rosetta]: rosettaMethods,
     [TOKEN.icp]: icpStandardMethods,
   }[standard] || defaultMethods);
 
@@ -36,6 +37,7 @@ const getIdl = (standard: string): IDL.InterfaceFactory => {
     [TOKEN.ext]: extIDL,
     [TOKEN.dip20]: dip20IDL,
     [TOKEN.wicp]: wicpIDL,
+    [TOKEN.rosetta]: icpIDL,
     [TOKEN.icp]: icpIDL
   }[standard];
   if (!idl) throw new Error(`Standard ${standard} Not Implemented`);
@@ -45,13 +47,12 @@ const getIdl = (standard: string): IDL.InterfaceFactory => {
 export const createTokenActor = async <T>(
   canisterId: string | Principal,
   agent: HttpAgent,
-  standard: string
+  standard: string,
 ): Promise<ActorSubclass<TokenServiceExtended<T>>> => {
   const idl = getIdl(standard);
-
   const actor = (new (createExtendedActorClass(
     agent,
-    canisterId === 'ryjl3-tyaaa-aaaaa-aaaba-cai' ? icpMethods : getMethods(standard),
+    getMethods(standard),
     canisterId,
     idl
   ))() as unknown) as ActorSubclass<TokenServiceExtended<any>>;
