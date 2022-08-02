@@ -18,9 +18,10 @@ interface CanisterMetadata {
   description: string;
   version: number;
   logo_url: string;
+  canisterId: string;
 }
 
-const formatBackwardsCompatible = (metadata?: FormattedMetadata): CanisterMetadata | undefined => {
+const formatBackwardsCompatible = (metadata?: FormattedMetadata): Omit<CanisterMetadata, 'canisterId'> | undefined => {
   if (!metadata) {
     return metadata;
   }
@@ -47,7 +48,8 @@ export const getCanisterInfo = async ({
   }): Promise<CanisterMetadata | undefined> => {
     const canisterRegistry = new CanisterRegistry(agent);
     const canister = await canisterRegistry.get(Principal.from(canisterId).toString());
-    return formatBackwardsCompatible(canister);
+    const formattedCanister = formatBackwardsCompatible(canister);
+    return formattedCanister && { ...formattedCanister, canisterId: canisterId.toString() };
   };
 
 export const getMultipleCanisterInfo = async ({
