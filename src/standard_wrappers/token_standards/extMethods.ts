@@ -1,7 +1,8 @@
 import { ActorSubclass, Actor } from '@dfinity/agent';
 import { Principal } from '@dfinity/principal';
 
-import ExtService, { Metadata } from '../../interfaces/ext';
+import ExtService from '../../interfaces/ext';
+import { Metadata } from '../../interfaces/token';
 import { BaseMethodsExtendedActor } from '../../utils/actorFactory';
 import {
   BalanceResponse,
