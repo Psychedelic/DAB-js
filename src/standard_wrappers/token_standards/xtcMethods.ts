@@ -3,7 +3,7 @@ import { Principal } from '@dfinity/principal';
 import { ActorSubclass } from '@dfinity/agent';
 
 import XtcService, { BurnResult } from '../../interfaces/xtc';
-import { Metadata } from '../../interfaces/ext';
+import { Metadata } from '../../interfaces/token';
 import {
   BalanceResponse,
   BurnParams,
@@ -26,6 +26,7 @@ const getMetadata = async (
       symbol: metadataResult.symbol,
       decimals: metadataResult.decimals,
       name: metadataResult.name,
+      logo: metadataResult.logo,
     },
   };
 };

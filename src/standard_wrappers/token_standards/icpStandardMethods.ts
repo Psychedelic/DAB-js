@@ -4,7 +4,7 @@ import { Actor, ActorSubclass } from '@dfinity/agent';
 import fetch from 'cross-fetch';
 
 import LedgerService from '../../interfaces/ledger';
-import { FungibleMetadata, Metadata } from '../../interfaces/ext';
+import { FungibleMetadata, Metadata } from '../../interfaces/token';
 import {
   BalanceResponse,
   BurnParams,
@@ -42,7 +42,7 @@ const send = async (
   const metadata = await getMetadata(actor);
   const { fee = 0.002, decimals = BigInt(8) } = (metadata as FungibleMetadata)?.fungible || {};
   const defaultArgs = {
-    fee: BigInt(fee * (10 ** parseInt(decimals.toString(), 10))),
+    fee: BigInt((fee as number) * (10 ** parseInt(decimals.toString(), 10))),
     memo: BigInt(0),
   };
   const response = await actor._send_dfx({

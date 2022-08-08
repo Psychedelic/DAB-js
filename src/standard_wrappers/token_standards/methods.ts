@@ -1,7 +1,7 @@
 import { ActorSubclass } from '@dfinity/agent';
 import { Principal } from '@dfinity/principal';
 
-import { Metadata } from '../../interfaces/ext';
+import { Metadata } from '../../interfaces/token';
 import { BurnResult } from '../../interfaces/xtc';
 import { BaseMethodsExtendedActor } from '../../utils/actorFactory';
 
