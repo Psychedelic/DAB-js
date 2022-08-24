@@ -21,6 +21,11 @@ export default class DepartureLabs extends NFT {
     });
   }
 
+  async metadata() {
+    const contractInfo = await this.actor.getContractInfo();
+    return contractInfo;
+  }
+
   async getUserTokens(principal: Principal): Promise<NFTDetails[]> {
     const tokensIndexes = await this.actor.balanceOf(principal);
     const tokensData = await Promise.all(

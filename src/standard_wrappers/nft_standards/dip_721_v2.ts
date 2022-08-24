@@ -35,7 +35,7 @@ const extractMetadataValue = (metadata: any) => {
   return typeof value === 'object' ? JSON.stringify(value) : value;
 };
 
-export default class ERC721 extends NFT {
+export default class DIP721v2 extends NFT {
   standard = NFTStandard.dip721v2;
 
   actor: ActorSubclass<Interface>;
@@ -47,6 +47,12 @@ export default class ERC721 extends NFT {
       agent,
       canisterId,
     });
+  }
+
+  async metadata(): Promise<Metadata> {
+    const metadataResult = await this.actor.metadata();
+    const metadata = metadataResult['Ok'] || {};
+    return this.formatMetadata(metadata);
   }
 
   async getUserTokens(principal: Principal): Promise<NFTDetails[]> {
