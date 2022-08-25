@@ -1,4 +1,6 @@
 import type { Principal } from '@dfinity/principal';
+import type { ActorMethod } from '@dfinity/agent';
+
 export type GenericValue = { 'Nat64Content' : bigint } |
   { 'Nat32Content' : number } |
   { 'BoolContent' : boolean } |
@@ -16,6 +18,7 @@ export type GenericValue = { 'Nat64Content' : bigint } |
   { 'Principal' : Principal } |
   { 'TextContent' : string };
 export interface InitArgs {
+  'cap' : [] | [Principal],
   'logo' : [] | [string],
   'name' : [] | [string],
   'custodians' : [] | [Array<Principal>],
@@ -35,18 +38,14 @@ export type ManualReply_2 = { 'Ok' : Array<TokenMetadata> } |
   { 'Err' : NftError };
 export type ManualReply_3 = { 'Ok' : TokenMetadata } |
   { 'Err' : NftError };
-export type ManualReply_4 = { 'Ok' : TxEvent } |
-  { 'Err' : NftError };
 export type NftError = { 'UnauthorizedOperator' : null } |
   { 'SelfTransfer' : null } |
   { 'TokenNotFound' : null } |
   { 'UnauthorizedOwner' : null } |
-  { 'TxNotFound' : null } |
   { 'SelfApprove' : null } |
   { 'OperatorNotFound' : null } |
   { 'ExistedNFT' : null } |
-  { 'OwnerNotFound' : null } |
-  { 'Other' : string };
+  { 'OwnerNotFound' : null };
 export type Result = { 'Ok' : bigint } |
   { 'Err' : NftError };
 export type Result_1 = { 'Ok' : boolean } |
@@ -59,10 +58,8 @@ export interface Stats {
   'total_unique_holders' : bigint,
   'total_supply' : bigint,
 }
-export type SupportedInterface = { 'Burn' : null } |
-  { 'Mint' : null } |
-  { 'Approval' : null } |
-  { 'TransactionHistory' : null };
+export type SupportedInterface = { 'Mint' : null } |
+  { 'Approval' : null };
 export interface TokenMetadata {
   'transferred_at' : [] | [bigint],
   'transferred_by' : [] | [Principal],
@@ -77,12 +74,6 @@ export interface TokenMetadata {
   'burned_by' : [] | [Principal],
   'minted_at' : bigint,
   'minted_by' : Principal,
-}
-export interface TxEvent {
-  'time' : bigint,
-  'operation' : string,
-  'details' : Array<[string, GenericValue]>,
-  'caller' : Principal,
 }
 export type Vec = Array<
   [
@@ -105,46 +96,40 @@ export type Vec = Array<
       { 'TextContent' : string },
   ]
 >;
-export default interface _SERVICE {
-  'approve' : (arg_0: Principal, arg_1: bigint) => Promise<Result>,
-  'balanceOf' : (arg_0: Principal) => Promise<Result>,
-  'burn' : (arg_0: bigint) => Promise<Result>,
-  'custodians' : () => Promise<Array<Principal>>,
-  'cycles' : () => Promise<bigint>,
-  'isApprovedForAll' : (arg_0: Principal, arg_1: Principal) => Promise<
-      Result_1
-    >,
-  'logo' : () => Promise<[] | [string]>,
-  'metadata' : () => Promise<ManualReply>,
-  'mint' : (
-      arg_0: Principal,
-      arg_1: bigint,
-      arg_2: Array<[string, GenericValue]>,
-    ) => Promise<Result>,
-  'name' : () => Promise<[] | [string]>,
-  'operatorOf' : (arg_0: bigint) => Promise<Result_2>,
-  'operatorTokenIdentifiers' : (arg_0: Principal) => Promise<ManualReply_1>,
-  'operatorTokenMetadata' : (arg_0: Principal) => Promise<ManualReply_2>,
-  'ownerOf' : (arg_0: bigint) => Promise<Result_2>,
-  'ownerTokenIdentifiers' : (arg_0: Principal) => Promise<ManualReply_1>,
-  'ownerTokenMetadata' : (arg_0: Principal) => Promise<ManualReply_2>,
-  'setApprovalForAll' : (arg_0: Principal, arg_1: boolean) => Promise<Result>,
-  'setCustodians' : (arg_0: Array<Principal>) => Promise<undefined>,
-  'setLogo' : (arg_0: string) => Promise<undefined>,
-  'setName' : (arg_0: string) => Promise<undefined>,
-  'setSymbol' : (arg_0: string) => Promise<undefined>,
-  'stats' : () => Promise<Stats>,
-  'supportedInterfaces' : () => Promise<Array<SupportedInterface>>,
-  'symbol' : () => Promise<[] | [string]>,
-  'tokenMetadata' : (arg_0: bigint) => Promise<ManualReply_3>,
-  'totalSupply' : () => Promise<bigint>,
-  'totalTransactions' : () => Promise<bigint>,
-  'totalUniqueHolders' : () => Promise<bigint>,
-  'transaction' : (arg_0: bigint) => Promise<ManualReply_4>,
-  'transfer' : (arg_0: Principal, arg_1: bigint) => Promise<Result>,
-  'transferFrom' : (
-      arg_0: Principal,
-      arg_1: Principal,
-      arg_2: bigint,
-    ) => Promise<Result>,
+export interface _SERVICE {
+  'dfx_info' : ActorMethod<[], string>,
+  'dip721_approve' : ActorMethod<[Principal, bigint], Result>,
+  'dip721_balance_of' : ActorMethod<[Principal], Result>,
+  'dip721_custodians' : ActorMethod<[], Array<Principal>>,
+  'dip721_cycles' : ActorMethod<[], bigint>,
+  'dip721_is_approved_for_all' : ActorMethod<[Principal, Principal], Result_1>,
+  'dip721_logo' : ActorMethod<[], [] | [string]>,
+  'dip721_metadata' : ActorMethod<[], ManualReply>,
+  'dip721_mint' : ActorMethod<
+    [Principal, bigint, Array<[string, GenericValue]>],
+    Result,
+  >,
+  'dip721_name' : ActorMethod<[], [] | [string]>,
+  'dip721_operator_of' : ActorMethod<[bigint], Result_2>,
+  'dip721_operator_token_identifiers' : ActorMethod<[Principal], ManualReply_1>,
+  'dip721_operator_token_metadata' : ActorMethod<[Principal], ManualReply_2>,
+  'dip721_owner_of' : ActorMethod<[bigint], Result_2>,
+  'dip721_owner_token_identifiers' : ActorMethod<[Principal], ManualReply_1>,
+  'dip721_owner_token_metadata' : ActorMethod<[Principal], ManualReply_2>,
+  'dip721_set_approval_for_all' : ActorMethod<[Principal, boolean], Result>,
+  'dip721_set_custodians' : ActorMethod<[Array<Principal>], undefined>,
+  'dip721_set_logo' : ActorMethod<[string], undefined>,
+  'dip721_set_name' : ActorMethod<[string], undefined>,
+  'dip721_set_symbol' : ActorMethod<[string], undefined>,
+  'dip721_stats' : ActorMethod<[], Stats>,
+  'dip721_supported_interfaces' : ActorMethod<[], Array<SupportedInterface>>,
+  'dip721_symbol' : ActorMethod<[], [] | [string]>,
+  'dip721_token_metadata' : ActorMethod<[bigint], ManualReply_3>,
+  'dip721_total_supply' : ActorMethod<[], bigint>,
+  'dip721_total_transactions' : ActorMethod<[], bigint>,
+  'dip721_total_unique_holders' : ActorMethod<[], bigint>,
+  'dip721_transfer' : ActorMethod<[Principal, bigint], Result>,
+  'dip721_transfer_from' : ActorMethod<[Principal, Principal, bigint], Result>,
+  'git_commit_hash' : ActorMethod<[], string>,
+  'rust_toolchain_info' : ActorMethod<[], string>,
 }
