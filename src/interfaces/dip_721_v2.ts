@@ -96,7 +96,7 @@ export type Vec = Array<
       { 'TextContent' : string },
   ]
 >;
-export interface _SERVICE {
+export default interface _SERVICE {
   'dfx_info' : ActorMethod<[], string>,
   'dip721_approve' : ActorMethod<[Principal, bigint], Result>,
   'dip721_balance_of' : ActorMethod<[Principal], Result>,
@@ -107,7 +107,7 @@ export interface _SERVICE {
   'dip721_metadata' : ActorMethod<[], ManualReply>,
   'dip721_mint' : ActorMethod<
     [Principal, bigint, Array<[string, GenericValue]>],
-    Result,
+    Result
   >,
   'dip721_name' : ActorMethod<[], [] | [string]>,
   'dip721_operator_of' : ActorMethod<[bigint], Result_2>,
