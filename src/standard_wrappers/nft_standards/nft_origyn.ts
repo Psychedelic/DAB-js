@@ -8,8 +8,12 @@ import IDL from '../../idls/nft_origyn.did';
 import NFT from './default';
 import {NFTDetails} from '../../interfaces/nft';
 import {NFT as NFTStandard} from '../../constants/standards';
+import { MetadataReturn } from '../../interfaces/dip_721';
 
 export default class NFTOrigyn extends NFT<string, string> {
+  getMetadata(_tokenIdentifier: string): Promise<MetadataReturn> {
+    throw new Error('Method not implemented.');
+  }
   standard = NFTStandard.nftOrigyn;
 
   actor: ActorSubclass<NFT_Origyn>;

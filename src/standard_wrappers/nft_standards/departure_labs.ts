@@ -6,6 +6,7 @@ import IDL from '../../idls/departure_labs.did';
 import NFT from './default';
 import { NFTDetails } from '../../interfaces/nft';
 import { NFT as NFTStandard} from '../../constants/standards';
+import { MetadataReturn } from '../../interfaces/dip_721';
 
 export default class DepartureLabs extends NFT {
   standard = NFTStandard.departuresLabs;
@@ -21,9 +22,10 @@ export default class DepartureLabs extends NFT {
     });
   }
 
-  async metadata() {
-    const contractInfo = await this.actor.getContractInfo();
-    return contractInfo;
+  async getMetadata(): Promise<MetadataReturn> {
+    const metadataResult = await this.actor.getMetadata();
+    const metadata = metadataResult['Ok'] || {};
+    return metadata;
   }
 
   async getUserTokens(principal: Principal): Promise<NFTDetails[]> {

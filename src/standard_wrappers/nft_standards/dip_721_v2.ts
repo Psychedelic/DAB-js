@@ -10,6 +10,7 @@ import IDL from '../../idls/dip_721_v2.did';
 import NFT from './default';
 import { NFT as NFTStandard } from '../../constants/standards';
 import { ok } from 'assert';
+import { MetadataReturn } from '../../interfaces/dip_721';
 
 interface Property {
   name: string;
@@ -49,10 +50,10 @@ export default class DIP721v2 extends NFT {
     });
   }
 
-  async metadata(): Promise<Metadata> {
+  async getMetadata(): Promise<MetadataReturn> {
     const metadataResult = await this.actor.metadata();
     const metadata = metadataResult['Ok'] || {};
-    return this.formatMetadata(metadata);
+    return metadata;
   }
 
   async getUserTokens(principal: Principal): Promise<NFTDetails[]> {

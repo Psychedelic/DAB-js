@@ -9,6 +9,7 @@ import { getAccountId } from '../../utils/account';
 import { to32bits } from '../../utils/number';
 import { NFT_CANISTERS } from '../../constants/canisters';
 import { NFT as NFTStandard} from '../../constants/standards';
+import { MetadataReturn } from '../../interfaces/dip_721';
 
 const getTokenIdentifier = (canister: string, index: number): string => {
   const padding = Buffer.from('\x0Atid');
@@ -63,6 +64,12 @@ export default class EXT extends NFT {
         tokenIndex
       );
     });
+  }
+
+  async getMetadata(tokenIdentifier): Promise<MetadataReturn> {
+    const metadataResult = await this.actor.metadata(tokenIdentifier);
+    const metadata = metadataResult['Ok'] || {};
+    return metadata;
   }
 
   async transfer(to: Principal, tokenIndex: number): Promise<void> {

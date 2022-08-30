@@ -1,5 +1,5 @@
 {
-  "name": "@psychedelic/dab-js",
+  "name": "@psychedelic/dab-js-test",
   "version": "1.4.6",
   "description": "JS adapter for DAB",
   "main": "dist/index.js",

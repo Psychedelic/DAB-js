@@ -6,9 +6,13 @@ import IDL from '../../idls/c3.did';
 import NFT from './default';
 import { NFTDetails } from '../../interfaces/nft';
 import { NFT as NFTStandard} from '../../constants/standards';
+import { MetadataReturn } from '../../interfaces/dip_721';
 
 
 export default class CCC extends NFT {
+  getMetadata(_tokenIdentifier: string): Promise<MetadataReturn> {
+    throw new Error('Method not implemented.');
+  }
   standard = NFTStandard.c3;
 
   actor: ActorSubclass<NFT_C3>;
