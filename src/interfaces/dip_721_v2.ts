@@ -16,6 +16,7 @@ export type GenericValue = { 'Nat64Content' : bigint } |
   { 'Principal' : Principal } |
   { 'TextContent' : string };
 export interface InitArgs {
+  'cap' : [] | [Principal],
   'logo' : [] | [string],
   'name' : [] | [string],
   'custodians' : [] | [Array<Principal>],
@@ -35,18 +36,14 @@ export type ManualReply_2 = { 'Ok' : Array<TokenMetadata> } |
   { 'Err' : NftError };
 export type ManualReply_3 = { 'Ok' : TokenMetadata } |
   { 'Err' : NftError };
-export type ManualReply_4 = { 'Ok' : TxEvent } |
-  { 'Err' : NftError };
 export type NftError = { 'UnauthorizedOperator' : null } |
   { 'SelfTransfer' : null } |
   { 'TokenNotFound' : null } |
   { 'UnauthorizedOwner' : null } |
-  { 'TxNotFound' : null } |
   { 'SelfApprove' : null } |
   { 'OperatorNotFound' : null } |
   { 'ExistedNFT' : null } |
-  { 'OwnerNotFound' : null } |
-  { 'Other' : string };
+  { 'OwnerNotFound' : null };
 export type Result = { 'Ok' : bigint } |
   { 'Err' : NftError };
 export type Result_1 = { 'Ok' : boolean } |
@@ -61,8 +58,7 @@ export interface Stats {
 }
 export type SupportedInterface = { 'Burn' : null } |
   { 'Mint' : null } |
-  { 'Approval' : null } |
-  { 'TransactionHistory' : null };
+  { 'Approval' : null };
 export interface TokenMetadata {
   'transferred_at' : [] | [bigint],
   'transferred_by' : [] | [Principal],
@@ -77,12 +73,6 @@ export interface TokenMetadata {
   'burned_by' : [] | [Principal],
   'minted_at' : bigint,
   'minted_by' : Principal,
-}
-export interface TxEvent {
-  'time' : bigint,
-  'operation' : string,
-  'details' : Array<[string, GenericValue]>,
-  'caller' : Principal,
 }
 export type Vec = Array<
   [
@@ -111,6 +101,8 @@ export default interface _SERVICE {
   'burn' : (arg_0: bigint) => Promise<Result>,
   'custodians' : () => Promise<Array<Principal>>,
   'cycles' : () => Promise<bigint>,
+  'dfxInfo' : () => Promise<string>,
+  'gitCommitHash' : () => Promise<string>,
   'isApprovedForAll' : (arg_0: Principal, arg_1: Principal) => Promise<
       Result_1
     >,
@@ -128,6 +120,7 @@ export default interface _SERVICE {
   'ownerOf' : (arg_0: bigint) => Promise<Result_2>,
   'ownerTokenIdentifiers' : (arg_0: Principal) => Promise<ManualReply_1>,
   'ownerTokenMetadata' : (arg_0: Principal) => Promise<ManualReply_2>,
+  'rustToolchainInfo' : () => Promise<string>,
   'setApprovalForAll' : (arg_0: Principal, arg_1: boolean) => Promise<Result>,
   'setCustodians' : (arg_0: Array<Principal>) => Promise<undefined>,
   'setLogo' : (arg_0: string) => Promise<undefined>,
@@ -140,7 +133,6 @@ export default interface _SERVICE {
   'totalSupply' : () => Promise<bigint>,
   'totalTransactions' : () => Promise<bigint>,
   'totalUniqueHolders' : () => Promise<bigint>,
-  'transaction' : (arg_0: bigint) => Promise<ManualReply_4>,
   'transfer' : (arg_0: Principal, arg_1: bigint) => Promise<Result>,
   'transferFrom' : (
       arg_0: Principal,

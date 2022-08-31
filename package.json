@@ -1,7 +1,7 @@
 {
   "name": "@psychedelic/dab-js-test",
-  "version": "1.4.6",
-  "description": "JS adapter for DAB",
+  "version": "1.4.11",
+  "description": "Internal development version for testing dab-js",
   "main": "dist/index.js",
   "repository": {
     "type": "git",

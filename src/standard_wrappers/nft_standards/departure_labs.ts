@@ -4,7 +4,7 @@ import { Principal } from '@dfinity/principal';
 import NFT_DEPARTURE_LABS, { Metadata } from '../../interfaces/departure_labs';
 import IDL from '../../idls/departure_labs.did';
 import NFT from './default';
-import { NFTDetails } from '../../interfaces/nft';
+import { NFTCollection, NFTDetails } from '../../interfaces/nft';
 import { NFT as NFTStandard} from '../../constants/standards';
 import { MetadataReturn } from '../../interfaces/dip_721';
 
@@ -22,12 +22,9 @@ export default class DepartureLabs extends NFT {
     });
   }
 
-  async getMetadata(): Promise<MetadataReturn> {
-    const metadataResult = await this.actor.getMetadata();
-    const metadata = metadataResult['Ok'] || {};
-    return metadata;
+  getMetadata(): Promise<NFTCollection> {
+    throw new Error('Method not implemented.');
   }
-
   async getUserTokens(principal: Principal): Promise<NFTDetails[]> {
     const tokensIndexes = await this.actor.balanceOf(principal);
     const tokensData = await Promise.all(

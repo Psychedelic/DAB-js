@@ -1,7 +1,7 @@
 import { Actor, ActorSubclass, HttpAgent } from '@dfinity/agent';
 import { Principal } from '@dfinity/principal';
 
-import { NFTDetails } from '../../interfaces/nft';
+import { NFTCollection, NFTDetails } from '../../interfaces/nft';
 import Interface, {
   TokenMetadata,
   GenericValue,
@@ -50,10 +50,17 @@ export default class DIP721v2 extends NFT {
     });
   }
 
-  async getMetadata(): Promise<MetadataReturn> {
-    const metadataResult = await this.actor.metadata();
-    const metadata = metadataResult['Ok'] || {};
-    return metadata;
+  async getMetadata(): Promise<NFTCollection> {
+    const metadata = await this.actor.metadata();
+    console.log('metadata result de 721v2 -> ', metadata);
+    return {
+      icon: metadata?.logo[0],
+      name: metadata?.name?.[0] || '',
+      standard: this.standard,
+      canisterId: this.canisterId,
+      tokens: [],
+      description: '',
+    }
   }
 
   async getUserTokens(principal: Principal): Promise<NFTDetails[]> {

@@ -6,14 +6,11 @@ import NFT_Origyn, {
 } from '../../interfaces/nft_origyn';
 import IDL from '../../idls/nft_origyn.did';
 import NFT from './default';
-import {NFTDetails} from '../../interfaces/nft';
+import {NFTDetails, NFTCollection} from '../../interfaces/nft';
 import {NFT as NFTStandard} from '../../constants/standards';
 import { MetadataReturn } from '../../interfaces/dip_721';
 
 export default class NFTOrigyn extends NFT<string, string> {
-  getMetadata(_tokenIdentifier: string): Promise<MetadataReturn> {
-    throw new Error('Method not implemented.');
-  }
   standard = NFTStandard.nftOrigyn;
 
   actor: ActorSubclass<NFT_Origyn>;
@@ -45,6 +42,9 @@ export default class NFTOrigyn extends NFT<string, string> {
     return tokensData.map((token) => this.serializeTokenData(token.detail));
   }
 
+  getMetadata(): Promise<NFTCollection> {
+    throw new Error('Method not implemented.');
+  }
   async transfer(to: Principal, tokenIndex: string): Promise<void> {
     const from = await this.agent.getPrincipal();
     const balance = await this.actor.balance_of_nft_origyn({principal: to});
