@@ -52,7 +52,6 @@ export default class DIP721v2 extends NFT {
 
   async getMetadata(): Promise<NFTCollection> {
     const metadata = await this.actor.metadata();
-    console.log('metadata result de 721v2 -> ', metadata);
     return {
       icon: metadata?.logo[0],
       name: metadata?.name?.[0] || '',
