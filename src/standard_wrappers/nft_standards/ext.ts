@@ -1,7 +1,7 @@
 import { Actor, ActorSubclass, HttpAgent } from '@dfinity/agent';
 import { Principal } from '@dfinity/principal';
 
-import { NFTDetails } from '../../interfaces/nft';
+import { NFTCollection, NFTDetails } from '../../interfaces/nft';
 import NTF_EXT from '../../interfaces/ext';
 import IDL from '../../idls/ext.did';
 import NFT from './default';
@@ -9,6 +9,7 @@ import { getAccountId } from '../../utils/account';
 import { to32bits } from '../../utils/number';
 import { NFT_CANISTERS } from '../../constants/canisters';
 import { NFT as NFTStandard} from '../../constants/standards';
+import { MetadataReturn } from '../../interfaces/dip_721';
 
 const getTokenIdentifier = (canister: string, index: number): string => {
   const padding = Buffer.from('\x0Atid');
@@ -63,6 +64,10 @@ export default class EXT extends NFT {
         tokenIndex
       );
     });
+  }
+
+  getMetadata(): Promise<NFTCollection> {
+    throw new Error('Method not implemented.');
   }
 
   async transfer(to: Principal, tokenIndex: number): Promise<void> {

@@ -4,9 +4,10 @@ import { Principal } from '@dfinity/principal';
 import NFT_ICPUNKS, { TokenDesc } from '../../interfaces/icpunks';
 import IDL from '../../idls/icpunks.did';
 import NFT from './default';
-import { NFTDetails } from '../../interfaces/nft';
+import { NFTCollection, NFTDetails } from '../../interfaces/nft';
 import { NFT_CANISTERS } from '../../constants/canisters';
 import { NFT as NFTStandard} from '../../constants/standards';
+import { MetadataReturn } from '../../interfaces/dip_721';
 
 const getICPBunnyCanisterId = (index) =>
   NFT_CANISTERS.ICP_BUNNY_STORAGE[index % 10];
@@ -18,6 +19,9 @@ const imageUrl = (canisterId: string, index: number, tokenDataUrl: string) =>
     )}.raw.ic0.app/Token/${index}`,
   }[canisterId] || `https://${canisterId}.raw.ic0.app${tokenDataUrl}`);
 export default class ICPUNKS extends NFT {
+  getMetadata(): Promise<NFTCollection> {
+    throw new Error('Method not implemented.');
+  }
   standard = NFTStandard.icpunks;
 
   actor: ActorSubclass<NFT_ICPUNKS>;

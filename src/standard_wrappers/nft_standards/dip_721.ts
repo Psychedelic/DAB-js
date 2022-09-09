@@ -1,8 +1,8 @@
 import { Actor, ActorSubclass, HttpAgent } from '@dfinity/agent';
 import { Principal } from '@dfinity/principal';
 
-import { NFTDetails } from '../../interfaces/nft';
-import Interface, { MetadataPart, MetadataVal, MetadataPurpose } from '../../interfaces/dip_721';
+import { NFTCollection, NFTDetails } from '../../interfaces/nft';
+import Interface, { MetadataPart, MetadataVal, MetadataReturn, TokenIdentifier } from '../../interfaces/dip_721';
 import IDL from '../../idls/dip_721.did';
 import NFT from './default';
 import { NFT as NFTStandard} from '../../constants/standards';
@@ -60,6 +60,11 @@ export default class ERC721 extends NFT {
         }`
       );
   }
+
+  getMetadata(): Promise<NFTCollection> {
+    throw new Error('Method not implemented.');
+  }
+
 
   async details(tokenIndex: number): Promise<NFTDetails> {
     const metadataResult = await this.actor.getMetadataDip721(BigInt(tokenIndex));
