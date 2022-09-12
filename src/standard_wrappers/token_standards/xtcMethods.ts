@@ -27,6 +27,9 @@ const getMetadata = async (
       decimals: metadataResult.decimals,
       name: metadataResult.name,
       logo: metadataResult.logo,
+      fee: metadataResult.fee,
+      totalSupply: metadataResult.totalSupply,
+      owner: metadataResult.owner,
     },
   };
 };
