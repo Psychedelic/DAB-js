@@ -35,6 +35,7 @@ const getMetadata = async (
       symbol: 'ICP',
       decimals: DECIMALS,
       name: 'ICP',
+      fee: 10000,
     },
   };
 };
