@@ -26,12 +26,16 @@ const getMetadata = async (
   const agent = Actor.agentOf(_actor) as HttpAgent;
   const tokenRegistry = new TokenRegistry(agent);
   const token = await tokenRegistry.get(Actor.canisterIdOf(_actor).toString());
+  const { fee = 0.0001, decimals = 8 } = token?.details || {};
+  const numberFee = Number(fee?.toString?.());
+  const numberDecimals = Number(decimals?.toString?.());
+  const parsedFee = numberFee * 10 ** numberDecimals;
   return {
     fungible: {
       symbol: (token?.details?.symbol as string) || 'ICP',
-      decimals: (token?.details?.decimals as number) || 8,
       name: (token?.name as string) || 'ICP',
-      fee: (token?.details?.fee as number) || 10000,
+      decimals: numberDecimals,
+      fee: parsedFee,
     },
   };
 };
