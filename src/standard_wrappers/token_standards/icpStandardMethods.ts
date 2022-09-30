@@ -24,20 +24,33 @@ const getMetadata = async (
   _actor: ActorSubclass<BaseLedgerService>
 ): Promise<Metadata> => {
   const agent = Actor.agentOf(_actor) as HttpAgent;
-  const tokenRegistry = new TokenRegistry(agent);
-  const token = await tokenRegistry.get(Actor.canisterIdOf(_actor).toString());
-  const { fee = 0.002, decimals = 8 } = token?.details || {};
-  const numberFee = Number(fee?.toString?.());
-  const numberDecimals = Number(decimals?.toString?.());
-  const parsedFee = numberFee * 10 ** numberDecimals;
-  return {
-    fungible: {
-      symbol: (token?.details?.symbol as string) || 'ICP',
-      name: (token?.name as string) || 'ICP',
-      decimals: numberDecimals,
-      fee: parsedFee,
-    },
-  };
+  try {
+    const tokenRegistry = new TokenRegistry(agent);
+    const token = await tokenRegistry.get(Actor.canisterIdOf(_actor).toString());
+    const { fee = 0.002, decimals = 8 } = token?.details || {};
+    const numberFee = Number(fee?.toString?.());
+    const numberDecimals = Number(decimals?.toString?.());
+    const parsedFee = numberFee * 10 ** numberDecimals;
+    return {
+      fungible: {
+        symbol: (token?.details?.symbol as string) || 'ICP',
+        name: (token?.name as string) || 'ICP',
+        decimals: numberDecimals,
+        fee: parsedFee,
+      },
+    };
+  } catch(e) {
+    console.error('Error while fetching token metadata, falling back to default values', e);
+    // Fallback to default ICP values when dab is unavailable
+    return {
+      fungible: {
+        symbol: 'ICP',
+        name: 'ICP',
+        decimals: 8,
+        fee: 10000,
+      },
+    };;
+  }
 };
 
 const send = async (
