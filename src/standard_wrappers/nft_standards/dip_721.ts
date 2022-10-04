@@ -34,6 +34,12 @@ const extractMetadataValue = (metadata: any) => {
   return typeof value === 'object' ? JSON.stringify(value) : value;
 };
 
+const deprecationWarningForDip721LegacyRequests = ({
+  methodName
+}: {
+  methodName: string,
+}) => `Oops! An attempt to ${methodName} failed, a fallback to legacy will be used. Legacy DIP721 contract support will be dropped soon, the contract should be updated`
+
 export default class ERC721 extends NFT {
   standard = NFTStandard.dip721;
 
@@ -49,8 +55,24 @@ export default class ERC721 extends NFT {
   }
 
   async getUserTokens(principal: Principal): Promise<NFTDetails[]> {
-    const userTokensResult = await this.actor.dip721_owner_token_identifiers(principal);
+    const userTokensResult = await (async () => {
+      let res;
+
+      try {
+        res = await this.actor.dip721_owner_token_identifiers(principal);
+      } catch (err) {
+        deprecationWarningForDip721LegacyRequests({
+          methodName: 'dip721_owner_token_identifiers',
+        });
+
+        res = await this.actor.ownerTokenMetadata(principal);
+      }
+
+      return res;
+    })();
+
     const tokens: Array<TokenMetadata> = userTokensResult['Ok'] || [];
+
     return tokens.map((token) => {
       const tokenIndex = token.token_identifier;
       const formatedMetadata = this.formatMetadata(token);
@@ -66,10 +88,28 @@ export default class ERC721 extends NFT {
   }
 
   async transfer(to: Principal, tokenIndex: number): Promise<void> {
-    const transferResult = await this.actor.dip721_transfer(
-      to,
-      BigInt(tokenIndex)
-    );
+    const transferResult = await (async () => {
+      let res;
+
+      try {
+        res = await this.actor.dip721_transfer(
+          to,
+          BigInt(tokenIndex)
+        );
+      } catch (err) {
+        deprecationWarningForDip721LegacyRequests({
+          methodName: 'dip721_transfer',
+        });
+
+        res = await this.actor.transfer(
+          to,
+          BigInt(tokenIndex)
+        );
+      }
+
+      return res;
+    })();
+
     if ('Err' in transferResult)
       throw new Error(
         `${Object.keys(transferResult.Err)[0]}: ${
@@ -79,7 +119,21 @@ export default class ERC721 extends NFT {
   }
 
   async details(tokenIndex: number): Promise<NFTDetails> {
-    const metadataResult = await this.actor.dip721_token_metadata(BigInt(tokenIndex));
+    const metadataResult = await (async () => {
+      let res;
+
+      try {
+        res = await this.actor.dip721_token_metadata(BigInt(tokenIndex))
+      } catch (err) {
+        deprecationWarningForDip721LegacyRequests({
+          methodName: 'dip721_token_metadata',
+        });
+
+        res = await this.actor.tokenMetadata(BigInt(tokenIndex));
+      }
+
+      return res;
+    })();
 
     if ('Err' in metadataResult)
       throw new Error(
