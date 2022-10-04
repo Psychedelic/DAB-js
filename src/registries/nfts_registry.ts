@@ -184,11 +184,8 @@ export const getBatchedNFTs = async ({
 };
 
 export const getCachedUserNFTs = async ({ userPID, refresh }: { userPID: string, refresh?: boolean }): Promise<NFTCollection[]> => {
-  const url = `${KYASSHU_URL}/dab/user/nfts/${userPID}${refresh ? '?refresh=true' : ''}`;
-  const result = await axios.get<NFTCollection[]>(url);
-  if (!refresh)
-    axios.get(`${url}?refresh=true`).catch(console.warn);
-
+  const url = `${KYASSHU_URL}/dab/user/nfts/${userPID}`;
+  const result = await axios.get<NFTCollection[]>(url, { params: { refresh } });
   return result.data;
 }
 
