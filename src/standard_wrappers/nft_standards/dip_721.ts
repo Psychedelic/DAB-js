@@ -1,12 +1,12 @@
 import { Actor, ActorSubclass, HttpAgent } from '@dfinity/agent';
 import { Principal } from '@dfinity/principal';
 
-import { NFTCollection, NFTDetails } from '../../interfaces/nft';
+import { NFTDetails } from '../../interfaces/nft';
 import Interface, {
   TokenMetadata,
   GenericValue,
 } from '../../interfaces/dip_721';
-import IDL from '../../idls/dip_721.did';
+import IDL from '../../idls/dip_721_v2.did';
 import NFT from './default';
 import { NFT as NFTStandard } from '../../constants/standards';
 
@@ -34,8 +34,8 @@ const extractMetadataValue = (metadata: any) => {
   return typeof value === 'object' ? JSON.stringify(value) : value;
 };
 
-export default class DIP721v2 extends NFT {
-  standard = NFTStandard.dip721v2;
+export default class ERC721 extends NFT {
+  standard = NFTStandard.dip721;
 
   actor: ActorSubclass<Interface>;
 
@@ -48,20 +48,8 @@ export default class DIP721v2 extends NFT {
     });
   }
 
-  async getMetadata(): Promise<NFTCollection> {
-    const metadata = await this.actor.metadata();
-    return {
-      icon: metadata?.logo[0],
-      name: metadata?.name?.[0] || '',
-      standard: this.standard,
-      canisterId: this.canisterId,
-      tokens: [],
-      description: '',
-    }
-  }
-
   async getUserTokens(principal: Principal): Promise<NFTDetails[]> {
-    const userTokensResult = await this.actor.ownerTokenMetadata(principal);
+    const userTokensResult = await this.actor.dip721_owner_token_identifiers(principal);
     const tokens: Array<TokenMetadata> = userTokensResult['Ok'] || [];
     return tokens.map((token) => {
       const tokenIndex = token.token_identifier;
@@ -78,7 +66,7 @@ export default class DIP721v2 extends NFT {
   }
 
   async transfer(to: Principal, tokenIndex: number): Promise<void> {
-    const transferResult = await this.actor.transfer(
+    const transferResult = await this.actor.dip721_transfer(
       to,
       BigInt(tokenIndex)
     );
@@ -91,7 +79,7 @@ export default class DIP721v2 extends NFT {
   }
 
   async details(tokenIndex: number): Promise<NFTDetails> {
-    const metadataResult = await this.actor.tokenMetadata(BigInt(tokenIndex));
+    const metadataResult = await this.actor.dip721_token_metadata(BigInt(tokenIndex));
 
     if ('Err' in metadataResult)
       throw new Error(

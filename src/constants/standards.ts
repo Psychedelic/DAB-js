@@ -13,7 +13,6 @@ export const NFT = {
   departuresLabs: 'DepartureLabs',
   erc721: 'ERC721',
   dip721: 'DIP721',
-  dip721v2: 'DIP721v2',
   c3: 'C3',
   nftOrigyn: 'nftOrigyn'
 }
