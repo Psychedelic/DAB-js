@@ -13,7 +13,6 @@ import NFTOrigyn from '../standard_wrappers/nft_standards/nft_origyn';
 import DepartureLabs from '../standard_wrappers/nft_standards/departure_labs';
 import NFT from '../standard_wrappers/nft_standards/default';
 import DIP721 from '../standard_wrappers/nft_standards/dip_721';
-import DIP721v2 from '../standard_wrappers/nft_standards/dip_721_v2';
 
 import {  NFT as NFTStandard } from '../constants/standards';
 import { IC_HOST, KYASSHU_URL } from '../constants';
@@ -34,7 +33,6 @@ const NFT_STANDARDS: { [key: string]: NFTStandards } = {
   [NFTStandard.departuresLabs]: DepartureLabs,
   [NFTStandard.erc721]: DIP721,
   [NFTStandard.dip721]: DIP721,
-  [NFTStandard.dip721v2]: DIP721v2,
   [NFTStandard.c3]: CCC
 };
 
