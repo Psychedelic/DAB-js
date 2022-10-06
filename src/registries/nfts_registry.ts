@@ -114,16 +114,38 @@ export const getUserCollectionTokens = async (
   }
 };
 
+const standardNormaliser = ({
+  standard
+}: {
+  standard: string
+}) => {
+  if (standard.toUpperCase().startsWith('DIP721')) {
+    console.warn(`Warning! Use the term DIP721, not ${standard}, suffixed and others are being deprecated and support will be dropped soon!`);
+
+    return NFTStandard.dip721;
+  }
+
+  return standard;
+};
+
 export const getNFTActor = (
   { canisterId,
     agent,
     standard }: GetNFTActorParams
 ): NFT<number | string, bigint | string> => {
-  if (!(standard in NFT_STANDARDS)) {
-    console.error(`Standard ${standard} is not implemented`);
-    throw new Error(`standard is not supported: ${standard}`);
+  // We might need to override deprecated standards
+  // which is computed by the standardNormaliser
+  const standardNormalised = standardNormaliser({
+    standard,
+  });
+
+  if (!(standardNormalised in NFT_STANDARDS)) {
+    console.error(`Standard ${standardNormalised} is not implemented`);
+
+    throw new Error(`standard is not supported: ${standardNormalised}`);
   }
-  return new NFT_STANDARDS[standard](canisterId, agent);
+
+  return new NFT_STANDARDS[standardNormalised](canisterId, agent);
 };
 
 export const getNFTInfo = async (
