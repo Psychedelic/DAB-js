@@ -119,7 +119,16 @@ const standardNormaliser = ({
 }: {
   standard: string
 }) => {
-  if (standard.toUpperCase().startsWith('DIP721')) {
+  const hasDip721Term = (() => {
+    const userStandardNormalised = standard.toUpperCase();
+    const systemStandardNormalised = NFTStandard.dip721.toUpperCase();
+    const startsWithDip721 = userStandardNormalised.startsWith(systemStandardNormalised);
+    const hasSuffix = userStandardNormalised.split(systemStandardNormalised).length > 1;
+
+    return startsWithDip721 && hasSuffix;
+  })();
+  
+  if (hasDip721Term) {
     console.warn(`Warning! Use the term DIP721, not ${standard}, suffixed and others are being deprecated and support will be dropped soon!`);
 
     return NFTStandard.dip721;
