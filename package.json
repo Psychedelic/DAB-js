@@ -1,6 +1,6 @@
 {
   "name": "@psychedelic/dab-js",
-  "version": "1.4.6-custom-202210111816-e11956f",
+  "version": "1.4.6-custom-202210121238-fb4c418",
   "description": "JS adapter for DAB",
   "main": "dist/index.js",
   "repository": {
