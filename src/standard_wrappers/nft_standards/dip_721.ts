@@ -1,7 +1,7 @@
 import { Actor, ActorSubclass, HttpAgent } from '@dfinity/agent';
 import { Principal } from '@dfinity/principal';
 
-import { NFTDetails } from '../../interfaces/nft';
+import { NFTCollection, NFTDetails } from '../../interfaces/nft';
 import Interface, {
   TokenMetadata,
   GenericValue,
@@ -183,5 +183,18 @@ export default class ERC721 extends NFT {
         !['location', 'thumbnail', 'contentHash', 'contentType'].includes(name)
     );
     return metadataResult;
+  }
+
+  async getMetadata(): Promise<NFTCollection> {
+    const metadata = await this.actor.metadata();
+
+    return {
+      icon: metadata?.logo[0],
+      name: metadata?.name?.[0] || '',
+      standard: this.standard,
+      canisterId: this.canisterId,
+      tokens: [],
+      description: '',
+    }
   }
 }
