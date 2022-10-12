@@ -6,7 +6,7 @@ import Interface, {
   TokenMetadata,
   GenericValue,
 } from '../../interfaces/dip_721';
-import IDL from '../../idls/dip_721_v2.did';
+import IDL from '../../idls/dip_721.did';
 import NFT from './default';
 import { NFT as NFTStandard } from '../../constants/standards';
 
