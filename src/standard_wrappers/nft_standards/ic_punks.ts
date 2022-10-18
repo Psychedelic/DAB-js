@@ -7,7 +7,6 @@ import NFT from './default';
 import { NFTCollection, NFTDetails } from '../../interfaces/nft';
 import { NFT_CANISTERS } from '../../constants/canisters';
 import { NFT as NFTStandard} from '../../constants/standards';
-import { MetadataReturn } from '../../interfaces/dip_721';
 
 const getICPBunnyCanisterId = (index) =>
   NFT_CANISTERS.ICP_BUNNY_STORAGE[index % 10];

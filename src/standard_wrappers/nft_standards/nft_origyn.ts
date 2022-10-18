@@ -8,7 +8,6 @@ import IDL from '../../idls/nft_origyn.did';
 import NFT from './default';
 import {NFTDetails, NFTCollection} from '../../interfaces/nft';
 import {NFT as NFTStandard} from '../../constants/standards';
-import { MetadataReturn } from '../../interfaces/dip_721';
 
 export default class NFTOrigyn extends NFT<string, string> {
   standard = NFTStandard.nftOrigyn;

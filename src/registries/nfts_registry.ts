@@ -13,7 +13,6 @@ import NFTOrigyn from '../standard_wrappers/nft_standards/nft_origyn';
 import DepartureLabs from '../standard_wrappers/nft_standards/departure_labs';
 import NFT from '../standard_wrappers/nft_standards/default';
 import DIP721 from '../standard_wrappers/nft_standards/dip_721';
-import DIP721v2 from '../standard_wrappers/nft_standards/dip_721_v2';
 
 import {  NFT as NFTStandard } from '../constants/standards';
 import { IC_HOST, KYASSHU_URL } from '../constants';
@@ -34,7 +33,6 @@ const NFT_STANDARDS: { [key: string]: NFTStandards } = {
   [NFTStandard.departuresLabs]: DepartureLabs,
   [NFTStandard.erc721]: DIP721,
   [NFTStandard.dip721]: DIP721,
-  [NFTStandard.dip721v2]: DIP721v2,
   [NFTStandard.c3]: CCC
 };
 
@@ -116,16 +114,47 @@ export const getUserCollectionTokens = async (
   }
 };
 
+const standardNormaliser = ({
+  standard
+}: {
+  standard: string
+}) => {
+  const hasDip721Term = (() => {
+    const userStandardNormalised = standard.toUpperCase();
+    const systemStandardNormalised = NFTStandard.dip721.toUpperCase();
+    const startsWithDip721 = userStandardNormalised.startsWith(systemStandardNormalised);
+    const hasSuffix = userStandardNormalised.split(systemStandardNormalised).length > 1;
+
+    return startsWithDip721 && hasSuffix;
+  })();
+  
+  if (hasDip721Term) {
+    console.warn(`Warning! Use the term DIP721, not ${standard}, suffixed and others are being deprecated and support will be dropped soon!`);
+
+    return NFTStandard.dip721;
+  }
+
+  return standard;
+};
+
 export const getNFTActor = (
   { canisterId,
     agent,
     standard }: GetNFTActorParams
 ): NFT<number | string, bigint | string> => {
-  if (!(standard in NFT_STANDARDS)) {
-    console.error(`Standard ${standard} is not implemented`);
-    throw new Error(`standard is not supported: ${standard}`);
+  // We might need to override deprecated standards
+  // which is computed by the standardNormaliser
+  const standardNormalised = standardNormaliser({
+    standard,
+  });
+
+  if (!(standardNormalised in NFT_STANDARDS)) {
+    console.error(`Standard ${standardNormalised} is not implemented`);
+
+    throw new Error(`standard is not supported: ${standardNormalised}`);
   }
-  return new NFT_STANDARDS[standard](canisterId, agent);
+
+  return new NFT_STANDARDS[standardNormalised](canisterId, agent);
 };
 
 export const getNFTInfo = async (
