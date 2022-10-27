@@ -71,13 +71,18 @@ export default class ERC721 extends NFT {
   }
 
   async getUserTokens(principal: Principal): Promise<NFTDetails[]> {
-    const guardedGetUserTokens = this.backwardsCompatibleGuard('ownerTokenMetadata', 'dip721_owner_token_identifiers');
+    const guardedGetUserTokens = this.backwardsCompatibleGuard('ownerTokenMetadata', 'dip721_owner_token_metadata');
     const userTokensResult = await guardedGetUserTokens([principal]);
     const tokens: Array<TokenMetadata> = userTokensResult['Ok'] || [];
 
-    return tokens.map((token) => {
+    if (!tokens.length) return [];
+
+    const formattedTokenData = tokens.map((token) => {
       const tokenIndex = token.token_identifier;
       const formatedMetadata = this.formatMetadata(token);
+
+      if (!formatedMetadata) return;
+
       const operator = token.operator?.[0]?.toText();
 
       return this.serializeTokenData(
@@ -86,7 +91,9 @@ export default class ERC721 extends NFT {
         principal.toText(),
         operator,
       );
-    });
+    }).filter((token) => token) as NFTDetails[];
+
+    return formattedTokenData;
   }
 
   async transfer(to: Principal, tokenIndex: number): Promise<void> {
@@ -150,14 +157,32 @@ export default class ERC721 extends NFT {
     };
   }
 
-  private formatMetadata(metadata: TokenMetadata): Metadata {
+  private formatMetadata(metadata: TokenMetadata): Metadata | undefined {
     const metadataResult = { properties: new Array<Property>() };
 
-    metadata.properties.map((prop) => {
-      metadataResult[prop[0]] = { value: prop[1] };
+    if (!metadata?.properties || !Array.isArray(metadata.properties)) {
+      console.warn(`Oops! Failed to format the metadata properties for token, field is missing or invalid. See ${JSON.stringify(metadata)}`);
+      console.log(metadata);
+
+      return;
+    }
+
+    metadata.properties.forEach((prop) => {
+      const propertyName = prop[0];
+      metadataResult[propertyName] = { value: prop[1] };
+
+      const value = (() => {
+        try {
+          return extractMetadataValue(prop[1]);
+        } catch(err) {
+          console.warn(`Oops! Failed to extract metadata value for property ${propertyName}, is that a valid key value pair?`);
+          console.error(err);
+        }
+      })();
+
       metadataResult.properties = [
         ...metadataResult.properties,
-        { name: prop[0], value: extractMetadataValue(prop[1]) },
+        { name: prop[0], value },
       ];
     });
 

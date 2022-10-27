@@ -119,22 +119,19 @@ const standardNormaliser = ({
 }: {
   standard: string
 }) => {
-  const hasDip721Term = (() => {
-    const userStandardNormalised = standard.toUpperCase();
-    const systemStandardNormalised = NFTStandard.dip721.toUpperCase();
-    const startsWithDip721 = userStandardNormalised.startsWith(systemStandardNormalised);
-    const hasSuffix = userStandardNormalised.split(systemStandardNormalised).filter(v => v).length > 0;
+  const userStandardNormalised = standard.toUpperCase();
+  const systemStandardNormalised = NFTStandard.dip721.toUpperCase();
+  const startsWithDip721 = userStandardNormalised.startsWith(systemStandardNormalised);
+  const hasSuffix = userStandardNormalised.split(systemStandardNormalised).filter(v => v).length > 0;
+  const hasDeprecatedDip721Term = startsWithDip721 && hasSuffix;
 
-    return startsWithDip721 && hasSuffix;
-  })();
-  
-  if (hasDip721Term) {
+  if (hasDeprecatedDip721Term) {
     console.warn(`Warning! Use the term DIP721, not ${standard}, suffixed and others are being deprecated and support will be dropped soon!`);
 
     return NFTStandard.dip721;
   }
 
-  return standard;
+  return userStandardNormalised;
 };
 
 export const getNFTActor = (
