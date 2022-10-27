@@ -40,6 +40,7 @@ const deprecationWarningForDip721LegacyRequests = ({
   methodName: string,
 }) => `Oops! An attempt to ${methodName} failed, a fallback to legacy will be used. Legacy DIP721 contract support will be dropped soon, the contract should be updated`
 
+
 export default class ERC721 extends NFT {
   standard = NFTStandard.dip721;
 
@@ -54,23 +55,24 @@ export default class ERC721 extends NFT {
     });
   }
 
-  async getUserTokens(principal: Principal): Promise<NFTDetails[]> {
-    const userTokensResult = await (async () => {
+  backwardsCompatibleGuard(legacyMethod: string, newMethod: string) {
+    return async (params: Array<any> = []) => {
       let res;
-
       try {
-        res = await this.actor.dip721_owner_token_identifiers(principal);
+        res = await this.actor[newMethod](...params);
       } catch (err) {
         deprecationWarningForDip721LegacyRequests({
-          methodName: 'dip721_owner_token_identifiers',
+          methodName: newMethod,
         });
-
-        res = await this.actor.ownerTokenMetadata(principal);
+        res = await this.actor[legacyMethod](...params);
       }
-
       return res;
-    })();
+    }
+  }
 
+  async getUserTokens(principal: Principal): Promise<NFTDetails[]> {
+    const guardedGetUserTokens = this.backwardsCompatibleGuard('ownerTokenMetadata', 'dip721_owner_token_identifiers');
+    const userTokensResult = await guardedGetUserTokens([principal]);
     const tokens: Array<TokenMetadata> = userTokensResult['Ok'] || [];
 
     return tokens.map((token) => {
@@ -88,27 +90,8 @@ export default class ERC721 extends NFT {
   }
 
   async transfer(to: Principal, tokenIndex: number): Promise<void> {
-    const transferResult = await (async () => {
-      let res;
-
-      try {
-        res = await this.actor.dip721_transfer(
-          to,
-          BigInt(tokenIndex)
-        );
-      } catch (err) {
-        deprecationWarningForDip721LegacyRequests({
-          methodName: 'dip721_transfer',
-        });
-
-        res = await this.actor.transfer(
-          to,
-          BigInt(tokenIndex)
-        );
-      }
-
-      return res;
-    })();
+    const guardedTransfer = this.backwardsCompatibleGuard('transfer', 'dip721_transfer');
+    const transferResult = await guardedTransfer([to, BigInt(tokenIndex)]);
 
     if ('Err' in transferResult)
       throw new Error(
@@ -119,21 +102,8 @@ export default class ERC721 extends NFT {
   }
 
   async details(tokenIndex: number): Promise<NFTDetails> {
-    const metadataResult = await (async () => {
-      let res;
-
-      try {
-        res = await this.actor.dip721_token_metadata(BigInt(tokenIndex))
-      } catch (err) {
-        deprecationWarningForDip721LegacyRequests({
-          methodName: 'dip721_token_metadata',
-        });
-
-        res = await this.actor.tokenMetadata(BigInt(tokenIndex));
-      }
-
-      return res;
-    })();
+    const guardedDetails = this.backwardsCompatibleGuard('tokenMetadata', 'dip721_token_metadata');
+    const metadataResult = await guardedDetails([BigInt(tokenIndex)]);
 
     if ('Err' in metadataResult)
       throw new Error(
@@ -147,6 +117,20 @@ export default class ERC721 extends NFT {
     const operator = metadata?.operator?.[0]?.toText?.();
 
     return this.serializeTokenData(formatedMetadata, tokenIndex, owner, operator);
+  }
+
+  async getMetadata(): Promise<NFTCollection> {
+    const guardedGetMetadata = this.backwardsCompatibleGuard('metadata', 'dip721_get_metadata');
+    const metadata = await guardedGetMetadata();
+
+    return {
+      icon: metadata?.logo[0],
+      name: metadata?.name?.[0] || '',
+      standard: this.standard,
+      canisterId: this.canisterId,
+      tokens: [],
+      description: '',
+    }
   }
 
   private serializeTokenData(
@@ -183,18 +167,5 @@ export default class ERC721 extends NFT {
         !['location', 'thumbnail', 'contentHash', 'contentType'].includes(name)
     );
     return metadataResult;
-  }
-
-  async getMetadata(): Promise<NFTCollection> {
-    const metadata = await this.actor.metadata();
-
-    return {
-      icon: metadata?.logo[0],
-      name: metadata?.name?.[0] || '',
-      standard: this.standard,
-      canisterId: this.canisterId,
-      tokens: [],
-      description: '',
-    }
   }
 }
