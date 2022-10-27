@@ -123,7 +123,7 @@ const standardNormaliser = ({
     const userStandardNormalised = standard.toUpperCase();
     const systemStandardNormalised = NFTStandard.dip721.toUpperCase();
     const startsWithDip721 = userStandardNormalised.startsWith(systemStandardNormalised);
-    const hasSuffix = userStandardNormalised.split(systemStandardNormalised).filter(v => v).length > 1;
+    const hasSuffix = userStandardNormalised.split(systemStandardNormalised).filter(v => v).length > 0;
 
     return startsWithDip721 && hasSuffix;
   })();
