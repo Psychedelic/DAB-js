@@ -15,7 +15,7 @@ import {
 } from './methods';
 import { BaseMethodsExtendedActor } from '../../utils/actorFactory';
 import { getAccountId } from '../../utils/account';
-import { validatePrincipalId } from '../../utils/validations';
+import { isValidPrincipal } from '../../utils/validations';
 
 type BaseLedgerService = BaseMethodsExtendedActor<LedgerService>;
 
@@ -49,7 +49,7 @@ const send = async (
     memo: BigInt(0),
   };
   const response = await actor._send_dfx({
-    to: validatePrincipalId(to) ? getAccountId(Principal.fromText(to)) : to,
+    to: isValidPrincipal(to) ? getAccountId(Principal.fromText(to)) : to,
     fee: { e8s: opts?.fee || defaultArgs.fee },
     amount: { e8s: amount },
     memo: opts?.memo ? BigInt(opts.memo) : defaultArgs.memo,
