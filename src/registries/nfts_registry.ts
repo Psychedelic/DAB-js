@@ -77,8 +77,9 @@ export const getUserCollectionTokens = async (
     collection: DABCollection,
     user: Principal,
     agent: HttpAgent = DEFAULT_AGENT,
-    callback: (val?: any) => void = () => {}
-  ): Promise<NFTCollection> => {
+    callback: (val?: any) => void = () => {},
+    debug = false,
+    ): Promise<NFTCollection> => {
   try {
     const NFTActor = getNFTActor(
       {
@@ -104,7 +105,7 @@ export const getUserCollectionTokens = async (
     }
     return collectionDetails;
   } catch (e) {
-    if (process.env.NODE_ENV !== 'production') {
+    if (debug) {
       console.error(e);
     }
     return {
