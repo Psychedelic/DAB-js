@@ -29,7 +29,7 @@
     "test": "jest",
     "lint": "eslint --ext ts,js ./src",
     "watch": "tsc --watch",
-    "package:publish": "npm run build && npm publish",
+    "package:publish": "export NODE_ENV=production && npm run build && npm publish",
     "publish:local": "npm run build && npm publish --@psychedelic:registry=${LOCAL_REGISTRY:=http://localhost:4873/}",
     "unpublish:local": "npm unpublish @psychedelic/dab-js  --@psychedelic:registry=${LOCAL_REGISTRY:=http://localhost:4873/} --force"
   },

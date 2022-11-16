@@ -104,7 +104,9 @@ export const getUserCollectionTokens = async (
     }
     return collectionDetails;
   } catch (e) {
-    console.error(e);
+    if (process.env.NODE_ENV !== 'production') {
+      console.error(e);
+    }
     return {
       name: collection.name,
       canisterId: collection.principal_id.toString(),
