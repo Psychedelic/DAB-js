@@ -57,7 +57,8 @@ interface GetNFTInfoParams {
 
 interface GetAllUserNFTsParams {
   user: string | Principal,
-  agent?: HttpAgent
+  agent?: HttpAgent,
+  debug?: boolean,
 }
 
 const DEFAULT_AGENT = new HttpAgent({ fetch, host: IC_HOST })
@@ -177,13 +178,15 @@ export const getAllNFTS = async (
 
 export const getAllUserNFTs = async (
   { user,
-    agent = DEFAULT_AGENT }: GetAllUserNFTsParams
+    agent = DEFAULT_AGENT,
+    debug = false,
+  }: GetAllUserNFTsParams
 ): Promise<NFTCollection[]> => {
   const NFTCollections = await getAllNFTS({ agent });
   const userPrincipal = user instanceof Principal ? user : Principal.fromText(user);
   
   const result = await Promise.all(
-    NFTCollections.map((collection) => getUserCollectionTokens(collection, userPrincipal, agent)),
+    NFTCollections.map((collection) => getUserCollectionTokens(collection, userPrincipal, agent, () => {}, debug)),
   );
   return result.filter((element) => element.tokens.length);
 };
