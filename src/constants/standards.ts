@@ -9,12 +9,12 @@ export const TOKEN = {
 
 export const NFT = {
   ext: 'EXT',
-  icpunks: 'ICPunks',
-  departuresLabs: 'DepartureLabs',
+  icpunks: 'ICPUNKS',
+  departuresLabs: 'DEPARTURELABS',
   erc721: 'ERC721',
   dip721: 'DIP721',
   c3: 'C3',
-  nftOrigyn: 'nftOrigyn'
+  nftOrigyn: 'NFTORIGYN'
 }
 
 export default {
