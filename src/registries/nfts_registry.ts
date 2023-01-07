@@ -4,6 +4,7 @@ import { Principal } from '@dfinity/principal';
 import fetch from 'cross-fetch';
 
 import NFTRegistryInterface from '../interfaces/dab_registries/nft_registry';
+import { PaginatedNftCanisters } from '../interfaces/dab_registries/nft_registry';
 import { NFTStandards, NFTCollection } from '../interfaces/nft';
 import { DABCollection } from '../interfaces/dab_nfts';
 
@@ -71,6 +72,10 @@ export class NFTRegistry extends Registry {
   public getAll = async (): Promise<FormattedMetadata[]> => {
     const canistersMetadata = await (this.actor as ActorSubclass<NFTRegistryInterface>).get_all();
     return canistersMetadata.map(formatMetadata);
+  }
+  public getAllPaginated = async(offset: number, limit: number): Promise<PaginatedNftCanisters> => {
+    const canistersMetadata = await (this.actor as ActorSubclass<NFTRegistryInterface>).get_all_paginated(offset, limit);
+    return canistersMetadata;
   }
 }
 
@@ -174,6 +179,19 @@ export const getAllNFTS = async (
   const registry = new NFTRegistry(agent);
   const allNFTs = await registry.getAll();
   return allNFTs.map((nft) => ({ ...nft, icon: nft.thumbnail, standard: nft.details.standard as string }));
+};
+
+export const getAllNFTSPaginated = async (
+  { agent = DEFAULT_AGENT }: { agent?: HttpAgent } = {}, offset: number, limit: number
+): Promise<PaginatedNftCanisters> => {
+  const registry = new NFTRegistry(agent);
+  const allNFTs = await registry.getAllPaginated(offset, limit);
+  return {
+    offset: allNFTs.offset,
+    limit: allNFTs.limit,
+    amount: allNFTs.amount,
+    nft_canisters: allNFTs.nft_canisters,
+  }
 };
 
 export const getAllUserNFTs = async (
