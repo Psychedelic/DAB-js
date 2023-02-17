@@ -1,10 +1,10 @@
 /* eslint-disable @typescript-eslint/camelcase */
 import { Principal } from '@dfinity/principal';
-import { Actor, ActorSubclass } from '@dfinity/agent';
+import { Actor, ActorSubclass, HttpAgent } from '@dfinity/agent';
 import fetch from 'cross-fetch';
 
 import LedgerService from '../../interfaces/ledger';
-import { FungibleMetadata, Metadata } from '../../interfaces/ext';
+import { FungibleMetadata, Metadata } from '../../interfaces/token';
 import {
   BalanceResponse,
   BurnParams,
@@ -23,16 +23,34 @@ type BaseLedgerService = BaseMethodsExtendedActor<LedgerService>;
 const getMetadata = async (
   _actor: ActorSubclass<BaseLedgerService>
 ): Promise<Metadata> => {
-  const tokenRegistry = new TokenRegistry();
-  const token = await tokenRegistry.get(Actor.canisterIdOf(_actor).toString());
-  return {
-    fungible: {
-      symbol: token?.details?.symbol as string || 'ICP',
-      decimals: token?.details?.decimals as number || 8,
-      name: token?.name as string || 'ICP',
-      fee: token?.details?.fee as number || 10000,
-    },
-  };
+  const agent = Actor.agentOf(_actor) as HttpAgent;
+  try {
+    const tokenRegistry = new TokenRegistry(agent);
+    const token = await tokenRegistry.get(Actor.canisterIdOf(_actor).toString());
+    const { fee = 0.002, decimals = 8 } = token?.details || {};
+    const numberFee = Number(fee?.toString?.());
+    const numberDecimals = Number(decimals?.toString?.());
+    const parsedFee = numberFee * 10 ** numberDecimals;
+    return {
+      fungible: {
+        symbol: (token?.details?.symbol as string) || 'ICP',
+        name: (token?.name as string) || 'ICP',
+        decimals: numberDecimals,
+        fee: parsedFee,
+      },
+    };
+  } catch(e) {
+    console.error('Error while fetching token metadata, falling back to default values', e);
+    // Fallback to default ICP values when dab is unavailable
+    return {
+      fungible: {
+        symbol: 'ICP',
+        name: 'ICP',
+        decimals: 8,
+        fee: 10000,
+      },
+    };;
+  }
 };
 
 const send = async (
@@ -40,9 +58,10 @@ const send = async (
   { to, amount, opts }: SendParams
 ): Promise<SendResponse> => {
   const metadata = await getMetadata(actor);
-  const { fee = 0.002, decimals = BigInt(8) } = (metadata as FungibleMetadata)?.fungible || {};
+  const { fee = 0.002, decimals = BigInt(8) } =
+    (metadata as FungibleMetadata)?.fungible || {};
   const defaultArgs = {
-    fee: BigInt(fee * (10 ** parseInt(decimals.toString(), 10))),
+    fee: BigInt((fee as number) * 10 ** parseInt(decimals.toString(), 10)),
     memo: BigInt(0),
   };
   const response = await actor._send_dfx({
@@ -65,8 +84,12 @@ const getBalance = async (
     const account = getAccountId(user);
     const balance = await actor._account_balance_dfx({ account });
     return { value: balance.e8s.toString(), decimals: 8 };
-  } catch(e) {
-    return { value: 'Error', decimals: 8, error: 'Error while fetching your balance' };
+  } catch (e) {
+    return {
+      value: 'Error',
+      decimals: 8,
+      error: 'Error while fetching your balance',
+    };
   }
 };
 

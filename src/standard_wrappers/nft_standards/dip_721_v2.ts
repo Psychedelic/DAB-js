@@ -55,19 +55,20 @@ export default class ERC721 extends NFT {
     return tokens.map((token) => {
       const tokenIndex = token.token_identifier;
       const formatedMetadata = this.formatMetadata(token);
-      const operator = token.operator?.[0]?.toText();
 
       return this.serializeTokenData(
         formatedMetadata,
         tokenIndex,
-        principal.toText(),
-        operator,
+        principal.toText()
       );
     });
   }
 
   async transfer(to: Principal, tokenIndex: number): Promise<void> {
-    const transferResult = await this.actor.transfer(
+    const from = await this.agent.getPrincipal();
+
+    const transferResult = await this.actor.transferFrom(
+      from,
       to,
       BigInt(tokenIndex)
     );
@@ -88,19 +89,17 @@ export default class ERC721 extends NFT {
           Object.values(metadataResult.Err)[0]
         }`
       );
-    const metadata = metadataResult?.Ok;
+    const metadata = metadataResult.Ok;
     const formatedMetadata = this.formatMetadata(metadata);
-    const owner = metadata?.owner?.[0]?.toText?.();
-    const operator = metadata?.operator?.[0]?.toText?.();
+    const owner = metadata.owner[0] ? metadata.owner[0].toText() : undefined;
 
-    return this.serializeTokenData(formatedMetadata, tokenIndex, owner, operator);
+    return this.serializeTokenData(formatedMetadata, tokenIndex, owner);
   }
 
   private serializeTokenData(
     metadata: any,
     tokenIndex: number | bigint,
-    owner: string | undefined,
-    operator: string | undefined
+    owner: string | undefined
   ): NFTDetails {
     return {
       index: BigInt(tokenIndex),
@@ -109,7 +108,6 @@ export default class ERC721 extends NFT {
       owner,
       url: metadata?.location?.value?.TextContent || '',
       standard: this.standard,
-      operator,
     };
   }
 

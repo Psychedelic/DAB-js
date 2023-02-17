@@ -4,11 +4,15 @@ import { Principal } from '@dfinity/principal';
 import NFT_C3, { GetTokenResponse, TokenDetails, TransferResponse } from '../../interfaces/c3';
 import IDL from '../../idls/c3.did';
 import NFT from './default';
-import { NFTDetails } from '../../interfaces/nft';
+import { NFTCollection, NFTDetails } from '../../interfaces/nft';
 import { NFT as NFTStandard} from '../../constants/standards';
 
 
 export default class CCC extends NFT {
+  getMetadata(): Promise<NFTCollection> {
+    throw new Error('Method not implemented.');
+  }
+
   standard = NFTStandard.c3;
 
   actor: ActorSubclass<NFT_C3>;

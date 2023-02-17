@@ -6,7 +6,7 @@ import NFT_Origyn, {
 } from '../../interfaces/nft_origyn';
 import IDL from '../../idls/nft_origyn.did';
 import NFT from './default';
-import {NFTDetails} from '../../interfaces/nft';
+import {NFTDetails, NFTCollection} from '../../interfaces/nft';
 import {NFT as NFTStandard} from '../../constants/standards';
 
 export default class NFTOrigyn extends NFT<string, string> {
@@ -30,9 +30,7 @@ export default class NFTOrigyn extends NFT<string, string> {
     }
     const tokensData = await Promise.all(
       tokensIndexes.ok.nfts.map(async (item) => {
-        const tokenIndex = item[0]
-        const principal = item[1]
-        const userTokensResult = await this.actor.nft_origyn(tokenIndex);
+        const userTokensResult = await this.actor.nft_origyn(item);
         if ('err' in userTokensResult)
           throw new Error(Object.keys(userTokensResult.err)[0]);
         return {detail: userTokensResult, principal};
@@ -41,6 +39,9 @@ export default class NFTOrigyn extends NFT<string, string> {
     return tokensData.map((token) => this.serializeTokenData(token.detail));
   }
 
+  getMetadata(): Promise<NFTCollection> {
+    throw new Error('Method not implemented.');
+  }
   async transfer(to: Principal, tokenIndex: string): Promise<void> {
     const from = await this.agent.getPrincipal();
     const balance = await this.actor.balance_of_nft_origyn({principal: to});

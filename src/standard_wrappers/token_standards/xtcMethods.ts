@@ -3,7 +3,7 @@ import { Principal } from '@dfinity/principal';
 import { ActorSubclass } from '@dfinity/agent';
 
 import XtcService, { BurnResult } from '../../interfaces/xtc';
-import { Metadata } from '../../interfaces/ext';
+import { Metadata } from '../../interfaces/token';
 import {
   BalanceResponse,
   BurnParams,
@@ -15,7 +15,7 @@ import {
 } from './methods';
 import { BaseMethodsExtendedActor } from '../../utils/actorFactory';
 
-type BaseXtcService = BaseMethodsExtendedActor<XtcService>
+type BaseXtcService = BaseMethodsExtendedActor<XtcService>;
 
 const getMetadata = async (
   actor: ActorSubclass<BaseXtcService>
@@ -26,6 +26,10 @@ const getMetadata = async (
       symbol: metadataResult.symbol,
       decimals: metadataResult.decimals,
       name: metadataResult.name,
+      logo: metadataResult.logo,
+      fee: metadataResult.fee,
+      totalSupply: metadataResult.totalSupply,
+      owner: metadataResult.owner,
     },
   };
 };
@@ -50,7 +54,7 @@ const getBalance = async (
   user: Principal
 ): Promise<BalanceResponse> => {
   const decimals = await getDecimals(actor);
-  const value = (await actor._balance([user])).toString();
+  const value = (await actor._balanceOf(user)).toString();
   return { value, decimals };
 };
 
@@ -63,12 +67,13 @@ const burnXTC = async (
   return actor._burn({ canister_id: to, amount: parsedAmount });
 };
 
-const getDecimals = async (actor: ActorSubclass<BaseXtcService>) => getDecimalsFromMetadata(await getMetadata(actor))
+const getDecimals = async (actor: ActorSubclass<BaseXtcService>) =>
+  getDecimalsFromMetadata(await getMetadata(actor));
 
 export default {
   send,
   getMetadata,
   getBalance,
   burnXTC,
-  getDecimals
+  getDecimals,
 } as InternalTokenMethods;

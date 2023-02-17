@@ -1,7 +1,7 @@
 import { Actor, ActorSubclass, HttpAgent } from '@dfinity/agent';
 import { Principal } from '@dfinity/principal';
 
-import { NFTDetails } from '../../interfaces/nft';
+import { NFTCollection, NFTDetails } from '../../interfaces/nft';
 import NTF_EXT from '../../interfaces/ext';
 import IDL from '../../idls/ext.did';
 import NFT from './default';
@@ -63,6 +63,10 @@ export default class EXT extends NFT {
         tokenIndex
       );
     });
+  }
+
+  getMetadata(): Promise<NFTCollection> {
+    throw new Error('Method not implemented.');
   }
 
   async transfer(to: Principal, tokenIndex: number): Promise<void> {
