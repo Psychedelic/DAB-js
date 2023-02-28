@@ -4,7 +4,8 @@ export const TOKEN = {
   wicp: 'WICP',
   ext: 'EXT',
   icp: 'ICP',
-  rosetta: 'ROSETTA'
+  rosetta: 'ROSETTA',
+  icrc1: 'ICRC1'
 }
 
 export const NFT = {
