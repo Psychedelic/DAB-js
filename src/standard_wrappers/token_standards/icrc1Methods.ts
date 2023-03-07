@@ -1,11 +1,15 @@
-import {
-  InternalTokenMethods,
-  getDecimalsFromMetadata
-} from './methods';
+import { InternalTokenMethods, getDecimalsFromMetadata } from './methods';
 
 import { ActorSubclass } from '@dfinity/agent';
 import { BaseMethodsExtendedActor } from '../../utils/actorFactory';
-import { BalanceResponse, BurnParams, FungibleMetadata, Metadata, SendParams, SendResponse } from '../../interfaces/token';
+import {
+  BalanceResponse,
+  BurnParams,
+  FungibleMetadata,
+  Metadata,
+  SendParams,
+  SendResponse,
+} from '../../interfaces/token';
 import ICRC1Service from '../../interfaces/icrc_1';
 import { Principal } from '@dfinity/principal';
 
@@ -22,7 +26,10 @@ const getMetadata = async (
   const totalSupply = await actor._icrc1_total_supply();
   const mintingAccount = await actor._icrc1_minting_account();
 
-  const logo = metadataResult.find(([name]) => name === 'icrc1:logo')?.[1]
+  const logo = metadataResult.find(([name]) => name === 'icrc1:logo')?.[1];
+  const owner = !mintingAccount[0]
+    ? Principal.anonymous()
+    : mintingAccount[0].owner;
 
   return {
     fungible: {
@@ -32,7 +39,7 @@ const getMetadata = async (
       fee,
       totalSupply,
       logo: logo?.['Text'] || '',
-      owner: mintingAccount[0]!.owner,
+      owner,
     },
   };
 };
@@ -42,7 +49,10 @@ const getBalance = async (
   user: Principal
 ): Promise<BalanceResponse> => {
   try {
-    const balance = await actor._icrc1_balance_of({ owner: user, subaccount: [] });
+    const balance = await actor._icrc1_balance_of({
+      owner: user,
+      subaccount: [],
+    });
     return { value: balance.toString(), decimals: 8 };
   } catch (e) {
     return {
@@ -64,15 +74,15 @@ const send = async (
     fee,
     memo: [],
   };
-  
-  const response =  await actor._icrc1_transfer({
+
+  const response = await actor._icrc1_transfer({
     to: { owner: Principal.fromText(to), subaccount: [] },
     fee: [opts?.fee ? BigInt(opts?.fee) : BigInt(defaultArgs.fee)],
     memo: [opts.memo ? [Number(opts.memo)] : defaultArgs.memo],
     from_subaccount: [],
     created_at_time: [],
     amount,
-  })
+  });
 
   return { height: response.toString() };
 };
@@ -92,6 +102,5 @@ export default {
   getBalance,
   send,
   burnXTC,
-  getDecimals
+  getDecimals,
 } as InternalTokenMethods;
-
