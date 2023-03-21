@@ -12,9 +12,9 @@ export interface SendOpts {
   fee?: bigint;
   memo?: string;
   from_subaccount?: number;
+  to_subaccount?: Uint8Array | number[];
   created_at_time?: TimeStamp; // TODO: create js Date to TimeStamp function
 }
-
 
 export type SendResponse =
   | { height: string }
@@ -33,7 +33,6 @@ export interface BurnParams {
   amount: string;
 }
 
-
 export interface BalanceResponse {
   value: string;
   decimals: number;
@@ -48,7 +47,8 @@ interface AddedMehtodsToken {
   getDecimals: () => Promise<number>;
 }
 
-export type TokenServiceExtended<T> = BaseMethodsExtendedActor<T> & AddedMehtodsToken
+export type TokenServiceExtended<T> = BaseMethodsExtendedActor<T> &
+  AddedMehtodsToken;
 
 export interface InternalTokenMethods {
   send: (
@@ -56,7 +56,10 @@ export interface InternalTokenMethods {
     { to, from, amount }: SendParams
   ) => Promise<SendResponse>;
   getMetadata: (actor: ActorSubclass<any>) => Promise<Metadata>;
-  getBalance: (actor: ActorSubclass<any>, user: Principal) => Promise<BalanceResponse>;
+  getBalance: (
+    actor: ActorSubclass<any>,
+    user: Principal
+  ) => Promise<BalanceResponse>;
   burnXTC: (
     actor: ActorSubclass<any>,
     { to, amount }: BurnParams
@@ -89,7 +92,6 @@ const burnXTC = async (_actor: ActorSubclass<any>, _params: BurnParams) => {
 const getDecimals = async (_actor: ActorSubclass<any>) => {
   throw Error('Standard Not Implemented');
 };
-
 
 export const getDecimalsFromMetadata = (metadata: Metadata): number => {
   return 'fungible' in metadata ? metadata.fungible.decimals : 0;

@@ -73,10 +73,14 @@ const send = async (
   const defaultArgs = {
     fee,
     memo: [],
+    subaccount: [],
   };
 
   const response = await actor._icrc1_transfer({
-    to: { owner: Principal.fromText(to), subaccount: [] },
+    to: {
+      owner: Principal.fromText(to),
+      subaccount: [opts.to_subaccount || defaultArgs.subaccount],
+    },
     fee: [opts?.fee ? BigInt(opts?.fee) : BigInt(defaultArgs.fee)],
     memo: [opts.memo ? [Number(opts.memo)] : defaultArgs.memo],
     from_subaccount: [],
