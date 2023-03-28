@@ -3,8 +3,9 @@ import { Principal } from '@dfinity/principal';
 import { ActorSubclass } from '@dfinity/agent';
 
 import Dip20Service from '../../interfaces/dip_20';
-import { Metadata } from '../../interfaces/token'; 
+import { Metadata } from '../../interfaces/token';
 import {
+  ApproveParams,
   BalanceResponse,
   BurnParams,
   getDecimalsFromMetadata,
@@ -37,10 +38,7 @@ const send = async (
   actor: ActorSubclass<BaseDip20Service>,
   { to, amount }: SendParams
 ): Promise<SendResponse> => {
-  const transferResult = await actor._transfer(
-    Principal.fromText(to),
-    amount
-  );
+  const transferResult = await actor._transfer(Principal.fromText(to), amount);
 
   if ('Ok' in transferResult)
     return { transactionId: transferResult.Ok.toString() };
@@ -64,12 +62,21 @@ const burnXTC = async (
   throw new Error('BURN NOT SUPPORTED');
 };
 
-const getDecimals = async (actor: ActorSubclass<BaseDip20Service>) => getDecimalsFromMetadata(await getMetadata(actor))
+const approve = async (
+  actor: ActorSubclass<BaseDip20Service>,
+  params: ApproveParams
+) => {
+  return actor._approve(params.spender, params.amount);
+};
+
+const getDecimals = async (actor: ActorSubclass<BaseDip20Service>) =>
+  getDecimalsFromMetadata(await getMetadata(actor));
 
 export default {
   send,
   getMetadata,
   getBalance,
   burnXTC,
-  getDecimals
+  getDecimals,
+  approve,
 } as InternalTokenMethods;

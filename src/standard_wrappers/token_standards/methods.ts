@@ -3,6 +3,8 @@ import { Principal } from '@dfinity/principal';
 
 import { Metadata } from '../../interfaces/token';
 import { BurnResult } from '../../interfaces/xtc';
+import { TxnResult } from '../../interfaces/drc_20';
+import { Result } from '../../interfaces/dip_20';
 import { BaseMethodsExtendedActor } from '../../utils/actorFactory';
 
 interface TimeStamp {
@@ -31,6 +33,12 @@ export interface SendParams {
 export interface BurnParams {
   to: Principal;
   amount: string;
+}
+
+export interface ApproveParams {
+  spender: Principal;
+  amount: bigint;
+  nonce?: bigint;
 }
 
 export interface BalanceResponse {
@@ -65,6 +73,10 @@ export interface InternalTokenMethods {
     { to, amount }: BurnParams
   ) => Promise<BurnResult>;
   getDecimals: (actor: ActorSubclass<any>) => Promise<number>;
+  approve: (
+    actor: ActorSubclass<any>,
+    { spender, amount, nonce }: ApproveParams
+  ) => Promise<Result | TxnResult>;
 }
 
 const send = async (
@@ -93,6 +105,10 @@ const getDecimals = async (_actor: ActorSubclass<any>) => {
   throw Error('Standard Not Implemented');
 };
 
+const approve = async (_actor: ActorSubclass<any>) => {
+  throw Error('Standard Not Implemented');
+};
+
 export const getDecimalsFromMetadata = (metadata: Metadata): number => {
   return 'fungible' in metadata ? metadata.fungible.decimals : 0;
 };
@@ -107,4 +123,5 @@ export default {
   getBalance,
   burnXTC,
   getDecimals,
+  approve,
 } as InternalTokenMethods;

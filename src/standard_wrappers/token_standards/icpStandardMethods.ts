@@ -6,6 +6,7 @@ import fetch from 'cross-fetch';
 import LedgerService from '../../interfaces/ledger';
 import { FungibleMetadata, Metadata } from '../../interfaces/token';
 import {
+  ApproveParams,
   BalanceResponse,
   BurnParams,
   getDecimalsFromMetadata,
@@ -26,7 +27,9 @@ const getMetadata = async (
   const agent = Actor.agentOf(_actor) as HttpAgent;
   try {
     const tokenRegistry = new TokenRegistry(agent);
-    const token = await tokenRegistry.get(Actor.canisterIdOf(_actor).toString());
+    const token = await tokenRegistry.get(
+      Actor.canisterIdOf(_actor).toString()
+    );
     const { fee = 0.002, decimals = 8 } = token?.details || {};
     const numberFee = Number(fee?.toString?.());
     const numberDecimals = Number(decimals?.toString?.());
@@ -39,8 +42,11 @@ const getMetadata = async (
         fee: parsedFee,
       },
     };
-  } catch(e) {
-    console.error('Error while fetching token metadata, falling back to default values', e);
+  } catch (e) {
+    console.error(
+      'Error while fetching token metadata, falling back to default values',
+      e
+    );
     // Fallback to default ICP values when dab is unavailable
     return {
       fungible: {
@@ -49,7 +55,7 @@ const getMetadata = async (
         decimals: 8,
         fee: 10000,
       },
-    };;
+    };
   }
 };
 
@@ -100,6 +106,13 @@ const burnXTC = async (
   throw new Error('BURN NOT SUPPORTED');
 };
 
+const approve = async (
+  _actor: ActorSubclass<BaseLedgerService>,
+  _params: ApproveParams
+) => {
+  throw new Error('APPROVE NOT SUPPORTED');
+};
+
 const getDecimals = async (actor: ActorSubclass<BaseLedgerService>) =>
   getDecimalsFromMetadata(await getMetadata(actor));
 
@@ -109,4 +122,5 @@ export default {
   getBalance,
   burnXTC,
   getDecimals,
+  approve,
 } as InternalTokenMethods;
