@@ -6,6 +6,7 @@ import fetch from 'cross-fetch';
 import LedgerService from '../../interfaces/ledger';
 import { Metadata } from '../../interfaces/ext';
 import {
+  ApproveParams,
   BalanceResponse,
   BurnParams,
   getDecimalsFromMetadata,
@@ -94,6 +95,13 @@ const burnXTC = async (
   throw new Error('BURN NOT SUPPORTED');
 };
 
+const approve = async (
+  _actor: ActorSubclass<BaseLedgerService>,
+  _params: ApproveParams
+) => {
+  throw new Error('APPROVE NOT SUPPORTED');
+};
+
 const getDecimals = async (actor: ActorSubclass<BaseLedgerService>) =>
   getDecimalsFromMetadata(await getMetadata(actor));
 
@@ -103,4 +111,5 @@ export default {
   getBalance,
   burnXTC,
   getDecimals,
+  approve,
 } as InternalTokenMethods;

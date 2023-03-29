@@ -118,4 +118,5 @@ export default {
   send,
   burnXTC,
   getDecimals,
+  approve,
 } as InternalTokenMethods;
