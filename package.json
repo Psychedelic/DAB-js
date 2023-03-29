@@ -30,8 +30,8 @@
     "lint": "eslint --ext ts,js ./src",
     "watch": "tsc --watch",
     "package:publish": "npm run build && npm publish",
-    "publish:local": "npm run build && npm publish --@psychedelic:registry=${LOCAL_REGISTRY:=http://localhost:4873/}",
-    "unpublish:local": "npm unpublish @psychedelic/dab-js  --@psychedelic:registry=${LOCAL_REGISTRY:=http://localhost:4873/} --force"
+    "publish:local": "npm run build && npm publish --@funded-labs:registry=${LOCAL_REGISTRY:=http://localhost:4873/}",
+    "unpublish:local": "npm unpublish @funded-labs/dab-js  --@funded-labs:registry=${LOCAL_REGISTRY:=http://localhost:4873/} --force"
   },
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^4.32.0",
