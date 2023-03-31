@@ -43,5 +43,6 @@ export {
   SendResponse,
   BalanceResponse,
   BurnParams,
+  ApproveResponse,
 } from '../standard_wrappers/token_standards/methods';
 export { EventDetail, BurnResult } from './xtc';

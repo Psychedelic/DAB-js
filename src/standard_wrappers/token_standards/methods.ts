@@ -47,12 +47,19 @@ export interface BalanceResponse {
   error?: string;
 }
 
+export type ApproveResponse = Result | TxnResult;
+
 interface AddedMehtodsToken {
   send: ({ to, from, amount }: SendParams) => Promise<SendResponse>;
   getMetadata: () => Promise<Metadata>;
   getBalance: (user: Principal) => Promise<BalanceResponse>;
   burnXTC: ({ to, amount }: BurnParams) => Promise<BurnResult>;
   getDecimals: () => Promise<number>;
+  approve: ({
+    spender,
+    amount,
+    nonce,
+  }: ApproveParams) => Promise<ApproveResponse>;
 }
 
 export type TokenServiceExtended<T> = BaseMethodsExtendedActor<T> &
