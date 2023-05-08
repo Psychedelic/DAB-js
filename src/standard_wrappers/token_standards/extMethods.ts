@@ -5,6 +5,7 @@ import ExtService from '../../interfaces/ext';
 import { Metadata } from '../../interfaces/token';
 import { BaseMethodsExtendedActor } from '../../utils/actorFactory';
 import {
+  ApproveParams,
   BalanceResponse,
   BurnParams,
   getDecimalsFromMetadata,
@@ -13,17 +14,19 @@ import {
   SendResponse,
 } from './methods';
 
-type BaseExtService = BaseMethodsExtendedActor<ExtService>
+type BaseExtService = BaseMethodsExtendedActor<ExtService>;
 
 const getMetadata = async (
   actor: ActorSubclass<BaseExtService>
 ): Promise<Metadata> => {
-  actor._balance
+  actor._balance;
   const token = Actor.canisterIdOf(actor).toText();
 
   const extensions = await actor._extensions();
   if (!extensions.includes('@ext/common'))
-    throw new Error('The provided canister does not implement commont extension');
+    throw new Error(
+      'The provided canister does not implement commont extension'
+    );
   const metadataResult = await actor._metadata(token);
 
   if ('ok' in metadataResult) return metadataResult.ok;
@@ -81,13 +84,21 @@ const burnXTC = async (
   throw new Error('BURN NOT SUPPORTED');
 };
 
-const getDecimals = async (actor: ActorSubclass<BaseExtService>) => getDecimalsFromMetadata(await getMetadata(actor))
+const approve = async (
+  _actor: ActorSubclass<BaseExtService>,
+  _params: ApproveParams
+) => {
+  throw new Error('APPROVE NOT SUPPORTED');
+};
 
+const getDecimals = async (actor: ActorSubclass<BaseExtService>) =>
+  getDecimalsFromMetadata(await getMetadata(actor));
 
 export default {
   send,
   getMetadata,
   getBalance,
   burnXTC,
-  getDecimals
+  getDecimals,
+  approve,
 } as InternalTokenMethods;

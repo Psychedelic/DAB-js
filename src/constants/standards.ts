@@ -5,8 +5,9 @@ export const TOKEN = {
   ext: 'EXT',
   icp: 'ICP',
   rosetta: 'ROSETTA',
-  icrc1: 'ICRC1'
-}
+  icrc1: 'ICRC1',
+  drc20: 'DRC20',
+};
 
 export const NFT = {
   ext: 'EXT',
@@ -15,9 +16,10 @@ export const NFT = {
   erc721: 'ERC721',
   dip721: 'DIP721',
   c3: 'C3',
-  nftOrigyn: 'NFTORIGYN'
-}
+  nftOrigyn: 'NFTORIGYN',
+};
 
 export default {
-  TOKEN, NFT
+  TOKEN,
+  NFT,
 };

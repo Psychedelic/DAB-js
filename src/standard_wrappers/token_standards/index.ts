@@ -13,15 +13,17 @@ import extMethods from './extMethods';
 import dip20Methods from './dip20Methods';
 import extIDL from '../../idls/ext.did';
 import xtcIDL from '../../idls/xtc.did';
-import icrc1IDL from '../../idls/icrc_1.did'
+import icrc1IDL from '../../idls/icrc_1.did';
 import dip20IDL from '../../idls/dip_20.did';
+import drc20IDL from '../../idls/drc_20.did';
 import icpIDL from '../../idls/ledger.did';
-import { TOKEN } from '../../constants/standards'
+import { TOKEN } from '../../constants/standards';
 import wicpIDL from '../../idls/wicp.did';
 import wicpMethods from './wicpMethods';
 import rosettaMethods from './rosettaMethods';
 import icpStandardMethods from './icpStandardMethods';
 import icrc1Methods from './icrc1Methods';
+import drc20Methods from './drc20Methods';
 
 const getMethods = (standard: string): InternalTokenMethods =>
   ({
@@ -32,6 +34,7 @@ const getMethods = (standard: string): InternalTokenMethods =>
     [TOKEN.rosetta]: rosettaMethods,
     [TOKEN.icp]: icpStandardMethods,
     [TOKEN.icrc1]: icrc1Methods,
+    [TOKEN.drc20]: drc20Methods,
   }[standard] || defaultMethods);
 
 const getIdl = (standard: string): IDL.InterfaceFactory => {
@@ -43,6 +46,7 @@ const getIdl = (standard: string): IDL.InterfaceFactory => {
     [TOKEN.rosetta]: icpIDL,
     [TOKEN.icp]: icpIDL,
     [TOKEN.icrc1]: icrc1IDL,
+    [TOKEN.drc20]: drc20IDL,
   }[standard];
   if (!idl) throw new Error(`Standard ${standard} Not Implemented`);
   return idl;
@@ -51,15 +55,15 @@ const getIdl = (standard: string): IDL.InterfaceFactory => {
 export const createTokenActor = async <T>(
   canisterId: string | Principal,
   agent: HttpAgent,
-  standard: string,
+  standard: string
 ): Promise<ActorSubclass<TokenServiceExtended<T>>> => {
   const idl = getIdl(standard);
-  const actor = (new (createExtendedActorClass(
+  const actor = new (createExtendedActorClass(
     agent,
     getMethods(standard),
     canisterId,
     idl
-  ))() as unknown) as ActorSubclass<TokenServiceExtended<any>>;
+  ))() as unknown as ActorSubclass<TokenServiceExtended<any>>;
   return actor;
 };
 

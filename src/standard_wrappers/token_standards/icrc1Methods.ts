@@ -1,4 +1,8 @@
-import { InternalTokenMethods, getDecimalsFromMetadata } from './methods';
+import {
+  InternalTokenMethods,
+  getDecimalsFromMetadata,
+  ApproveParams,
+} from './methods';
 
 import { ActorSubclass } from '@dfinity/agent';
 import { BaseMethodsExtendedActor } from '../../utils/actorFactory';
@@ -98,6 +102,13 @@ const burnXTC = async (
   throw new Error('BURN NOT SUPPORTED');
 };
 
+const approve = async (
+  _actor: ActorSubclass<BaseICRC1Service>,
+  _params: ApproveParams
+) => {
+  throw new Error('APPROVE NOT SUPPORTED');
+};
+
 const getDecimals = async (actor: ActorSubclass<BaseICRC1Service>) =>
   getDecimalsFromMetadata(await getMetadata(actor));
 
@@ -107,4 +118,5 @@ export default {
   send,
   burnXTC,
   getDecimals,
+  approve,
 } as InternalTokenMethods;

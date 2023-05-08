@@ -5,6 +5,7 @@ import { ActorSubclass } from '@dfinity/agent';
 import WICPService from '../../interfaces/wicp';
 import { Metadata } from '../../interfaces/token';
 import {
+  ApproveParams,
   BalanceResponse,
   BurnParams,
   getDecimalsFromMetadata,
@@ -37,10 +38,7 @@ const send = async (
   actor: ActorSubclass<BaseWICPService>,
   { to, amount }: SendParams
 ): Promise<SendResponse> => {
-  const transferResult = await actor._transfer(
-    Principal.fromText(to),
-    amount
-  );
+  const transferResult = await actor._transfer(Principal.fromText(to), amount);
 
   if ('Ok' in transferResult)
     return { transactionId: transferResult.Ok.toString() };
@@ -64,7 +62,15 @@ const burnXTC = async (
   throw new Error('BURN NOT SUPPORTED');
 };
 
-const getDecimals = async (actor: ActorSubclass<BaseWICPService>) => getDecimalsFromMetadata(await getMetadata(actor))
+const approve = async (
+  _actor: ActorSubclass<BaseWICPService>,
+  _params: ApproveParams
+) => {
+  throw new Error('APPROVE NOT SUPPORTED');
+};
+
+const getDecimals = async (actor: ActorSubclass<BaseWICPService>) =>
+  getDecimalsFromMetadata(await getMetadata(actor));
 
 export default {
   send,
@@ -72,4 +78,5 @@ export default {
   getBalance,
   burnXTC,
   getDecimals,
+  approve,
 } as InternalTokenMethods;
