@@ -5,7 +5,7 @@ import NFT_DEPARTURE_LABS, { Metadata } from '../../interfaces/departure_labs';
 import IDL from '../../idls/departure_labs.did';
 import NFT from './default';
 import { NFTCollection, NFTDetails } from '../../interfaces/nft';
-import { NFT as NFTStandard} from '../../constants/standards';
+import { NFT as NFTStandard } from '../../constants/standards';
 
 export default class DepartureLabs extends NFT {
   standard = NFTStandard.departuresLabs;
@@ -63,7 +63,7 @@ export default class DepartureLabs extends NFT {
   private serializeTokenData = (tokenData: Metadata): NFTDetails => ({
     index: BigInt(tokenData.id),
     canister: this.canisterId,
-    url: `https://${this.canisterId}.raw.ic0.app/nft/${tokenData.id}`,
+    url: `https://${this.canisterId}.raw.icp0.io/nft/${tokenData.id}`,
     metadata: tokenData,
     standard: this.standard,
   });

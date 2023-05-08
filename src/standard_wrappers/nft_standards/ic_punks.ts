@@ -6,7 +6,7 @@ import IDL from '../../idls/icpunks.did';
 import NFT from './default';
 import { NFTCollection, NFTDetails } from '../../interfaces/nft';
 import { NFT_CANISTERS } from '../../constants/canisters';
-import { NFT as NFTStandard} from '../../constants/standards';
+import { NFT as NFTStandard } from '../../constants/standards';
 
 const getICPBunnyCanisterId = (index) =>
   NFT_CANISTERS.ICP_BUNNY_STORAGE[index % 10];
@@ -15,8 +15,8 @@ const imageUrl = (canisterId: string, index: number, tokenDataUrl: string) =>
   ({
     [NFT_CANISTERS.ICP_BUNNY_MAIN]: `https://${getICPBunnyCanisterId(
       index
-    )}.raw.ic0.app/Token/${index}`,
-  }[canisterId] || `https://${canisterId}.raw.ic0.app${tokenDataUrl}`);
+    )}.raw.icp0.io/Token/${index}`,
+  }[canisterId] || `https://${canisterId}.raw.icp0.io${tokenDataUrl}`);
 export default class ICPUNKS extends NFT {
   getMetadata(): Promise<NFTCollection> {
     throw new Error('Method not implemented.');

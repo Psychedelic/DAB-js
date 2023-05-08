@@ -62,7 +62,7 @@ const getBalance = async (
     return {
       value: 'Error',
       decimals: 8,
-      error: 'Error while fetching your balance',
+      error: `Error while fetching your balance: ${e.message}`,
     };
   }
 };

@@ -1,12 +1,15 @@
 import { Actor, ActorSubclass, HttpAgent } from '@dfinity/agent';
 import { Principal } from '@dfinity/principal';
 
-import NFT_C3, { GetTokenResponse, TokenDetails, TransferResponse } from '../../interfaces/c3';
+import NFT_C3, {
+  GetTokenResponse,
+  TokenDetails,
+  TransferResponse,
+} from '../../interfaces/c3';
 import IDL from '../../idls/c3.did';
 import NFT from './default';
 import { NFTCollection, NFTDetails } from '../../interfaces/nft';
-import { NFT as NFTStandard} from '../../constants/standards';
-
+import { NFT as NFTStandard } from '../../constants/standards';
 
 export default class CCC extends NFT {
   getMetadata(): Promise<NFTCollection> {
@@ -30,20 +33,26 @@ export default class CCC extends NFT {
     const tokensIndexes = await this.actor.getAllNFT(principal);
     const tokensData = await Promise.all(
       tokensIndexes.map(async (item) => {
-        const tokenIndex = item[0]
-        const principal = item[1]
+        const tokenIndex = item[0];
+        const principal = item[1];
         const userTokensResult = await this.actor.getTokenById(tokenIndex);
         if ('err' in userTokensResult)
           throw new Error(Object.keys(userTokensResult.err)[0]);
-        return {detail: userTokensResult.ok, principal};
+        return { detail: userTokensResult.ok, principal };
       })
     );
-    return tokensData.map((token) => this.serializeTokenData(token.detail, token.principal));
+    return tokensData.map((token) =>
+      this.serializeTokenData(token.detail, token.principal)
+    );
   }
 
   async transfer(to: Principal, tokenIndex: number): Promise<void> {
     const from = await this.agent.getPrincipal();
-    const transferResult:TransferResponse = await this.actor.transferFrom(from, to, BigInt(tokenIndex));
+    const transferResult: TransferResponse = await this.actor.transferFrom(
+      from,
+      to,
+      BigInt(tokenIndex)
+    );
     if ('err' in transferResult)
       throw new Error(Object.keys(transferResult.err)[0]);
   }
@@ -52,19 +61,21 @@ export default class CCC extends NFT {
     const tokenData = await this.actor.getTokenById(BigInt(tokenIndex));
     if ('err' in tokenData) throw new Error(Object.keys(tokenData.err)[0]);
     const prinId = await this.actor.getNftStoreCIDByIndex(BigInt(tokenIndex));
-    if (!prinId) throw new Error('Error tokenIndex')
+    if (!prinId) throw new Error('Error tokenIndex');
     return this.serializeTokenData(tokenData.ok, prinId);
   }
 
-  private serializeTokenData = (tokenData: TokenDetails, prinId: Principal): NFTDetails => {
+  private serializeTokenData = (
+    tokenData: TokenDetails,
+    prinId: Principal
+  ): NFTDetails => {
     return {
       index: BigInt(tokenData.id),
       canister: this.canisterId,
-      url: `https://${prinId.toText()}.raw.ic0.app/token/${tokenData.id}`,
+      url: `https://${prinId.toText()}.raw.icp0.io/token/${tokenData.id}`,
       name: `${tokenData.id}`,
       metadata: tokenData,
       standard: this.standard,
-    }
-  }
-    
+    };
+  };
 }

@@ -8,7 +8,7 @@ import NFT from './default';
 import { getAccountId } from '../../utils/account';
 import { to32bits } from '../../utils/number';
 import { NFT_CANISTERS } from '../../constants/canisters';
-import { NFT as NFTStandard} from '../../constants/standards';
+import { NFT as NFTStandard } from '../../constants/standards';
 
 const getTokenIdentifier = (canister: string, index: number): string => {
   const padding = Buffer.from('\x0Atid');
@@ -22,10 +22,10 @@ const getTokenIdentifier = (canister: string, index: number): string => {
 
 const extImageUrl = (canisterId, index, tokenIdentifier) =>
   ({
-    [NFT_CANISTERS.WRAPPED_PUNKS]: `https://${NFT_CANISTERS.IC_PUNKS}.raw.ic0.app/Token/${index}`,
-    [NFT_CANISTERS.WRAPPED_DRIP]: `https://${NFT_CANISTERS.IC_DRIP}.raw.ic0.app?tokenId=${index}`,
+    [NFT_CANISTERS.WRAPPED_PUNKS]: `https://${NFT_CANISTERS.IC_PUNKS}.raw.icp0.io/Token/${index}`,
+    [NFT_CANISTERS.WRAPPED_DRIP]: `https://${NFT_CANISTERS.IC_DRIP}.raw.icp0.io?tokenId=${index}`,
   }[canisterId] ||
-  `https://${canisterId}.raw.ic0.app/?type=thumbnail&tokenid=${tokenIdentifier}`);
+  `https://${canisterId}.raw.icp0.io/?type=thumbnail&tokenid=${tokenIdentifier}`);
 
 export default class EXT extends NFT {
   standard = NFTStandard.ext;
@@ -103,7 +103,8 @@ export default class EXT extends NFT {
         }`
       );
 
-    const { metadata = {} } = 'nonfungible' in metadataResult.ok ? metadataResult.ok.nonfungible : {} ; 
+    const { metadata = {} } =
+      'nonfungible' in metadataResult.ok ? metadataResult.ok.nonfungible : {};
 
     return this.serializeTokenData(metadata, tokenIdentifier, tokenIndex);
   }
