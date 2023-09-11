@@ -92,7 +92,11 @@ const send = async (
     amount,
   });
 
-  return { height: response.toString() };
+  if (response['Err']) {
+    return Promise.reject(response['Err']);
+  }
+
+  return { height: response['Ok'].toString() };
 };
 
 const burnXTC = async (
