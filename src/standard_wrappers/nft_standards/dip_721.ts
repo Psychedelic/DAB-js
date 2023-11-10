@@ -1,4 +1,9 @@
-import { Actor, ActorSubclass, HttpAgent } from '@dfinity/agent';
+import {
+  Actor,
+  ActorSubclass,
+  CreateCertificateOptions,
+  HttpAgent,
+} from '@dfinity/agent';
 import { Principal } from '@dfinity/principal';
 
 import { NFTCollection, NFTDetails } from '../../interfaces/nft';
@@ -35,23 +40,28 @@ const extractMetadataValue = (metadata: any) => {
 };
 
 const deprecationWarningForDip721LegacyRequests = ({
-  methodName
+  methodName,
 }: {
-  methodName: string,
-}) => `Oops! An attempt to ${methodName} failed, a fallback to legacy will be used. Legacy DIP721 contract support will be dropped soon, the contract should be updated`
-
+  methodName: string;
+}) =>
+  `Oops! An attempt to ${methodName} failed, a fallback to legacy will be used. Legacy DIP721 contract support will be dropped soon, the contract should be updated`;
 
 export default class ERC721 extends NFT {
   standard = NFTStandard.dip721;
 
   actor: ActorSubclass<Interface>;
 
-  constructor(canisterId: string, agent: HttpAgent) {
+  constructor(
+    canisterId: string,
+    agent: HttpAgent,
+    blsVerify?: CreateCertificateOptions['blsVerify']
+  ) {
     super(canisterId, agent);
 
     this.actor = Actor.createActor(IDL, {
       agent,
       canisterId,
+      blsVerify,
     });
   }
 
@@ -67,37 +77,45 @@ export default class ERC721 extends NFT {
         res = await this.actor[legacyMethod](...params);
       }
       return res;
-    }
+    };
   }
 
   async getUserTokens(principal: Principal): Promise<NFTDetails[]> {
-    const guardedGetUserTokens = this.backwardsCompatibleGuard('ownerTokenMetadata', 'dip721_owner_token_metadata');
+    const guardedGetUserTokens = this.backwardsCompatibleGuard(
+      'ownerTokenMetadata',
+      'dip721_owner_token_metadata'
+    );
     const userTokensResult = await guardedGetUserTokens([principal]);
     const tokens: Array<TokenMetadata> = userTokensResult['Ok'] || [];
 
     if (!tokens.length) return [];
 
-    const formattedTokenData = tokens.map((token) => {
-      const tokenIndex = token.token_identifier;
-      const formatedMetadata = this.formatMetadata(token);
+    const formattedTokenData = tokens
+      .map((token) => {
+        const tokenIndex = token.token_identifier;
+        const formatedMetadata = this.formatMetadata(token);
 
-      if (!formatedMetadata) return;
+        if (!formatedMetadata) return;
 
-      const operator = token.operator?.[0]?.toText();
+        const operator = token.operator?.[0]?.toText();
 
-      return this.serializeTokenData(
-        formatedMetadata,
-        tokenIndex,
-        principal.toText(),
-        operator,
-      );
-    }).filter((token) => token) as NFTDetails[];
+        return this.serializeTokenData(
+          formatedMetadata,
+          tokenIndex,
+          principal.toText(),
+          operator
+        );
+      })
+      .filter((token) => token) as NFTDetails[];
 
     return formattedTokenData;
   }
 
   async transfer(to: Principal, tokenIndex: number): Promise<void> {
-    const guardedTransfer = this.backwardsCompatibleGuard('transfer', 'dip721_transfer');
+    const guardedTransfer = this.backwardsCompatibleGuard(
+      'transfer',
+      'dip721_transfer'
+    );
     const transferResult = await guardedTransfer([to, BigInt(tokenIndex)]);
 
     if ('Err' in transferResult)
@@ -109,7 +127,10 @@ export default class ERC721 extends NFT {
   }
 
   async details(tokenIndex: number): Promise<NFTDetails> {
-    const guardedDetails = this.backwardsCompatibleGuard('tokenMetadata', 'dip721_token_metadata');
+    const guardedDetails = this.backwardsCompatibleGuard(
+      'tokenMetadata',
+      'dip721_token_metadata'
+    );
     const metadataResult = await guardedDetails([BigInt(tokenIndex)]);
 
     if ('Err' in metadataResult)
@@ -123,11 +144,19 @@ export default class ERC721 extends NFT {
     const owner = metadata?.owner?.[0]?.toText?.();
     const operator = metadata?.operator?.[0]?.toText?.();
 
-    return this.serializeTokenData(formatedMetadata, tokenIndex, owner, operator);
+    return this.serializeTokenData(
+      formatedMetadata,
+      tokenIndex,
+      owner,
+      operator
+    );
   }
 
   async getMetadata(): Promise<NFTCollection> {
-    const guardedGetMetadata = this.backwardsCompatibleGuard('metadata', 'dip721_get_metadata');
+    const guardedGetMetadata = this.backwardsCompatibleGuard(
+      'metadata',
+      'dip721_get_metadata'
+    );
     const metadata = await guardedGetMetadata();
 
     return {
@@ -137,7 +166,7 @@ export default class ERC721 extends NFT {
       canisterId: this.canisterId,
       tokens: [],
       description: '',
-    }
+    };
   }
 
   private serializeTokenData(
@@ -161,7 +190,11 @@ export default class ERC721 extends NFT {
     const metadataResult = { properties: new Array<Property>() };
 
     if (!metadata?.properties || !Array.isArray(metadata.properties)) {
-      console.warn(`Oops! Failed to format the metadata properties for token, field is missing or invalid. See ${JSON.stringify(metadata)}`);
+      console.warn(
+        `Oops! Failed to format the metadata properties for token, field is missing or invalid. See ${JSON.stringify(
+          metadata
+        )}`
+      );
       console.log(metadata);
 
       return;
@@ -174,8 +207,10 @@ export default class ERC721 extends NFT {
       const value = (() => {
         try {
           return extractMetadataValue(prop[1]);
-        } catch(err) {
-          console.warn(`Oops! Failed to extract metadata value for property ${propertyName}, is that a valid key value pair?`);
+        } catch (err) {
+          console.warn(
+            `Oops! Failed to extract metadata value for property ${propertyName}, is that a valid key value pair?`
+          );
           console.error(err);
         }
       })();

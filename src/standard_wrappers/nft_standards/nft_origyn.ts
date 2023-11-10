@@ -1,4 +1,9 @@
-import { Actor, ActorSubclass, HttpAgent } from '@dfinity/agent';
+import {
+  Actor,
+  ActorSubclass,
+  CreateCertificateOptions,
+  HttpAgent,
+} from '@dfinity/agent';
 import { Principal } from '@dfinity/principal';
 
 import NFT_Origyn, { Result_5 } from '../../interfaces/nft_origyn';
@@ -12,12 +17,17 @@ export default class NFTOrigyn extends NFT<string, string> {
 
   actor: ActorSubclass<NFT_Origyn>;
 
-  constructor(canisterId: string, agent: HttpAgent) {
+  constructor(
+    canisterId: string,
+    agent: HttpAgent,
+    blsVerify?: CreateCertificateOptions['blsVerify']
+  ) {
     super(canisterId, agent);
 
     this.actor = Actor.createActor(IDL, {
       agent,
       canisterId,
+      blsVerify,
     });
   }
 

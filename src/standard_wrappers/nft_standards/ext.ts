@@ -1,4 +1,9 @@
-import { Actor, ActorSubclass, HttpAgent } from '@dfinity/agent';
+import {
+  Actor,
+  ActorSubclass,
+  CreateCertificateOptions,
+  HttpAgent,
+} from '@dfinity/agent';
 import { Principal } from '@dfinity/principal';
 
 import { NFTCollection, NFTDetails } from '../../interfaces/nft';
@@ -32,12 +37,17 @@ export default class EXT extends NFT {
 
   actor: ActorSubclass<NTF_EXT>;
 
-  constructor(canisterId: string, agent: HttpAgent) {
+  constructor(
+    canisterId: string,
+    agent: HttpAgent,
+    blsVerify?: CreateCertificateOptions['blsVerify']
+  ) {
     super(canisterId, agent);
 
     this.actor = Actor.createActor(IDL, {
       agent,
       canisterId,
+      blsVerify,
     });
   }
 

@@ -1,4 +1,9 @@
-import { Actor, ActorSubclass, HttpAgent } from '@dfinity/agent';
+import {
+  Actor,
+  ActorSubclass,
+  CreateCertificateOptions,
+  HttpAgent,
+} from '@dfinity/agent';
 import { Principal } from '@dfinity/principal';
 
 import NFT_ICPUNKS, { TokenDesc } from '../../interfaces/icpunks';
@@ -25,12 +30,17 @@ export default class ICPUNKS extends NFT {
 
   actor: ActorSubclass<NFT_ICPUNKS>;
 
-  constructor(canisterId: string, agent: HttpAgent) {
+  constructor(
+    canisterId: string,
+    agent: HttpAgent,
+    blsVerify?: CreateCertificateOptions['blsVerify']
+  ) {
     super(canisterId, agent);
 
     this.actor = Actor.createActor(IDL, {
       agent,
       canisterId,
+      blsVerify,
     });
   }
 

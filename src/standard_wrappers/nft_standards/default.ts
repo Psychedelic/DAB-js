@@ -19,7 +19,7 @@ export default abstract class NFT<Tid = number, Tindex = bigint> {
 
   abstract transfer(principal: Principal, tokenIndex: Tid): Promise<void>;
 
-  abstract getMetadata(): Promise<NFTCollection>
+  abstract getMetadata(): Promise<NFTCollection>;
 
-  abstract details(tokenIndex: Tid ): Promise<NFTDetails<Tindex>>;
+  abstract details(tokenIndex: Tid): Promise<NFTDetails<Tindex>>;
 }

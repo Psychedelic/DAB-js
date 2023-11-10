@@ -1,4 +1,9 @@
-import { HttpAgent, ActorSubclass } from '@dfinity/agent';
+import {
+  HttpAgent,
+  ActorSubclass,
+  blsVerify,
+  CreateCertificateOptions,
+} from '@dfinity/agent';
 import { Principal } from '@dfinity/principal';
 import { IDL } from '@dfinity/candid';
 
@@ -55,14 +60,16 @@ const getIdl = (standard: string): IDL.InterfaceFactory => {
 export const createTokenActor = async <T>(
   canisterId: string | Principal,
   agent: HttpAgent,
-  standard: string
+  standard: string,
+  blsVerify?: CreateCertificateOptions['blsVerify']
 ): Promise<ActorSubclass<TokenServiceExtended<T>>> => {
   const idl = getIdl(standard);
   const actor = new (createExtendedActorClass(
     agent,
     getMethods(standard),
     canisterId,
-    idl
+    idl,
+    blsVerify
   ))() as unknown as ActorSubclass<TokenServiceExtended<any>>;
   return actor;
 };

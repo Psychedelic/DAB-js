@@ -1,4 +1,9 @@
-import { Actor, ActorSubclass, HttpAgent } from '@dfinity/agent';
+import {
+  Actor,
+  ActorSubclass,
+  CreateCertificateOptions,
+  HttpAgent,
+} from '@dfinity/agent';
 import { Principal } from '@dfinity/principal';
 
 import NFT_C3, {
@@ -20,12 +25,17 @@ export default class CCC extends NFT {
 
   actor: ActorSubclass<NFT_C3>;
 
-  constructor(canisterId: string, agent: HttpAgent) {
+  constructor(
+    canisterId: string,
+    agent: HttpAgent,
+    blsVerify?: CreateCertificateOptions['blsVerify']
+  ) {
     super(canisterId, agent);
 
     this.actor = Actor.createActor(IDL, {
       agent,
       canisterId,
+      blsVerify,
     });
   }
 

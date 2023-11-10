@@ -1,4 +1,8 @@
-import { HttpAgent, ActorSubclass } from '@dfinity/agent';
+import {
+  HttpAgent,
+  ActorSubclass,
+  CreateCertificateOptions,
+} from '@dfinity/agent';
 import fetch from 'cross-fetch';
 
 import TokenRegistryInterface from '../interfaces/dab_registries/token_registry';
@@ -23,18 +27,20 @@ interface GetTokenActorParams {
   canisterId: string;
   standard: string;
   agent: HttpAgent;
+  blsVerify?: CreateCertificateOptions['blsVerify'];
 }
 
 export const getTokenActor = <T = {}>({
   canisterId,
   agent,
   standard,
+  blsVerify,
 }: GetTokenActorParams) => {
   if (!TOKEN_STANDARDS.includes(standard)) {
     console.error(`Standard ${standard} is not implemented`);
     throw new Error(`standard is not supported: ${standard}`);
   }
-  return createTokenActor<T>(canisterId, agent, standard);
+  return createTokenActor<T>(canisterId, agent, standard, blsVerify);
 };
 
 export class TokenRegistry extends Registry {
