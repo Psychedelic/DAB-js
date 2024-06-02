@@ -1,11 +1,9 @@
-import axios from 'axios';
 import {
   ActorSubclass,
   CreateCertificateOptions,
   HttpAgent,
 } from '@dfinity/agent';
 import { Principal } from '@dfinity/principal';
-import fetch from 'cross-fetch';
 
 import NFTRegistryInterface from '../interfaces/dab_registries/nft_registry';
 import { NFTStandards, NFTCollection } from '../interfaces/nft';
@@ -245,9 +243,11 @@ export const getCachedUserNFTs = async ({
   userPID: string;
   refresh?: boolean;
 }): Promise<NFTCollection[]> => {
-  const url = `${KYASSHU_URL}/dab/user/nfts/${userPID}`;
-  const result = await axios.get<NFTCollection[]>(url, { params: { refresh } });
-  return result.data;
+  const url = `${KYASSHU_URL}/dab/user/nfts/${userPID}?refresh=${refresh}`;
+  const result = await fetch(url)
+  const response = (await result.json()) as NFTCollection[]
+
+  return response
 };
 
 export default {

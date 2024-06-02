@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/camelcase */
 import { Principal } from '@dfinity/principal';
 import { ActorSubclass } from '@dfinity/agent';
-import fetch from 'cross-fetch';
 
 import LedgerService from '../../interfaces/ledger';
 import { Metadata } from '../../interfaces/ext';
@@ -83,6 +82,8 @@ const getBalance = async (
   if (!response.ok) {
     return { value: 'Error', decimals, error: response.statusText };
   }
+
+  // @ts-ignore
   const { balances } = await response.json();
   const [{ value, currency }] = balances;
   return { value, decimals: currency.decimals };

@@ -3,7 +3,6 @@ import {
   ActorSubclass,
   CreateCertificateOptions,
 } from '@dfinity/agent';
-import fetch from 'cross-fetch';
 
 import TokenRegistryInterface from '../interfaces/dab_registries/token_registry';
 import IDL from '../idls/dab_registries/token_registry.did';

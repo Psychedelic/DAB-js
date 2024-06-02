@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/camelcase */
 import { Principal } from '@dfinity/principal';
 import { Actor, ActorSubclass, HttpAgent } from '@dfinity/agent';
-import fetch from 'cross-fetch';
 
 import LedgerService from '../../interfaces/ledger';
 import { FungibleMetadata, Metadata } from '../../interfaces/token';
