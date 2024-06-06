@@ -17,6 +17,7 @@ export const NFT = {
   dip721: 'DIP721',
   c3: 'C3',
   nftOrigyn: 'NFTORIGYN',
+  icrc7: 'ICRC7',
 };
 
 export default {

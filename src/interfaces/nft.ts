@@ -4,7 +4,8 @@ import DIP721 from '../standard_wrappers/nft_standards/dip_721';
 import EXT from '../standard_wrappers/nft_standards/ext';
 import CCC from '../standard_wrappers/nft_standards/ccc';
 import ICPunks from '../standard_wrappers/nft_standards/ic_punks';
-import NFTOrigyn from "../standard_wrappers/nft_standards/nft_origyn";
+import NFTOrigyn from '../standard_wrappers/nft_standards/nft_origyn';
+import ICRC7 from '../standard_wrappers/nft_standards/icrc_7';
 
 export type NFTStandards =
   | typeof EXT
@@ -12,7 +13,8 @@ export type NFTStandards =
   | typeof DepartureLabs
   | typeof NFTOrigyn
   | typeof DIP721
-  | typeof CCC;
+  | typeof CCC
+  | typeof ICRC7;
 
 export interface DABCollection {
   icon: string;

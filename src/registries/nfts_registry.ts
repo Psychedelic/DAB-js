@@ -24,6 +24,7 @@ import Registry from './standard_registry';
 import { generateActor } from '../utils/actorFactory';
 import { formatMetadata, FormattedMetadata } from '../utils/registry';
 import CCC from '../standard_wrappers/nft_standards/ccc';
+import ICRC7 from '../standard_wrappers/nft_standards/icrc_7';
 
 const CANISTER_ID = 'ctqxp-yyaaa-aaaah-abbda-cai';
 const BATCH_AMOUNT = 5;
@@ -36,6 +37,7 @@ const NFT_STANDARDS: { [key: string]: NFTStandards } = {
   [NFTStandard.erc721]: DIP721,
   [NFTStandard.dip721]: DIP721,
   [NFTStandard.c3]: CCC,
+  [NFTStandard.icrc7]: ICRC7,
 };
 
 interface GetBatchedNFTsParams {
@@ -244,10 +246,10 @@ export const getCachedUserNFTs = async ({
   refresh?: boolean;
 }): Promise<NFTCollection[]> => {
   const url = `${KYASSHU_URL}/dab/user/nfts/${userPID}?refresh=${refresh}`;
-  const result = await fetch(url)
-  const response = (await result.json()) as NFTCollection[]
+  const result = await fetch(url);
+  const response = (await result.json()) as NFTCollection[];
 
-  return response
+  return response;
 };
 
 export default {
