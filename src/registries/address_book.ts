@@ -1,4 +1,4 @@
-import { HttpAgent, Actor, Identity } from '@dfinity/agent';
+import { HttpAgent, Actor } from '@dfinity/agent';
 import AddressBookInterface, {
   Response,
   Address,

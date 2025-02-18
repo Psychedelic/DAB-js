@@ -66,7 +66,7 @@ interface GetAllUserNFTsParams {
   debug?: boolean;
 }
 
-const DEFAULT_AGENT = new HttpAgent({ fetch, host: IC_HOST });
+const DEFAULT_AGENT = HttpAgent.createSync({ fetch, host: IC_HOST });
 
 export class NFTRegistry extends Registry {
   constructor(agent?: HttpAgent) {
