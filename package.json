@@ -1,6 +1,6 @@
 {
   "name": "@funded-labs/dab-js",
-  "version": "1.9.1",
+  "version": "2.0.0",
   "description": "JS adapter for DAB",
   "main": "dist/index.js",
   "repository": {
