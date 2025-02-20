@@ -7,7 +7,7 @@ import RegistryStandard, {
 } from '../interfaces/dab_registries/registry_standard';
 import { formatMetadata } from '../utils/registry';
 
-const DEFAULT_AGENT = new HttpAgent({ fetch, host: IC_HOST });
+const DEFAULT_AGENT = HttpAgent.createSync({ fetch, host: IC_HOST });
 
 class Registry {
   protected actor: ActorSubclass<RegistryStandard>; // Set as protected so that subclasses can override it

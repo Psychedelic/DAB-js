@@ -18,7 +18,7 @@ import { Token } from '../interfaces/token';
 
 const CANISTER_ID = 'b7hhy-tyaaa-aaaah-abbja-cai';
 
-const DEFAULT_AGENT = new HttpAgent({ fetch, host: IC_HOST });
+const DEFAULT_AGENT = HttpAgent.createSync({ fetch, host: IC_HOST });
 
 export const TOKEN_STANDARDS = Object.values(TOKEN);
 

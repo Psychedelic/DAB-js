@@ -1,4 +1,3 @@
-
 import { Principal } from '@dfinity/principal';
 
 export interface TransferResponse {
@@ -14,7 +13,7 @@ export interface Error {
 };
 export interface TokenDetails {
   'id' : bigint,
-  'rarityScore' : number 
+  'rarityScore' : number
 };
 export interface GetTokenResponse {
   'ok' : TokenDetails,
