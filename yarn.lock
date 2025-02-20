@@ -432,7 +432,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@dfinity/agent@npm:2.3.0":
+"@dfinity/agent@npm:^2.3.0":
   version: 2.3.0
   resolution: "@dfinity/agent@npm:2.3.0"
   dependencies:
@@ -449,7 +449,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@dfinity/candid@npm:2.3.0":
+"@dfinity/candid@npm:^2.3.0":
   version: 2.3.0
   resolution: "@dfinity/candid@npm:2.3.0"
   peerDependencies:
@@ -458,7 +458,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@dfinity/principal@npm:2.3.0":
+"@dfinity/principal@npm:^2.3.0":
   version: 2.3.0
   resolution: "@dfinity/principal@npm:2.3.0"
   dependencies:
@@ -488,9 +488,9 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@funded-labs/dab-js@workspace:."
   dependencies:
-    "@dfinity/agent": "npm:2.3.0"
-    "@dfinity/candid": "npm:2.3.0"
-    "@dfinity/principal": "npm:2.3.0"
+    "@dfinity/agent": "npm:^2.3.0"
+    "@dfinity/candid": "npm:^2.3.0"
+    "@dfinity/principal": "npm:^2.3.0"
     "@types/node": "npm:^20.10.6"
     "@typescript-eslint/eslint-plugin": "npm:^4.32.0"
     buffer-crc32: "npm:^0.2.13"
